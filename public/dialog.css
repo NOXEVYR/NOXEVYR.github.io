@@ -1,0 +1,69 @@
+/* The close control is outside the independently scrolling detail panel. */
+#project-dialog {
+  --panel-bg: #fff;
+  --panel-ink: #20242e;
+  --panel-border: #dde2ea;
+  --panel-radius: 14px;
+  width: min(680px, calc(100vw - 32px));
+  max-width: none;
+  max-height: none;
+  height: fit-content;
+  margin: auto;
+  padding: 0;
+  border: 0;
+  border-radius: 0;
+  overflow: visible;
+  background: transparent;
+  color: var(--panel-ink);
+  box-shadow: none;
+}
+#project-dialog .dialog-panel {
+  max-height: calc(100dvh - 144px);
+  overflow: auto;
+  overscroll-behavior: contain;
+  scrollbar-gutter: stable;
+  background: var(--panel-bg);
+  border: 1px solid var(--panel-border);
+  border-radius: var(--panel-radius);
+  padding: 28px;
+  box-shadow: 0 24px 90px #101b3040;
+}
+#project-dialog > .close-button {
+  position: absolute;
+  top: -56px;
+  right: 0;
+  width: 44px;
+  height: 44px;
+  padding: 0;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  background: var(--panel-bg);
+  color: var(--panel-ink);
+  border: 1px solid var(--panel-border);
+  box-shadow: 0 4px 16px #0002;
+  font-size: 28px;
+  line-height: 1;
+  z-index: 1;
+}
+#project-dialog > .close-button:hover { filter: brightness(.94); }
+#project-dialog .dialog-top { margin: 0 0 22px; }
+#project-dialog .dialog-title-row { min-width: 0; }
+#project-dialog .dialog-title-row > div { min-width: 0; }
+#project-dialog h2, #project-dialog p, #project-dialog a { overflow-wrap: anywhere; }
+#project-dialog .dialog-links { flex-wrap: wrap; gap: 14px 24px; }
+html:has(#project-dialog[open]) { overflow: hidden; scrollbar-gutter: stable; }
+.theme-studio #project-dialog { --panel-bg:#161b26; --panel-ink:#edf0f9; --panel-border:#41495e; }
+.theme-editorial #project-dialog { --panel-bg:#fcfcf9; --panel-radius:0; }
+.theme-gallery #project-dialog { --panel-radius:0; }
+@media(max-width:760px) {
+  #project-dialog .dialog-panel { padding:22px; max-height:calc(100dvh - 136px); }
+  #project-dialog .dialog-title-row h2 { font-size:clamp(20px,6vw,25px); }
+}
+@media(max-height:500px) {
+  #project-dialog .dialog-panel { max-height:calc(100dvh - 120px); }
+  #project-dialog > .close-button { top:-52px; }
+}
+
+.status-label{display:inline-block;vertical-align:middle;margin-left:9px;padding:4px 7px;border:1px solid #e7d4ae;border-radius:4px;background:#fff5e2;color:#866022;font-size:12px;font-weight:500;letter-spacing:0;white-space:nowrap}
+.theme-studio .status-label{background:#3a3020;border-color:#665233;color:#f2d495}
