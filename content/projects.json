@@ -39,7 +39,7 @@
       "update": "Windows 截图线宽支持直接选择，保留近期截图绘制、回收站与笔记体验修复；macOS 同步版本。",
       "date": "2026-09-18",
       "type": "software",
-      "icon": "assets/icons/yingxu-local.png"
+      "icon": "assets/icons/yingxu-29cea82d75.png"
     },
     {
       "id": "ai-hub",
@@ -71,7 +71,7 @@
       "update": "新增工作环境、来源体检、项目目录与工具规则交接。",
       "date": "2026-09-11",
       "type": "software",
-      "icon": "assets/icons/ai-hub-local.png"
+      "icon": "assets/icons/ai-hub-d6d9293c3b.png"
     },
     {
       "id": "frameweave",
@@ -143,7 +143,7 @@
       "update": "修复可处理的失效代理入口，保留程序线路与网站例外。",
       "date": "2026-09-16",
       "type": "software",
-      "icon": "assets/icons/proxy-switch-local.png"
+      "icon": "assets/icons/proxy-switch-2702ae1bd0.png"
     },
     {
       "id": "codex-switcher",
@@ -175,7 +175,7 @@
       "update": "当前公开版本 2.4.1；历史安装包继续保留。",
       "date": null,
       "type": "software",
-      "icon": "assets/icons/codex-switcher-local.png"
+      "icon": "assets/icons/codex-switcher-fa74f9db74.png"
     },
     {
       "id": "video-catch",
@@ -212,7 +212,7 @@
       "update": "桌面程序与扩展 0.3.0 配套使用。",
       "date": null,
       "type": "software",
-      "icon": "assets/icons/video-catch-local.png"
+      "icon": "assets/icons/video-catch-f9c0ca04c7.png"
     },
     {
       "id": "classicdesk",
@@ -245,7 +245,7 @@
       "update": "公开预览：方案编辑与参数图示；真实系统增强尚未提供。",
       "date": "2026-09-11",
       "type": "software",
-      "icon": "assets/icons/classicdesk-local.png"
+      "icon": "assets/icons/classicdesk-58092aa6a2.png"
     },
     {
       "id": "codex-pet",
@@ -280,7 +280,7 @@
       "update": "边缘抓框收纳与两种体型、五套服装表情。",
       "date": "2026-09-12",
       "type": "software",
-      "icon": "assets/icons/codex-pet-local.png"
+      "icon": "assets/icons/codex-pet-5e0298b16d.png"
     },
     {
       "id": "michelle-pet",
@@ -315,7 +315,7 @@
       "update": "中英文合并为同一程序，可即时切换语言，保留四套服装与经典制服键鼠联动。",
       "date": "2026-09-18",
       "type": "software",
-      "icon": "assets/icons/michelle-pet-local.png"
+      "icon": "assets/icons/michelle-pet-7569e4cd20.png"
     }
   ]
 }
