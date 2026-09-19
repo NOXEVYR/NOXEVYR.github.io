@@ -4,3 +4,4 @@ dist-production/
 .sites-runtime/
 .env
 .env.*
+__pycache__/

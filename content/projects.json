@@ -1,5 +1,5 @@
 {
-  "checkedAt": "2026-09-18",
+  "checkedAt": "2026-09-19",
   "projects": [
     {
       "id": "yingxu",
@@ -39,7 +39,7 @@
       "update": "Windows 截图线宽支持直接选择，保留近期截图绘制、回收站与笔记体验修复；macOS 同步版本。",
       "date": "2026-09-18",
       "type": "software",
-      "icon": "assets/icons/yingxu-29cea82d75.png"
+      "icon": "assets/icons/yingxu-29cea82d75c4.png"
     },
     {
       "id": "ai-hub",
@@ -71,7 +71,7 @@
       "update": "新增工作环境、来源体检、项目目录与工具规则交接。",
       "date": "2026-09-11",
       "type": "software",
-      "icon": "assets/icons/ai-hub-d6d9293c3b.png"
+      "icon": "assets/icons/ai-hub-d6d9293c3b34.png"
     },
     {
       "id": "frameweave",
@@ -105,7 +105,7 @@
       "update": "新增历史任务参数复用与再次生成、队列搜索筛选，以及工作流包收藏归档。",
       "date": null,
       "type": "software",
-      "icon": "assets/icons/frameweave-local.png"
+      "icon": "assets/icons/frameweave-c4bf1d8e0d06.png"
     },
     {
       "id": "proxy-switch",
@@ -113,7 +113,7 @@
       "english": "FlowSwitch",
       "category": "tools",
       "label": "系统与效率",
-      "version": "3.8.2",
+      "version": "3.8.4",
       "status": "已发布",
       "symbol": "FS",
       "color": "orange",
@@ -129,21 +129,21 @@
       "requirements": "Windows 10 1809+ / Windows 11 x64；macOS 测试版需 macOS 13+，提供 Apple 芯片与 Intel 包，自带代理内核但尚未公证。需自己的可用代理，不提供 VPN 服务、订阅或节点；Mac 功能范围与 Windows 不完全相同。",
       "downloads": [
         {
-          "label": "Windows 3.8.2",
-          "url": "https://github.com/turnsolesama/proxy-switch/releases/tag/v3.8.2",
+          "label": "Windows 3.8.4",
+          "url": "https://github.com/turnsolesama/proxy-switch/releases/tag/v3.8.4",
           "channel": "stable"
         },
         {
-          "label": "macOS 0.1.0-preview.1 测试版",
-          "url": "https://github.com/turnsolesama/proxy-switch/releases/tag/macos-v0.1.0-preview.1",
+          "label": "macOS 0.1.0-preview.3 测试版",
+          "url": "https://github.com/turnsolesama/proxy-switch/releases/tag/macos-v0.1.0-preview.3",
           "channel": "mac"
         }
       ],
       "sync": "stable",
-      "update": "修复可处理的失效代理入口，保留程序线路与网站例外。",
-      "date": "2026-09-16",
+      "update": "新图标覆盖窗口、任务栏、快捷方式；小尺寸采用兼容 Windows 图标格式，保留透明度。",
+      "date": "2026-09-19",
       "type": "software",
-      "icon": "assets/icons/proxy-switch-2702ae1bd0.png"
+      "icon": "assets/icons/proxy-switch-2702ae1bd076.png"
     },
     {
       "id": "codex-switcher",
@@ -175,7 +175,7 @@
       "update": "当前公开版本 2.4.1；历史安装包继续保留。",
       "date": null,
       "type": "software",
-      "icon": "assets/icons/codex-switcher-fa74f9db74.png"
+      "icon": "assets/icons/codex-switcher-fa74f9db7441.png"
     },
     {
       "id": "video-catch",
@@ -212,7 +212,7 @@
       "update": "桌面程序与扩展 0.3.0 配套使用。",
       "date": null,
       "type": "software",
-      "icon": "assets/icons/video-catch-f9c0ca04c7.png"
+      "icon": "assets/icons/video-catch-f9c0ca04c723.png"
     },
     {
       "id": "classicdesk",
@@ -220,7 +220,7 @@
       "english": "桌面方案编辑",
       "category": "tools",
       "label": "系统与效率",
-      "version": "0.6.0-preview",
+      "version": "0.10.0-preview",
       "status": "预览版",
       "symbol": "CD",
       "color": "blue",
@@ -236,16 +236,49 @@
       "requirements": "Windows 11 x64 与 .NET 8 Desktop Runtime。当前包没有增强引擎，不能直接启用真实桌面改造。",
       "downloads": [
         {
-          "label": "Windows 0.6.0-preview",
-          "url": "https://github.com/turnsolesama/classicdesk/releases/tag/v0.6.0-preview",
+          "label": "Windows 0.10.0-preview",
+          "url": "https://github.com/turnsolesama/classicdesk/releases/tag/v0.10.0-preview",
           "channel": "stable"
         }
       ],
       "sync": "manual",
-      "update": "公开预览：方案编辑与参数图示；真实系统增强尚未提供。",
-      "date": "2026-09-11",
+      "update": "ClassicDesk 0.10.0 · 布局与皮肤预览版 已发布，查看完整更新与平台说明。",
+      "date": "2026-09-19",
       "type": "software",
-      "icon": "assets/icons/classicdesk-58092aa6a2.png"
+      "icon": "assets/icons/classicdesk-58092aa6a243.png"
+    },
+    {
+      "id": "env-anchor",
+      "name": "环境锚点",
+      "english": "EnvAnchor",
+      "category": "tools",
+      "label": "系统与效率",
+      "version": "0.6.0",
+      "status": "已发布",
+      "symbol": "EA",
+      "color": "blue",
+      "description": "把个人文件与软件配置安放到保留盘，让环境在系统还原后重新连接。",
+      "details": "面向 Windows 10 的个人文件与软件配置迁移工具。支持勾选多个目录、统一默认保存位置、复制校验、重新连接与撤销；单文件客户端在本地运行。",
+      "features": [
+        "批量勾选与统一保存位置",
+        "逐文件 SHA-256 校验与备份",
+        "系统还原后重新连接",
+        "已有方案换位置与撤销"
+      ],
+      "platform": "Windows 10",
+      "requirements": "Windows 10 自带 .NET Framework 和 Windows PowerShell 5.1；目标为不会还原的非系统 NTFS 固定磁盘。不迁移整套用户目录或浏览器凭据，软件本体需另行保留。登录自动重新连接需要将启动项写入还原基线；真实关机还原和多屏高 DPI 尚未完成实测。",
+      "downloads": [
+        {
+          "label": "Windows 0.6.0",
+          "url": "https://github.com/turnsolesama/env-anchor/releases/tag/v0.6.0",
+          "channel": "stable"
+        }
+      ],
+      "sync": "stable",
+      "update": "文件复制和校验改为后台任务，窗口保持响应，显示当前阶段及校验进度；操作期间阻止重复提交和意外关闭。",
+      "date": "2026-09-19",
+      "type": "software",
+      "icon": "assets/icons/env-anchor-b0fd80143a42.png"
     },
     {
       "id": "codex-pet",
@@ -253,7 +286,7 @@
       "english": "NatsumePet",
       "category": "play",
       "label": "桌面伙伴",
-      "version": "0.4.1",
+      "version": "0.5.9",
       "status": "已发布",
       "symbol": "NP",
       "color": "pink",
@@ -271,16 +304,16 @@
       "imageNote": "桌宠角色素材",
       "downloads": [
         {
-          "label": "Windows 0.4.1",
-          "url": "https://github.com/turnsolesama/codex-pet/releases/tag/v0.4.1",
+          "label": "Windows 0.5.9",
+          "url": "https://github.com/turnsolesama/codex-pet/releases/tag/v0.5.9",
           "channel": "stable"
         }
       ],
       "sync": "stable",
-      "update": "边缘抓框收纳与两种体型、五套服装表情。",
-      "date": "2026-09-12",
+      "update": "v0.5.9 · 自由放置、超大号与交互修复 已发布，查看完整更新与平台说明。",
+      "date": "2026-09-19",
       "type": "software",
-      "icon": "assets/icons/codex-pet-5e0298b16d.png"
+      "icon": "assets/icons/codex-pet-5e0298b16dc1.png"
     },
     {
       "id": "michelle-pet",
@@ -288,7 +321,7 @@
       "english": "MichelePet",
       "category": "play",
       "label": "桌面伙伴",
-      "version": "0.3.3",
+      "version": "0.3.8",
       "status": "已发布",
       "symbol": "MP",
       "color": "pink",
@@ -306,16 +339,16 @@
       "imageNote": "桌宠角色素材",
       "downloads": [
         {
-          "label": "Windows 0.3.3",
-          "url": "https://github.com/turnsolesama/michelle-pet/releases/tag/v0.3.3",
+          "label": "Windows 0.3.8",
+          "url": "https://github.com/turnsolesama/michelle-pet/releases/tag/v0.3.8",
           "channel": "stable"
         }
       ],
       "sync": "stable",
-      "update": "中英文合并为同一程序，可即时切换语言，保留四套服装与经典制服键鼠联动。",
-      "date": "2026-09-18",
+      "update": "经典制服继续保留双马尾；宿舍「原版长发」与「轻盈长发」均可在「搭子造型」选择。",
+      "date": "2026-09-19",
       "type": "software",
-      "icon": "assets/icons/michelle-pet-7569e4cd20.png"
+      "icon": "assets/icons/michelle-pet-7569e4cd2046.png"
     }
   ]
 }

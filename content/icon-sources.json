@@ -1,0 +1,32 @@
+{
+  "yingxu": {
+    "path": "desktop/brand.ico"
+  },
+  "ai-hub": {
+    "path": "frontend/brand.ico"
+  },
+  "frameweave": {
+    "path": "assets/frameweave.ico"
+  },
+  "proxy-switch": {
+    "path": "assets/FlowSwitch.ico"
+  },
+  "codex-switcher": {
+    "path": "switcher.ico"
+  },
+  "video-catch": {
+    "path": "assets/videocatch.ico"
+  },
+  "classicdesk": {
+    "path": "src/ClassicDesk/Assets/brand-starlight.png"
+  },
+  "codex-pet": {
+    "path": "assets/natsume/app-icon-v1/icon.ico"
+  },
+  "michelle-pet": {
+    "path": "assets/icon/michele-dorm-refined.ico"
+  },
+  "env-anchor": {
+    "path": "assets/app.ico"
+  }
+}

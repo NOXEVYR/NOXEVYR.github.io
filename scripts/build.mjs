@@ -1,4 +1,5 @@
 import {readFile, mkdir, cp, writeFile, rm} from 'node:fs/promises';
+import {createHash} from 'node:crypto';
 const production=process.argv.includes('--production');
 const data=JSON.parse(await readFile(new URL('../content/projects.json',import.meta.url),'utf8'));
 const ids=new Set();
@@ -12,6 +13,7 @@ await rm(root,{recursive:true,force:true}); await mkdir(root,{recursive:true});
 if(!production)await cp(source,root,{recursive:true});
 await writeFile(new URL('data.js',root),'window.PORTFOLIO = '+JSON.stringify(data).replace(/</g,'\\u003c')+';\n');
 const template=await readFile(new URL('../public/index.html',import.meta.url),'utf8');
+const dataVersion=createHash('sha256').update(JSON.stringify(data)).digest('hex').slice(0,12);
 const variants=[
  {id:'classic',title:'A · 清爽工具集'},
  {id:'studio',title:'B · 深色产品工作室',headline:'认真打磨，<br>每一个<span class="highlight">想法<span class="highlight-dot">.</span></span>'},
@@ -20,6 +22,9 @@ const variants=[
 ];
 function variantHtml(v, prefix='', isHome=false){
  let html=template;
+ html=html.replaceAll('{{count:all}}',String(data.projects.length)).replaceAll('{{count:total}}',String(data.projects.length).padStart(2,'0'));
+ for(const category of ['creative','tools','play'])html=html.replaceAll(`{{count:${category}}}`,String(data.projects.filter(p=>p.category===category).length));
+ html=html.replace(/src="data\.js\?[^" ]*"/,`src="data.js?v=${dataVersion}"`);
  if(v.id!=='classic')html=html.replace('<body>',`<body class="theme-${v.id}">`);
  if(!isHome)html=html.replace(/<title>.*?<\/title>/,`<title>${v.title} — turnsolesama</title>`);
  if(v.headline)html=html.replace(/<h1>.*?<\/h1>/,`<h1>${v.headline}</h1>`);

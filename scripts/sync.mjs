@@ -55,3 +55,4 @@ await Promise.all(data.projects.map(async p=>{try{
  console.log(`${p.id}: ${p.version}`);
 }catch(e){failed=true;console.error(e.message)}}));
 if(failed){console.error('Sync incomplete: preserved the previous catalog; deployment must not publish partial data.');process.exitCode=1}else{data.checkedAt=new Date().toISOString().slice(0,10);await writeFile(path,JSON.stringify(data,null,2)+'\n');console.log('Catalog refreshed; no remote repository was modified.')}
+if(!failed)await import('./sync-icons.mjs');
