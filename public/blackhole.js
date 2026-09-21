@@ -8,6 +8,7 @@
   const explore = document.querySelector('#explore-hole');
   const readout = document.querySelector('#orbit-readout');
   const hint = document.querySelector('#orbit-hint');
+  const retry = document.querySelector('#scene-retry');
   const reduced = matchMedia('(prefers-reduced-motion: reduce)');
   const qualityButton = document.querySelector('#render-quality');
   const projectDialog = document.querySelector('#project-dialog');
@@ -32,6 +33,7 @@
   try { if(localStorage.getItem('noxevyr-quality')==='ultra')quality='ultra'; } catch {}
   const clamp = (value, min, max) => Math.min(max, Math.max(min, value));
   function state() {
+    if(failed)return;
     toggle.setAttribute('aria-pressed', String(paused));
     toggle.setAttribute('aria-label', paused ? '开启动态效果' : '暂停动态效果');
     toggle.querySelector('.motion-label').textContent = paused ? '继续流动' : '暂停流动';
@@ -42,25 +44,39 @@
     qualityButton.setAttribute('aria-label',quality==='high'?'切换为超清画质':'切换为高清画质');
     qualityButton.setAttribute('aria-pressed',String(quality==='ultra'));
   }
-  function fallback() {
+  function controlsDisabled(value){
+    document.querySelectorAll('.orbit-controls button, #motion-toggle').forEach(button => { button.disabled = value; });
+  }
+  function fallback(reason,error) {
+    if(failed)return;
     failed = true; ready = false; cancelAnimationFrame(running); running = 0;
     if(expanded)expand(false);
     scene.classList.remove('is-ready'); canvas.hidden = true;
-    document.querySelectorAll('.orbit-controls button, #motion-toggle').forEach(button => { button.disabled = true; });
-    hint.textContent = '此设备暂不支持 3D，显示静态封面';
+    scene.dataset.failure=reason;
+    controlsDisabled(true);
+    document.querySelectorAll('.orbit-controls button').forEach(button=>{button.hidden=button!==retry;});
+    readout.hidden=true;
+    const messages={context:'浏览器未能启动 3D，暂时显示封面',shader:'3D 场景启动失败，请重试',texture:'黑洞素材加载失败，请重试',render:'3D 画面初始化失败，请重试',lost:'3D 画面已中断，请重新加载'};
+    hint.textContent = messages[reason] || messages.render;
     toggle.querySelector('.motion-label').textContent = '静态画面';
+    retry.hidden=false;retry.disabled=false;
+    console.warn(`3D scene unavailable (${reason}):`,error?.message || reason);
   }
+  retry.addEventListener('click',()=>location.reload());
+  retry.hidden=true;
+  controlsDisabled(true);
+  hint.textContent='正在加载 3D 场景…';
   state();
   let gl;
   try { gl = canvas.getContext('webgl', { alpha: false, antialias: false, powerPreference: 'high-performance' }); } catch {}
-  if (!gl) { fallback(); return; }
+  if (!gl) { fallback('context'); return; }
   const maxRenderSize=Math.min(gl.getParameter(gl.MAX_TEXTURE_SIZE),gl.getParameter(gl.MAX_RENDERBUFFER_SIZE));
   const halfFloat=gl.getExtension('OES_texture_half_float');
-  const gradientSampling=!!(gl.getExtension('OES_standard_derivatives')&&gl.getExtension('EXT_shader_texture_lod'));
-  const renderType=halfFloat && gl.getExtension('OES_texture_half_float_linear') && gl.getExtension('EXT_color_buffer_half_float') ? halfFloat.HALF_FLOAT_OES : gl.UNSIGNED_BYTE;
+  let gradientSampling=!!(gl.getExtension('OES_standard_derivatives')&&gl.getExtension('EXT_shader_texture_lod'));
+  let renderType=halfFloat && gl.getExtension('OES_texture_half_float_linear') && gl.getExtension('EXT_color_buffer_half_float') ? halfFloat.HALF_FLOAT_OES : gl.UNSIGNED_BYTE;
   const vertex = `attribute vec2 aPosition; varying vec2 vUv;
     void main(){ vUv=aPosition*.5+.5; gl_Position=vec4(aPosition,0.,1.); }`;
-  const fragment = `${gradientSampling?'#extension GL_OES_standard_derivatives : enable\n#extension GL_EXT_shader_texture_lod : enable\n':''}precision highp float;
+  const fragment = () => `${gradientSampling?'#extension GL_OES_standard_derivatives : enable\n#extension GL_EXT_shader_texture_lod : enable\n':''}precision highp float;
     varying vec2 vUv;
     uniform vec2 uSize, uCenter;
     uniform vec3 uEye, uRight, uUp;
@@ -240,9 +256,14 @@
   let sourceUniform, stepUniform, texelUniform, extractUniform, sceneUniform, bloomUniform;
   let sceneTarget, bloomA, bloomB, plasmaTexture,filamentsTexture;
   function link(fragmentSource){
-    const result=gl.createProgram(),vs=compile(gl.VERTEX_SHADER,vertex),fs=compile(gl.FRAGMENT_SHADER,fragmentSource);
-    gl.attachShader(result,vs);gl.attachShader(result,fs);gl.bindAttribLocation(result,0,'aPosition');gl.linkProgram(result);
-    gl.deleteShader(vs);gl.deleteShader(fs);if(!gl.getProgramParameter(result,gl.LINK_STATUS))throw Error('WebGL link failed');return result;
+    const result=gl.createProgram();let vs,fs;
+    try{
+      vs=compile(gl.VERTEX_SHADER,vertex);fs=compile(gl.FRAGMENT_SHADER,fragmentSource);
+      gl.attachShader(result,vs);gl.attachShader(result,fs);gl.bindAttribLocation(result,0,'aPosition');gl.linkProgram(result);
+      if(!gl.getProgramParameter(result,gl.LINK_STATUS))throw Error(gl.getProgramInfoLog(result)||'WebGL link failed');
+      return result;
+    }catch(error){gl.deleteProgram(result);throw error;}
+    finally{if(vs)gl.deleteShader(vs);if(fs)gl.deleteShader(fs);}
   }
   function target(){
     const texture=gl.createTexture();gl.bindTexture(gl.TEXTURE_2D,texture);
@@ -254,13 +275,37 @@
   }
   function resizeTarget(t,width,height){
     if(t.width===width&&t.height===height)return;
-    t.width=width;t.height=height;gl.bindTexture(gl.TEXTURE_2D,t.texture);
+    gl.bindTexture(gl.TEXTURE_2D,t.texture);
     gl.texImage2D(gl.TEXTURE_2D,0,gl.RGBA,width,height,0,gl.RGBA,renderType,null);
     gl.bindFramebuffer(gl.FRAMEBUFFER,t.framebuffer);
     if(gl.checkFramebufferStatus(gl.FRAMEBUFFER)!==gl.FRAMEBUFFER_COMPLETE)throw Error('Render target unavailable');
+    t.width=width;t.height=height;
   }
+  function resizeTargets(width,height){
+    const allocate=()=>{
+      resizeTarget(sceneTarget,width,height);
+      resizeTarget(bloomA,Math.max(1,width>>2),Math.max(1,height>>2));
+      resizeTarget(bloomB,bloomA.width,bloomA.height);
+    };
+    try{allocate();}catch(error){
+      if(renderType===gl.UNSIGNED_BYTE)throw error;
+      // Light is logarithmically encoded into 0..1 in every pass, so RGBA8 is
+      // a valid fallback when the driver's advertised float target fails.
+      renderType=gl.UNSIGNED_BYTE;
+      for(const t of [sceneTarget,bloomA,bloomB]){t.width=0;t.height=0;}
+      allocate();
+    }
+  }
+  let initializationStage='shader';
   try {
-    program=link(fragment);blurProgram=link(blurFragment);compositeProgram=link(compositeFragment);
+    try{program=link(fragment());}catch(error){
+      if(!gradientSampling)throw error;
+      // Some mobile drivers expose both extensions but reject their combined
+      // shader. Keep highp ray integration and use implicit mip sampling.
+      gradientSampling=false;program=link(fragment());
+    }
+    blurProgram=link(blurFragment);compositeProgram=link(compositeFragment);
+    initializationStage='render';
     const buffer=gl.createBuffer();gl.bindBuffer(gl.ARRAY_BUFFER,buffer);
     gl.bufferData(gl.ARRAY_BUFFER,new Float32Array([-1,-1,1,-1,-1,1,-1,1,1,-1,1,1]),gl.STATIC_DRAW);
     gl.enableVertexAttribArray(0);gl.vertexAttribPointer(0,2,gl.FLOAT,false,0,0);
@@ -269,7 +314,7 @@
     sceneUniform=gl.getUniformLocation(compositeProgram,'uScene');bloomUniform=gl.getUniformLocation(compositeProgram,'uBloom');
     sceneTarget=target();bloomA=target();bloomB=target();
     plasmaTexture=gl.createTexture();filamentsTexture=gl.createTexture();filamentsUniform=gl.getUniformLocation(program,'uFilaments');
-  } catch(error) { console.warn('3D scene unavailable:',error.message); fallback(); return; }
+  } catch(error) { fallback(initializationStage,error); return; }
   function draw() {
     if (!ready || failed) return;
     const rect=scene.getBoundingClientRect();
@@ -283,7 +328,7 @@
     try {
       if(canvas.width!==width||canvas.height!==height){canvas.width=width;canvas.height=height;}
       gl.activeTexture(gl.TEXTURE0);
-      resizeTarget(sceneTarget,width,height);resizeTarget(bloomA,Math.max(1,width>>2),Math.max(1,height>>2));resizeTarget(bloomB,bloomA.width,bloomA.height);
+      resizeTargets(width,height);
       gl.useProgram(program);gl.bindFramebuffer(gl.FRAMEBUFFER,sceneTarget.framebuffer);gl.viewport(0,0,width,height);
       gl.activeTexture(gl.TEXTURE2);gl.bindTexture(gl.TEXTURE_2D,plasmaTexture);gl.uniform1i(plasmaUniform,2);
       gl.activeTexture(gl.TEXTURE3);gl.bindTexture(gl.TEXTURE_2D,filamentsTexture);gl.uniform1i(filamentsUniform,3);
@@ -306,8 +351,12 @@
       gl.useProgram(compositeProgram);gl.bindFramebuffer(gl.FRAMEBUFFER,null);gl.viewport(0,0,width,height);
       gl.activeTexture(gl.TEXTURE0);gl.bindTexture(gl.TEXTURE_2D,sceneTarget.texture);gl.uniform1i(sceneUniform,0);
       gl.activeTexture(gl.TEXTURE1);gl.bindTexture(gl.TEXTURE_2D,bloomB.texture);gl.uniform1i(bloomUniform,1);gl.drawArrays(gl.TRIANGLES,0,6);
-    } catch {fallback();return;}
-    scene.classList.add('is-ready');
+    } catch(error) {fallback('render',error);return;}
+    if(!scene.classList.contains('is-ready')){
+      scene.classList.add('is-ready');delete scene.dataset.failure;
+      controlsDisabled(false);retry.hidden=true;retry.disabled=true;
+      hint.textContent='拖动环绕 · 边缘拖动倾斜';
+    }
   }
   function tick(time) {
     running=0;
@@ -382,7 +431,7 @@
   document.addEventListener('keydown',event=>{
     if(expanded&&event.key==='Escape'){event.preventDefault();expand(false);}
     if(expanded&&event.key==='Tab'){
-      const stops=[canvas,...hero.querySelectorAll('.orbit-controls button'),toggle];
+      const stops=[canvas,...[...hero.querySelectorAll('.orbit-controls button')].filter(button=>!button.hidden&&!button.disabled),toggle];
       const index=stops.indexOf(document.activeElement);
       if(event.shiftKey&&index===0){event.preventDefault();stops.at(-1).focus();}
       else if(!event.shiftKey&&index===stops.length-1){event.preventDefault();canvas.focus();}
@@ -402,12 +451,14 @@
   addEventListener('scroll',()=>{if(!scrollFrame)scrollFrame=requestAnimationFrame(scrollScene);},{passive:true});
   scrollScene();
   if('ResizeObserver' in window)new ResizeObserver(requestDraw).observe(scene);else addEventListener('resize',requestDraw);
-  canvas.addEventListener('webglcontextlost',event=>{event.preventDefault();if(expanded)expand(false);fallback();});
+  canvas.addEventListener('webglcontextlost',event=>{event.preventDefault();fallback('lost');});
   addEventListener('pagehide',()=>{pageActive=false;resume();});addEventListener('pageshow',()=>{pageActive=true;resume();requestDraw();});
   function loadTexture(path,texture,unit){return new Promise((resolve,reject)=>{
     const flowImage=new Image();
+    let retried=false;
     flowImage.onload=()=>{
     try{
+      if(failed){resolve();return;}
       // Normalize image dimensions for portable WebGL1 mipmapped material sampling.
       const source=document.createElement('canvas');
       const flow=path.endsWith('plasma-flow.png');
@@ -420,12 +471,18 @@
       gl.texParameteri(gl.TEXTURE_2D,gl.TEXTURE_WRAP_S,gl.REPEAT);gl.texParameteri(gl.TEXTURE_2D,gl.TEXTURE_WRAP_T,gl.REPEAT);
       gl.texParameteri(gl.TEXTURE_2D,gl.TEXTURE_MIN_FILTER,gl.LINEAR_MIPMAP_LINEAR);gl.texParameteri(gl.TEXTURE_2D,gl.TEXTURE_MAG_FILTER,gl.LINEAR);
       gl.generateMipmap(gl.TEXTURE_2D);
+      // The GPU owns the uploaded pixels now; release the temporary 2D backing.
+      source.width=1;source.height=1;
       const aniso=gl.getExtension('EXT_texture_filter_anisotropic');if(aniso)gl.texParameterf(gl.TEXTURE_2D,aniso.TEXTURE_MAX_ANISOTROPY_EXT,Math.min(16,gl.getParameter(aniso.MAX_TEXTURE_MAX_ANISOTROPY_EXT)));
       resolve();
     }catch(error){reject(error);}
   };
-    flowImage.onerror=reject;flowImage.src=path+buildQuery;
+    flowImage.onerror=()=>{
+      if(!retried&&!failed){retried=true;flowImage.src=path+buildQuery+(buildQuery?'&':'?')+'retry=1';}
+      else reject(Error(`Could not load ${path}`));
+    };
+    flowImage.src=path+buildQuery;
   });}
   Promise.all([loadTexture('assets/plasma-turbulence.png',plasmaTexture,gl.TEXTURE2),loadTexture('assets/plasma-flow.png',filamentsTexture,gl.TEXTURE3)])
-    .then(()=>{if(failed)return;ready=true;requestDraw();}).catch(fallback);
+    .then(()=>{if(failed)return;ready=true;requestDraw();}).catch(error=>fallback('texture',error));
 })();
