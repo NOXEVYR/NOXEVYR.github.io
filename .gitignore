@@ -5,3 +5,8 @@ dist-production/
 .env
 .env.*
 __pycache__/
+
+# Local research, diagnostic servers and comparison assets stay in this checkout.
+design/*
+!design/check-render-scheduler.mjs
+!design/analyze-ray-cost.mjs
