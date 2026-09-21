@@ -3,7 +3,8 @@
  * Run: node scripts/generate-plasma-texture.mjs
  *
  * Sampling: U = azimuth / (2*pi), V = normalized disk radius.
- * RGB = identical linear energy samples; A = 255. Both axes are periodic.
+ * R/B = original flow, G = gently combed version of that same flow, A = 255.
+ * Both axes are periodic.
  * Use REPEAT + LINEAR_MIPMAP_LINEAR. Color, radial falloff, motion, lensing and
  * lighting belong in the real-time renderer. There are no baked rings/camera.
  * Integer noise periods guarantee seamless wrap without a crossfade strip.
@@ -48,11 +49,14 @@ const primary = noiseGrid(9, 91), branch = noiseGrid(18, 149), fine = noiseGrid(
 const knots = noiseGrid(39, 71), illumination = noiseGrid(5, 19);
 const companion = noiseGrid(13, 119), lace = noiseGrid(41, 307);
 
-function energy(u, v) {
+function energy(u, v, combed = false) {
   const broad = warpBroad(u, v), medium = warpMedium(u, v);
-  const wu = u + stretch(u, v) * 0.018;
-  const wv = v + broad * parameters.broadWarp + medium * parameters.mediumWarp
-    + warpFine(u, v) * parameters.fineWarp;
+  // G uses the same original irregular strands, knots, gaps and illumination.
+  // Only their displacement is gentler; no separate radial ring template exists.
+  const warpScale = combed ? 0.4 : 1;
+  const wu = u + stretch(u, v) * 0.018 * (combed ? 0.6 : 1);
+  const wv = v + broad * parameters.broadWarp * warpScale + medium * parameters.mediumWarp * warpScale
+    + warpFine(u, v) * parameters.fineWarp * warpScale;
   const a = primary(wu, wv), b = branch(wu + 0.013, wv + a * 0.004);
   const c = fine(wu - 0.017, wv + b * 0.002);
   const d = companion(wu + 0.079, wv + a * 0.003);
@@ -72,36 +76,49 @@ function energy(u, v) {
     + tendril * (0.07 + gate * 0.16) + haze) * excitation;
 }
 
+const combedEnergy = (u, v) => energy(u, v, true);
+
 const started = performance.now();
 let periodicError = 0;
 for (let i = 0; i < 64; i++) {
   const u = i / 63, v = ((i * 17) % 64) / 64;
   periodicError = Math.max(periodicError,
     Math.abs(energy(u, v) - energy(u + 1, v)),
-    Math.abs(energy(u, v) - energy(u, v + 1)));
+    Math.abs(energy(u, v) - energy(u, v + 1)),
+    Math.abs(combedEnergy(u, v) - combedEnergy(u + 1, v)),
+    Math.abs(combedEnergy(u, v) - combedEnergy(u, v + 1)));
 }
 if (periodicError > 1e-9) throw Error(`Texture seam check failed: ${periodicError}`);
 const pixels = Buffer.alloc((width * 4 + 1) * height);
 let minimum = 255, maximum = 0, sum = 0, lit = 0;
+let combedMinimum = 255, combedMaximum = 0, combedSum = 0, combedLit = 0;
 for (let y = 0; y < height; y++) {
   const line = y * (width * 4 + 1);
-  pixels[line] = 0; // PNG no-filter row.
+  pixels[line] = 1; // PNG Sub filter keeps the smooth flow channels compact.
   for (let x = 0; x < width; x++) {
     // Cover both axes with a stratified 2D grid before generating GPU mipmaps.
     // Sampling only the diagonal can skip narrow wisps aligned with that diagonal.
-    let value = 0;
+    let value = 0, combedValue = 0;
     for (let s = 0; s < parameters.samples; s++) {
       const offsetX = ((s % sampleSide) + 0.5) / sampleSide;
       const offsetY = (Math.floor(s / sampleSide) + 0.5) / sampleSide;
       value += energy((x + offsetX) / width, (y + offsetY) / height);
+      combedValue += combedEnergy((x + offsetX) / width, (y + offsetY) / height);
     }
     const encoded = Math.round(clamp(value / parameters.samples * parameters.exposure) * 255);
+    const combedEncoded = Math.round(clamp(combedValue / parameters.samples * parameters.exposure) * 255);
     const at = line + 1 + x * 4;
-    pixels[at] = pixels[at + 1] = pixels[at + 2] = encoded;
+    pixels[at] = pixels[at + 2] = encoded;
+    pixels[at + 1] = combedEncoded;
     pixels[at + 3] = 255;
     minimum = Math.min(minimum, encoded); maximum = Math.max(maximum, encoded);
     sum += encoded; if (encoded > 100) lit++;
+    combedMinimum = Math.min(combedMinimum, combedEncoded); combedMaximum = Math.max(combedMaximum, combedEncoded);
+    combedSum += combedEncoded; if (combedEncoded > 100) combedLit++;
   }
+  // Work backwards so each residual uses the original preceding RGBA pixel.
+  // This is lossless: filtering changes transfer size, not material detail.
+  for (let i = width * 4; i > 4; i--) pixels[line + i] = (pixels[line + i] - pixels[line + i - 4]) & 255;
 }
 
 const crcTable = Uint32Array.from({length: 256}, (_, value) => {
@@ -120,7 +137,7 @@ const ihdr = Buffer.alloc(13);
 ihdr.writeUInt32BE(width, 0); ihdr.writeUInt32BE(height, 4); ihdr[8] = 8; ihdr[9] = 6;
 const png = Buffer.concat([
   Buffer.from([137, 80, 78, 71, 13, 10, 26, 10]), chunk('IHDR', ihdr),
-  chunk('tEXt', Buffer.from('Description\0Deterministic periodic linear grayscale plasma flow; U azimuth, V disk radius.')),
+  chunk('tEXt', Buffer.from('Description\0Deterministic periodic linear plasma flow; R/B original, G same irregular flow with gentler displacement; U azimuth, V disk radius.')),
   chunk('IDAT', deflateSync(pixels, {level: 9})), chunk('IEND', Buffer.alloc(0)),
 ]);
 const output = new URL('../public/assets/plasma-flow.png', import.meta.url);
@@ -129,4 +146,6 @@ await writeFile(output, png);
 console.log(JSON.stringify({output: fileURLToPath(output), width, height, seed, bytes: png.length,
   seconds: +((performance.now() - started) / 1000).toFixed(2), minimum, maximum,
   mean: +(sum / (width * height)).toFixed(2), brightFraction: +(lit / (width * height)).toFixed(4),
+  combed: {minimum: combedMinimum, maximum: combedMaximum,
+    mean: +(combedSum / (width * height)).toFixed(2), brightFraction: +(combedLit / (width * height)).toFixed(4)},
   periodicError}, null, 2));

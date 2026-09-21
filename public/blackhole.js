@@ -83,9 +83,9 @@
     uniform sampler2D uPlasma,uFilaments;
     uniform float uTime;
     const float PI=3.14159265359;
-    float flowSample(sampler2D tex,vec2 uv,float lod){
+    float flowSample(sampler2D tex,vec2 uv,float lod,float calm){
       ${gradientSampling?`vec2 dx=dFdx(uv),dy=dFdy(uv);dx.x-=floor(dx.x+.5);dy.x-=floor(dy.x+.5);
-      vec4 value=texture2DGradEXT(tex,uv,dx*exp2(lod),dy*exp2(lod));return value.r*value.a;`:`vec4 value=texture2D(tex,uv,lod);return value.r*value.a;`}
+      vec4 value=texture2DGradEXT(tex,uv,dx*exp2(lod),dy*exp2(lod));return mix(value.r,value.g,calm)*value.a;`:`vec4 value=texture2D(tex,uv,lod);return mix(value.r,value.g,calm)*value.a;`}
     }
     float hash(vec2 p){return fract(sin(dot(p,vec2(127.1,311.7)))*43758.5453);}
     float smoothNoise(vec2 p){vec2 i=floor(p),f=fract(p);f=f*f*f*(f*(f*6.-15.)+10.);
@@ -108,27 +108,52 @@
       return mix(vec3(.42,.52,.69),vec3(.95,.72,.44),hash(cell+4.))
         *(core+glow*.07)*step(.991,n)*(.18+hash(cell+1.)*.9);
     }
+    vec2 flowLayer(vec2 uv,float lod,float calm){
+      float fine=flowSample(uFilaments,uv*vec2(1.,1.7)+vec2(.29,.17),lod+.7,calm);
+      // Retain the original uneven brightness and branching material. The inner
+      // correction uses the same random field with gentler bends, not ring lines.
+      vec2 turbulenceUV=vec2(1.-abs(fract(uv.x*2.)*2.-1.),uv.y);
+      float turbulence=flowSample(uPlasma,turbulenceUV,lod,0.);
+      float strands=flowSample(uFilaments,uv,lod,calm);
+      float field=strands*(.7+turbulence*3.5)+fine*.12;
+      return vec2(clamp(field*1.2,0.,.65),field*field*9.+field*.5+turbulence*turbulence*.9);
+    }
     vec4 matter(vec3 p,vec3 ray,float lod){
       float r=length(p.xz);
       float inner=smoothstep(2.95,3.38,r);
       float outer=1.-smoothstep(7.,12.8,r);
-      float radial=(r-2.9)/10.;
+      float radius=clamp((r-2.9)/10.,0.,1.);
+      // Smooth only the most cramped bends at the inner lip. There are no
+      // generated concentric strands, and the rest of the disc keeps its gaps.
+      float radial=radius+.003*smoothstep(2.95,3.25,r)*(1.-smoothstep(3.25,4.,r));
+      float calm=.65*(1.-smoothstep(3.28,4.,r));
       float phi=atan(p.z,p.x+.000001)/(2.*PI);
-      // The periodic flow field lives in disc coordinates, never screen coordinates.
-      // Uniform orbit plus bounded local drift: radial gradients must not grow
-      // with elapsed time, otherwise mip filtering progressively erases strands.
-      // Wrapping only the uniform integer turn is seamless for every lookup.
-      float shear=fract(uTime*.01)+.045*sin(uTime*.055-r*.72);
-      vec2 circle=vec2(cos((phi+shear)*2.*PI),sin((phi+shear)*2.*PI));
-      float warp=(smoothNoise(circle*8.+r*.57)-.5)*.027+(smoothNoise(circle*21.+r*1.2)-.5)*.004;
-      vec2 uv=vec2(phi*2.+shear,radial+warp);
-      float fine=flowSample(uFilaments,uv*vec2(1.,1.7)+vec2(.29,.17),lod+.7);
-      // A mirrored angular lookup closes the generated turbulence without a seam.
-      vec2 turbulenceUV=vec2(1.-abs(fract(uv.x*2.)*2.-1.),uv.y);
-      float turbulence=flowSample(uPlasma,turbulenceUV,lod);
-      float strands=flowSample(uFilaments,uv,lod);
-      float field=strands*(.7+turbulence*3.5)+fine*.12;
-      float energy=(field*field*9.+field*.5+turbulence*turbulence*.9)*inner*outer;
+      // A slowly evolving local flow bends the material; it no longer rotates
+      // as a rigid sheet. Both advection phases share these two noise lookups.
+      vec2 circle=vec2(cos(phi*2.*PI),sin(phi*2.*PI));
+      vec2 evolution=vec2(sin(uTime*.043),cos(uTime*.031))*(.38-calm*.28);
+      float warp=((smoothNoise(circle*8.+r*.57+evolution)-.5)*.027
+        +(smoothNoise(circle*21.+r*1.2-evolution*.7)-.5)*.004)*(1.-calm*.55);
+      // Inner streams move faster, while outer waves travel more slowly and
+      // drift inward. Advection age is always [-9,9], so differential rotation
+      // cannot keep stretching UV gradients into blurry mip levels over time.
+      float speed=.0025+.012*pow(3.1/max(r,3.1),1.5);
+      vec2 flowVelocity=vec2(-speed*2.,.00008+.00055*(1.-calm));
+      float clock=uTime/18.+radial*.45;
+      float phaseA=fract(clock),phaseB=fract(clock+.5);
+      float weightA=.5-.5*cos(phaseA*2.*PI);
+      weightA=weightA*weightA/(weightA*weightA+(1.-weightA)*(1.-weightA));
+      // A phase resets only with zero weight and zero weight derivative. Radial
+      // staggering prevents the whole disc from changing material in unison.
+      vec2 uv=vec2(phi*2.,radial+warp);
+      vec2 uvA=uv+flowVelocity*((phaseA-.5)*18.)+vec2(fract(floor(clock)*.3819660113),0.);
+      vec2 uvB=uv+flowVelocity*((phaseB-.5)*18.)+vec2(fract(floor(clock+.5)*.3819660113+.185),0.);
+      vec2 layerA=flowLayer(uvA,lod,calm);
+      vec2 layerB=flowLayer(uvB,lod,calm);
+      // Blend emitted energy after squaring each field; squaring a blended
+      // field would make every handover dim and look like a pulsing overlay.
+      vec2 flow=mix(layerB,layerA,weightA);
+      float energy=flow.y*inner*outer;
       float heat=pow(3.15/max(r,3.15),1.2);
       vec3 ember=vec3(1.15,.25,.045);
       vec3 gold=vec3(2.2,1.04,.36);
@@ -137,7 +162,7 @@
       tint=mix(tint,white,pow(heat,3.)*.65);
       vec3 velocity=vec3(-p.z,0.,p.x)/max(r,.00001);
       float beaming=pow(clamp(1.-dot(-ray,velocity)*.46,.35,1.5),2.);
-      return vec4(tint*energy*pow(heat,.8)*beaming,clamp(field*1.2,0.,.65)*inner*outer);
+      return vec4(tint*energy*pow(heat,.8)*beaming,flow.x*inner*outer);
     }
     void main(){
       vec3 forward=normalize(-uEye);
@@ -207,7 +232,7 @@
       // Keep the emphasis local and smooth so distant stars stay quiet.
       float lensEmphasis=1.+.55*exp(-pow((impact-4.2)/2.2,2.));
       if(escaped) light+=stars(normalize(ray))*lensEmphasis;
-      // Critical impact parameter supplies a subpixel, warm-white photon rim.
+      // Critical impact parameter supplies the original subpixel photon rim.
       float ringWidth=max(.009,length(uEye)*1.1/uSize.y);
       float critical=exp(-pow((impact-2.598)/ringWidth,2.));
       light+=vec3(4.2,2.8,1.65)*critical;
