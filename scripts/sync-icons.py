@@ -17,8 +17,8 @@ def download_icon(repo, path):
         raise ValueError("Invalid repository name")
     if path.startswith("/") or ".." in PurePosixPath(path).parts:
         raise ValueError("Icon path must stay within its repository")
-    url = f"https://api.github.com/repos/turnsolesama/{repo}/contents/{path}?ref=main"
-    headers = {"User-Agent": "turnsolesama-site-icons", "Accept": "application/vnd.github+json"}
+    url = f"https://api.github.com/repos/NOXEVYR/{repo}/contents/{path}?ref=main"
+    headers = {"User-Agent": "noxevyr-site-icons", "Accept": "application/vnd.github+json"}
     if os.getenv("GITHUB_TOKEN"):
         headers["Authorization"] = "Bearer " + os.environ["GITHUB_TOKEN"]
     with urllib.request.urlopen(urllib.request.Request(url, headers=headers), timeout=30) as response:

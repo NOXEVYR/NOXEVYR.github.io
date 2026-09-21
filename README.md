@@ -1,6 +1,6 @@
-# turnsolesama 的个人作品集
+# NOXEVYR 的个人作品集
 
-个人网站：https://turnsolesama.github.io/
+个人网站：https://noxevyr.github.io/
 
 当前采用方案 C：编辑式布局、固定侧栏与软件作品目录。内容覆盖公开软件、项目详情、版本下载和更新进展，后续再加入视频等创作。
 

@@ -26,7 +26,7 @@ function variantHtml(v, prefix='', isHome=false){
  for(const category of ['creative','tools','play'])html=html.replaceAll(`{{count:${category}}}`,String(data.projects.filter(p=>p.category===category).length));
  html=html.replace(/src="data\.js\?[^" ]*"/,`src="data.js?v=${dataVersion}"`);
  if(v.id!=='classic')html=html.replace('<body>',`<body class="theme-${v.id}">`);
- if(!isHome)html=html.replace(/<title>.*?<\/title>/,`<title>${v.title} — turnsolesama</title>`);
+ if(!isHome)html=html.replace(/<title>.*?<\/title>/,`<title>${v.title} — NOXEVYR</title>`);
  if(v.headline)html=html.replace(/<h1>.*?<\/h1>/,`<h1>${v.headline}</h1>`);
  html=html.replaceAll('href="assets/',`href="${prefix}assets/`).replaceAll('src="assets/',`src="${prefix}assets/`).replace('href="styles.css',`href="${prefix}styles.css`).replace('src="app.js',`src="${prefix}app.js`).replace('href="dialog.css',`href="${prefix}dialog.css`);
  html=html.replace('<!-- variant-theme -->',v.id==='classic'?'':`<link rel="stylesheet" href="${prefix}themes/${v.id}.css?v=1">`);

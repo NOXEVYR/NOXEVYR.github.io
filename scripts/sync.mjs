@@ -1,7 +1,7 @@
 import {readFile,writeFile} from 'node:fs/promises';
 const path=new URL('../content/projects.json',import.meta.url);
 const data=JSON.parse(await readFile(path,'utf8'));
-const headers={'User-Agent':'turnsolesama-personal-site','Accept':'application/vnd.github+json'};
+const headers={'User-Agent':'noxevyr-personal-site','Accept':'application/vnd.github+json'};
 if(process.env.GITHUB_TOKEN)headers.Authorization=`Bearer ${process.env.GITHUB_TOKEN}`;
 const version=tag=>tag.match(/(?:^|v)(\d+\.\d+\.\d+(?:-[a-zA-Z0-9.]+)?)/)?.[1];
 const compare=(a,b)=>{
@@ -15,7 +15,7 @@ const compare=(a,b)=>{
   if(xn&&yn)return Number(x[i])-Number(y[i]);if(xn!==yn)return xn?-1:1;return x[i].localeCompare(y[i]);
  }return 0;
 };
-async function releases(repo){const list=[];for(let page=1;page<=10;page++){const r=await fetch(`https://api.github.com/repos/turnsolesama/${repo}/releases?per_page=100&page=${page}`,{headers,signal:AbortSignal.timeout(20000)});if(!r.ok)throw Error(`${repo}: GitHub HTTP ${r.status}`);list.push(...await r.json());if(!r.headers.get('link')?.includes('rel="next"'))return list}throw Error(`${repo}: pagination exceeded safety limit`)}
+async function releases(repo){const list=[];for(let page=1;page<=10;page++){const r=await fetch(`https://api.github.com/repos/NOXEVYR/${repo}/releases?per_page=100&page=${page}`,{headers,signal:AbortSignal.timeout(20000)});if(!r.ok)throw Error(`${repo}: GitHub HTTP ${r.status}`);list.push(...await r.json());if(!r.headers.get('link')?.includes('rel="next"'))return list}throw Error(`${repo}: pagination exceeded safety limit`)}
 function summary(r){const lines=(r.body||'').split(/\r?\n/);const bullet=lines.find(l=>/^[-*] /.test(l)&&!l.includes(']('));return (bullet||`${r.name||r.tag_name} 已发布，查看完整更新与平台说明。`).replace(/^[-*] /,'').replace(/[*`#]/g,'').slice(0,150)}
 // Only real downloadable binary releases qualify. Migration navigation and Source code archives never do.
 const preview=r=>r.prerelease||Boolean(version(r.tag_name)?.includes('-'));
@@ -45,11 +45,11 @@ await Promise.all(data.projects.map(async p=>{try{
  // Some projects publish packages in their repository instead of attaching a new Release.
  const readmePackages={'ai-hub':'AI-Hub',frameweave:'FrameWeave'};
  if(readmePackages[p.id]){
-  const r=await fetch(`https://api.github.com/repos/turnsolesama/${p.id}/contents/README.md`,{headers,signal:AbortSignal.timeout(20000)});
+  const r=await fetch(`https://api.github.com/repos/NOXEVYR/${p.id}/contents/README.md`,{headers,signal:AbortSignal.timeout(20000)});
   if(!r.ok)throw Error(`${p.id} README HTTP ${r.status}`);
   const doc=await r.json();if(doc.encoding!=='base64')throw Error(`${p.id}: unsupported README encoding`);
   const text=Buffer.from(doc.content,'base64').toString('utf8');
-  const match=text.match(new RegExp(`https://raw\\.githubusercontent\\.com/turnsolesama/${p.id}/main/releases/${readmePackages[p.id]}-v(\\d+\\.\\d+\\.\\d+)-Windows-x64\\.zip`));
+  const match=text.match(new RegExp(`https://raw\\.githubusercontent\\.com/(?:NOXEVYR|turnsolesama)/${p.id}/main/releases/${readmePackages[p.id]}-v(\\d+\\.\\d+\\.\\d+)-Windows-x64\\.zip`));
   if(match&&compare(match[1],p.version)>0){p.version=match[1];p.downloads=[{label:`Windows ${p.version} ZIP`,url:match[0]}];p.date=null;p.update=`${p.version} 已提供下载，完整改动见项目说明。`}
  }
  console.log(`${p.id}: ${p.version}`);
