@@ -24,13 +24,33 @@
   const qRotate=(q,v)=>qMultiply(qMultiply(q,[...v,0]),[-q[0],-q[1],-q[2],q[3]]).slice(0,3);
   const defaults = { rotation:qView(.45,.075,.045), distance:17.5 };
   let camera = { rotation:[...defaults.rotation],distance:defaults.distance }, paused = reduced.matches, expanded = false;
-  let quality='high';
+  const qualityModes=['auto','standard','high','ultra'];
+  const qualityNames={auto:'自动',standard:'标准',high:'高清',ultra:'超清'};
+  const qualityProfiles={
+    standard:{budget:1440000,maxRatio:1.5,scale:1,fps:24,backgroundFps:6},
+    high:{budget:3686400,maxRatio:2,scale:1,fps:30,backgroundFps:8},
+    ultra:{budget:8294400,maxRatio:3,scale:1.5,fps:30,backgroundFps:8},
+  };
+  let qualityMode='auto',quality='standard',autoQuality='standard',qualityLoading=false;
+  let gl;
+  const resources={textures:new Set(),framebuffers:new Set(),programs:new Set(),buffers:new Set()};
+  function releaseTexture(texture){if(resources.textures.delete(texture))gl.deleteTexture(texture);}
+  function releaseGraphics(){
+    if(!gl)return;
+    for(const texture of [...resources.textures])releaseTexture(texture);
+    for(const framebuffer of resources.framebuffers)gl.deleteFramebuffer(framebuffer);
+    for(const program of resources.programs)gl.deleteProgram(program);
+    for(const buffer of resources.buffers)gl.deleteBuffer(buffer);
+    resources.framebuffers.clear();resources.programs.clear();resources.buffers.clear();
+    canvas.width=1;canvas.height=1;
+  }
   let running = 0, ready = false, failed = false, pageActive = true, dirty = true, elapsed = 0, last = 0;
   let lastDrawAt = -Infinity;
   let savedScroll = 0, pinchDistance = 0, pinchAngle = null;
   const pointers = new Map();
   try { paused ||= localStorage.getItem('noxevyr-motion') === 'paused'; } catch {}
-  try { if(localStorage.getItem('noxevyr-quality')==='ultra')quality='ultra'; } catch {}
+  try { const saved=localStorage.getItem('noxevyr-quality');if(qualityModes.includes(saved))qualityMode=saved; } catch {}
+  quality=qualityMode==='auto'?autoQuality:qualityMode;
   const clamp = (value, min, max) => Math.min(max, Math.max(min, value));
   function state() {
     if(failed)return;
@@ -40,9 +60,13 @@
     toggle.querySelector('.motion-symbol').textContent = paused ? '▷' : 'Ⅱ';
     const elevation=Math.asin(clamp(qRotate(camera.rotation,[0,0,1])[1],-1,1))*180/Math.PI;
     readout.textContent = `${Math.round(elevation)}° / ${(defaults.distance / camera.distance).toFixed(1)}×`;
-    qualityButton.textContent=quality==='high'?'高清':'超清';
-    qualityButton.setAttribute('aria-label',quality==='high'?'切换为超清画质':'切换为高清画质');
-    qualityButton.setAttribute('aria-pressed',String(quality==='ultra'));
+    const next=qualityModes[(qualityModes.indexOf(qualityMode)+1)%qualityModes.length];
+    const label=(qualityMode==='auto'?'自动·':'')+qualityNames[quality];
+    qualityButton.textContent=qualityLoading?'切换中…':label;
+    qualityButton.setAttribute('aria-label',qualityLoading?'正在切换画质':`当前${label}，点击切换为${qualityNames[next]}`);
+    qualityButton.setAttribute('aria-busy',String(qualityLoading));
+    qualityButton.dataset.quality=quality;
+    qualityButton.dataset.mode=qualityMode;
   }
   function controlsDisabled(value){
     document.querySelectorAll('.orbit-controls button, #motion-toggle').forEach(button => { button.disabled = value; });
@@ -50,6 +74,7 @@
   function fallback(reason,error) {
     if(failed)return;
     failed = true; ready = false; cancelAnimationFrame(running); running = 0;
+    releaseGraphics();
     if(expanded)expand(false);
     scene.classList.remove('is-ready'); canvas.hidden = true;
     scene.dataset.failure=reason;
@@ -67,13 +92,26 @@
   controlsDisabled(true);
   hint.textContent='正在加载 3D 场景…';
   state();
-  let gl;
-  try { gl = canvas.getContext('webgl', { alpha: false, antialias: false, powerPreference: 'high-performance' }); } catch {}
+  try { gl = canvas.getContext('webgl', { alpha: false, antialias: false, depth:false, stencil:false, preserveDrawingBuffer:false, powerPreference: 'high-performance' }); } catch {}
   if (!gl) { fallback('context'); return; }
   const maxRenderSize=Math.min(gl.getParameter(gl.MAX_TEXTURE_SIZE),gl.getParameter(gl.MAX_RENDERBUFFER_SIZE));
+  // Device hints are coarse and may be hidden. Choose once, conservatively;
+  // never lower resolution during dragging or after an arbitrary frame count.
+  try{
+    const device=typeof navigator==='undefined'?{}:navigator;
+    const debug=gl.getExtension('WEBGL_debug_renderer_info');
+    const renderer=debug?String(gl.getParameter(debug.UNMASKED_RENDERER_WEBGL)):'';
+    const discrete=/NVIDIA|(?:AMD|ATI).*Radeon.*(?:RX|R[579])\s*\d|Intel.*Arc/i.test(renderer)
+      && !/SwiftShader|llvmpipe|software/i.test(renderer);
+    if(!matchMedia('(pointer: coarse)').matches&&!device.connection?.saveData
+      &&device.deviceMemory>=8&&device.hardwareConcurrency>=8&&maxRenderSize>=8192&&discrete)autoQuality='high';
+  }catch{}
+  quality=qualityMode==='auto'?autoQuality:qualityMode;
+  state();
   const halfFloat=gl.getExtension('OES_texture_half_float');
   let gradientSampling=!!(gl.getExtension('OES_standard_derivatives')&&gl.getExtension('EXT_shader_texture_lod'));
-  let renderType=halfFloat && gl.getExtension('OES_texture_half_float_linear') && gl.getExtension('EXT_color_buffer_half_float') ? halfFloat.HALF_FLOAT_OES : gl.UNSIGNED_BYTE;
+  const preferredRenderType=halfFloat && gl.getExtension('OES_texture_half_float_linear') && gl.getExtension('EXT_color_buffer_half_float') ? halfFloat.HALF_FLOAT_OES : gl.UNSIGNED_BYTE;
+  let renderType=gl.UNSIGNED_BYTE,floatTargetsDisabled=false;
   const vertex = `attribute vec2 aPosition; varying vec2 vUv;
     void main(){ vUv=aPosition*.5+.5; gl_Position=vec4(aPosition,0.,1.); }`;
   const fragment = () => `${gradientSampling?'#extension GL_OES_standard_derivatives : enable\n#extension GL_EXT_shader_texture_lod : enable\n':''}precision highp float;
@@ -286,27 +324,31 @@
       vs=compile(gl.VERTEX_SHADER,vertex);fs=compile(gl.FRAGMENT_SHADER,fragmentSource);
       gl.attachShader(result,vs);gl.attachShader(result,fs);gl.bindAttribLocation(result,0,'aPosition');gl.linkProgram(result);
       if(!gl.getProgramParameter(result,gl.LINK_STATUS))throw Error(gl.getProgramInfoLog(result)||'WebGL link failed');
+      resources.programs.add(result);
       return result;
     }catch(error){gl.deleteProgram(result);throw error;}
     finally{if(vs)gl.deleteShader(vs);if(fs)gl.deleteShader(fs);}
   }
   function target(){
-    const texture=gl.createTexture();gl.bindTexture(gl.TEXTURE_2D,texture);
+    const texture=gl.createTexture();resources.textures.add(texture);gl.bindTexture(gl.TEXTURE_2D,texture);
     gl.texParameteri(gl.TEXTURE_2D,gl.TEXTURE_MIN_FILTER,gl.LINEAR);gl.texParameteri(gl.TEXTURE_2D,gl.TEXTURE_MAG_FILTER,gl.LINEAR);
     gl.texParameteri(gl.TEXTURE_2D,gl.TEXTURE_WRAP_S,gl.CLAMP_TO_EDGE);gl.texParameteri(gl.TEXTURE_2D,gl.TEXTURE_WRAP_T,gl.CLAMP_TO_EDGE);
-    const framebuffer=gl.createFramebuffer();gl.bindFramebuffer(gl.FRAMEBUFFER,framebuffer);
+    const framebuffer=gl.createFramebuffer();resources.framebuffers.add(framebuffer);gl.bindFramebuffer(gl.FRAMEBUFFER,framebuffer);
     gl.framebufferTexture2D(gl.FRAMEBUFFER,gl.COLOR_ATTACHMENT0,gl.TEXTURE_2D,texture,0);
-    return {texture,framebuffer,width:0,height:0};
+    return {texture,framebuffer,width:0,height:0,type:null};
   }
   function resizeTarget(t,width,height){
-    if(t.width===width&&t.height===height)return;
+    if(t.width===width&&t.height===height&&t.type===renderType)return;
     gl.bindTexture(gl.TEXTURE_2D,t.texture);
     gl.texImage2D(gl.TEXTURE_2D,0,gl.RGBA,width,height,0,gl.RGBA,renderType,null);
     gl.bindFramebuffer(gl.FRAMEBUFFER,t.framebuffer);
     if(gl.checkFramebufferStatus(gl.FRAMEBUFFER)!==gl.FRAMEBUFFER_COMPLETE)throw Error('Render target unavailable');
-    t.width=width;t.height=height;
+    t.width=width;t.height=height;t.type=renderType;
   }
   function resizeTargets(width,height){
+    // Preserve faint outer gas even in standard quality. RGBA8 clips these
+    // dark gradients; smaller targets/materials provide the memory reduction.
+    renderType=floatTargetsDisabled?gl.UNSIGNED_BYTE:preferredRenderType;
     const allocate=()=>{
       resizeTarget(sceneTarget,width,height);
       resizeTarget(bloomA,Math.max(1,width>>2),Math.max(1,height>>2));
@@ -317,6 +359,7 @@
       // Light is logarithmically encoded into 0..1 in every pass, so RGBA8 is
       // a valid fallback when the driver's advertised float target fails.
       renderType=gl.UNSIGNED_BYTE;
+      floatTargetsDisabled=true;
       for(const t of [sceneTarget,bloomA,bloomB]){t.width=0;t.height=0;}
       allocate();
     }
@@ -331,25 +374,23 @@
     }
     blurProgram=link(blurFragment);compositeProgram=link(compositeFragment);
     initializationStage='render';
-    const buffer=gl.createBuffer();gl.bindBuffer(gl.ARRAY_BUFFER,buffer);
+    const buffer=gl.createBuffer();resources.buffers.add(buffer);gl.bindBuffer(gl.ARRAY_BUFFER,buffer);
     gl.bufferData(gl.ARRAY_BUFFER,new Float32Array([-1,-1,1,-1,-1,1,-1,1,1,-1,1,1]),gl.STATIC_DRAW);
     gl.enableVertexAttribArray(0);gl.vertexAttribPointer(0,2,gl.FLOAT,false,0,0);
     sizeUniform=gl.getUniformLocation(program,'uSize');eyeUniform=gl.getUniformLocation(program,'uEye');rightUniform=gl.getUniformLocation(program,'uRight');upUniform=gl.getUniformLocation(program,'uUp');timeUniform=gl.getUniformLocation(program,'uTime');centerUniform=gl.getUniformLocation(program,'uCenter');plasmaUniform=gl.getUniformLocation(program,'uPlasma');
     sourceUniform=gl.getUniformLocation(blurProgram,'uSource');stepUniform=gl.getUniformLocation(blurProgram,'uStep');texelUniform=gl.getUniformLocation(blurProgram,'uTexel');extractUniform=gl.getUniformLocation(blurProgram,'uExtract');
     sceneUniform=gl.getUniformLocation(compositeProgram,'uScene');bloomUniform=gl.getUniformLocation(compositeProgram,'uBloom');
     sceneTarget=target();bloomA=target();bloomB=target();
-    plasmaTexture=gl.createTexture();filamentsTexture=gl.createTexture();filamentsUniform=gl.getUniformLocation(program,'uFilaments');
+    filamentsUniform=gl.getUniformLocation(program,'uFilaments');
   } catch(error) { fallback(initializationStage,error); return; }
   function draw() {
     if (!ready || failed) return;
     const rect=scene.getBoundingClientRect();
-    // Fixed, display-aware quality: native pixels in high, 1.5x native in ultra.
-    // Do not trace 3x CSS pixels on every display, or change quality while dragging.
-    const budget=quality==='ultra'?8294400:3686400;
+    const profile=qualityProfiles[quality];
     const nativeRatio=Math.max(1,window.devicePixelRatio||1);
-    const requestedRatio=quality==='ultra'?Math.min(3,nativeRatio*1.5):Math.min(2,nativeRatio);
-    const ratio=Math.min(requestedRatio,Math.sqrt(budget/Math.max(rect.width*rect.height,1)),maxRenderSize/Math.max(rect.width,rect.height));
-    const width=Math.max(1,Math.round(rect.width*ratio)),height=Math.max(1,Math.round(rect.height*ratio));
+    const requestedRatio=Math.min(profile.maxRatio,nativeRatio*profile.scale);
+    const ratio=Math.min(requestedRatio,Math.sqrt(profile.budget/Math.max(rect.width*rect.height,1)),maxRenderSize/Math.max(rect.width,rect.height));
+    const width=Math.max(1,Math.floor(rect.width*ratio)),height=Math.max(1,Math.floor(rect.height*ratio));
     try {
       if(canvas.width!==width||canvas.height!==height){canvas.width=width;canvas.height=height;}
       gl.activeTexture(gl.TEXTURE0);
@@ -361,7 +402,7 @@
       gl.uniform3fv(eyeUniform,qRotate(camera.rotation,[0,0,camera.distance]));
       gl.uniform3fv(rightUniform,qRotate(camera.rotation,[1,0,0]));
       gl.uniform3fv(upUniform,qRotate(camera.rotation,[0,1,0]));
-      qualityButton.title=`${width} × ${height} · 点击切换画质`;
+      qualityButton.title=`${width} × ${height} · ${quality==='standard'?'标准档更省内存':'保留精细流线'} · 自动 / 标准 / 高清 / 超清`;
       const small=rect.width<700;
       const travel=expanded?0:clamp(scrollY/Math.max(hero.offsetHeight*.8,1),0,1);
       const centerX=expanded?.5:(small?.5:.67-travel*.06);
@@ -390,7 +431,8 @@
     // keep the same flow speed. Pausing/hiding resets the clock, not the image.
     if(!paused&&last)elapsed+=Math.max(0,time-last)/1000;
     last=paused?0:time;
-    const interval=1000/(document.body.classList.contains('past-hero')&&!expanded?8:30);
+    const profile=qualityProfiles[quality];
+    const interval=1000/(document.body.classList.contains('past-hero')&&!expanded?profile.backgroundFps:profile.fps);
     if((dirty||!paused)&&time-lastDrawAt>=interval-.5){
       dirty=false;lastDrawAt=time;draw();
     }
@@ -437,7 +479,31 @@
   document.querySelector('#orbit-reset').addEventListener('click',()=>{camera={rotation:[...defaults.rotation],distance:defaults.distance};change();});
   document.querySelector('#orbit-top').addEventListener('click',()=>{camera.rotation=qView(.45,1.40);change();});
   document.querySelector('#orbit-side').addEventListener('click',()=>{camera.rotation=qView(.45,.001);change();});
-  qualityButton.addEventListener('click',()=>{quality=quality==='high'?'ultra':'high';try{localStorage.setItem('noxevyr-quality',quality);}catch{}state();requestDraw();});
+  qualityButton.addEventListener('click',async()=>{
+    if(qualityLoading||!ready||failed)return;
+    const nextMode=qualityModes[(qualityModes.indexOf(qualityMode)+1)%qualityModes.length];
+    const nextQuality=nextMode==='auto'?autoQuality:nextMode;
+    qualityLoading=true;qualityButton.disabled=true;state();
+    try{
+      if((nextQuality==='standard')!==(quality==='standard')){
+        // Keep the current scene usable if a new material download fails. Only
+        // one small+large pair can coexist, and the old pair is deleted at commit.
+        const next=await loadMaterials(nextQuality);
+        if(failed){releaseTexture(next.flow);releaseTexture(next.plasma);return;}
+        releaseTexture(filamentsTexture);releaseTexture(plasmaTexture);
+        filamentsTexture=next.flow;plasmaTexture=next.plasma;
+      }
+      qualityMode=nextMode;quality=nextQuality;
+      try{localStorage.setItem('noxevyr-quality',qualityMode);}catch{}
+      hint.textContent=expanded?'自由旋转 · 边缘拖动倾斜 · ESC 返回':'拖动环绕 · 边缘拖动倾斜';
+    }catch(error){
+      if(!failed)hint.textContent='画质切换未完成，已保留原档位，可重试';
+      console.warn('Quality switch kept the previous material:',error?.message);
+    }finally{
+      qualityLoading=false;
+      if(!failed){qualityButton.disabled=false;state();requestDraw();}
+    }
+  });
   document.querySelector('#orbit-in').addEventListener('click',()=>{camera.distance-=2;change();});
   document.querySelector('#orbit-out').addEventListener('click',()=>{camera.distance+=2;change();});
   function expand(value){
@@ -478,36 +544,54 @@
   if('ResizeObserver' in window)new ResizeObserver(requestDraw).observe(scene);else addEventListener('resize',requestDraw);
   canvas.addEventListener('webglcontextlost',event=>{event.preventDefault();fallback('lost');});
   addEventListener('pagehide',()=>{pageActive=false;resume();});addEventListener('pageshow',()=>{pageActive=true;resume();requestDraw();});
-  function loadTexture(path,texture,unit){return new Promise((resolve,reject)=>{
+  function loadTexture(path,texture,unit,requestedWidth){return new Promise((resolve,reject)=>{
     const flowImage=new Image();
     let retried=false;
+    function cleanImage(){flowImage.onload=null;flowImage.onerror=null;flowImage.removeAttribute('src');}
     flowImage.onload=()=>{
-    try{
-      if(failed){resolve();return;}
-      // Normalize image dimensions for portable WebGL1 mipmapped material sampling.
-      const source=document.createElement('canvas');
-      const flow=path.endsWith('plasma-flow.png');
-      source.width=Math.min(flow?4096:2048,maxRenderSize);source.height=source.width/2;
-      source.getContext('2d').drawImage(flowImage,0,0,source.width,source.height);
-      gl.activeTexture(unit);gl.bindTexture(gl.TEXTURE_2D,texture);
-      gl.pixelStorei(gl.UNPACK_COLORSPACE_CONVERSION_WEBGL,gl.NONE);
-      gl.pixelStorei(gl.UNPACK_PREMULTIPLY_ALPHA_WEBGL,false);
-      gl.texImage2D(gl.TEXTURE_2D,0,gl.RGBA,gl.RGBA,gl.UNSIGNED_BYTE,source);
-      gl.texParameteri(gl.TEXTURE_2D,gl.TEXTURE_WRAP_S,gl.REPEAT);gl.texParameteri(gl.TEXTURE_2D,gl.TEXTURE_WRAP_T,gl.REPEAT);
-      gl.texParameteri(gl.TEXTURE_2D,gl.TEXTURE_MIN_FILTER,gl.LINEAR_MIPMAP_LINEAR);gl.texParameteri(gl.TEXTURE_2D,gl.TEXTURE_MAG_FILTER,gl.LINEAR);
-      gl.generateMipmap(gl.TEXTURE_2D);
-      // The GPU owns the uploaded pixels now; release the temporary 2D backing.
-      source.width=1;source.height=1;
-      const aniso=gl.getExtension('EXT_texture_filter_anisotropic');if(aniso)gl.texParameterf(gl.TEXTURE_2D,aniso.TEXTURE_MAX_ANISOTROPY_EXT,Math.min(16,gl.getParameter(aniso.MAX_TEXTURE_MAX_ANISOTROPY_EXT)));
-      resolve();
-    }catch(error){reject(error);}
-  };
+      let temporary;
+      try{
+        if(failed)throw Error('Scene no longer active');
+        const width=2**Math.floor(Math.log2(Math.min(requestedWidth,maxRenderSize))),height=width/2;
+        let source=flowImage;
+        // A matching POT image can go straight to the GPU; avoid a second
+        // full-sized CPU canvas (32 MiB for the original flow image).
+        if(flowImage.naturalWidth!==width||flowImage.naturalHeight!==height){
+          temporary=document.createElement('canvas');temporary.width=width;temporary.height=height;
+          temporary.getContext('2d').drawImage(flowImage,0,0,width,height);source=temporary;
+        }
+        gl.activeTexture(unit);gl.bindTexture(gl.TEXTURE_2D,texture);
+        gl.pixelStorei(gl.UNPACK_COLORSPACE_CONVERSION_WEBGL,gl.NONE);
+        gl.pixelStorei(gl.UNPACK_PREMULTIPLY_ALPHA_WEBGL,false);
+        gl.texImage2D(gl.TEXTURE_2D,0,gl.RGBA,gl.RGBA,gl.UNSIGNED_BYTE,source);
+        gl.texParameteri(gl.TEXTURE_2D,gl.TEXTURE_WRAP_S,gl.REPEAT);gl.texParameteri(gl.TEXTURE_2D,gl.TEXTURE_WRAP_T,gl.REPEAT);
+        gl.texParameteri(gl.TEXTURE_2D,gl.TEXTURE_MIN_FILTER,gl.LINEAR_MIPMAP_LINEAR);gl.texParameteri(gl.TEXTURE_2D,gl.TEXTURE_MAG_FILTER,gl.LINEAR);
+        gl.generateMipmap(gl.TEXTURE_2D);
+        const aniso=gl.getExtension('EXT_texture_filter_anisotropic');if(aniso)gl.texParameterf(gl.TEXTURE_2D,aniso.TEXTURE_MAX_ANISOTROPY_EXT,Math.min(16,gl.getParameter(aniso.MAX_TEXTURE_MAX_ANISOTROPY_EXT)));
+        resolve();
+      }catch(error){reject(error);}
+      finally{if(temporary){temporary.width=1;temporary.height=1;}cleanImage();}
+    };
     flowImage.onerror=()=>{
       if(!retried&&!failed){retried=true;flowImage.src=path+buildQuery+(buildQuery?'&':'?')+'retry=1';}
-      else reject(Error(`Could not load ${path}`));
+      else{cleanImage();reject(Error(`Could not load ${path}`));}
     };
     flowImage.src=path+buildQuery;
   });}
-  Promise.all([loadTexture('assets/plasma-turbulence.png',plasmaTexture,gl.TEXTURE2),loadTexture('assets/plasma-flow.png',filamentsTexture,gl.TEXTURE3)])
-    .then(()=>{if(failed)return;ready=true;requestDraw();}).catch(error=>fallback('texture',error));
+  async function loadMaterials(tier){
+    const standard=tier==='standard',suffix=standard?'-standard':'';
+    let flow,plasma;
+    try{
+      flow=gl.createTexture();resources.textures.add(flow);
+      await loadTexture(`assets/plasma-flow${suffix}.png`,flow,gl.TEXTURE3,standard?2048:4096);
+      if(failed)throw Error('Scene no longer active');
+      plasma=gl.createTexture();resources.textures.add(plasma);
+      await loadTexture(`assets/plasma-turbulence${suffix}.png`,plasma,gl.TEXTURE2,standard?1024:2048);
+      return {flow,plasma};
+    }catch(error){releaseTexture(flow);releaseTexture(plasma);throw error;}
+  }
+  loadMaterials(quality).then(materials=>{
+    if(failed){releaseTexture(materials.flow);releaseTexture(materials.plasma);return;}
+    filamentsTexture=materials.flow;plasmaTexture=materials.plasma;ready=true;requestDraw();
+  }).catch(error=>fallback('texture',error));
 })();

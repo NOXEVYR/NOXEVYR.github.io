@@ -70,11 +70,18 @@ function harness({
   dpr = 1, sceneWidth = 1280, sceneHeight = 720, quality = 'high',
   halfFloat = false, framebufferFailure = null, gradientSampling = false,
   shaderFailure = null, contextAvailable = true, allowFallback = false,
+  deviceMemory, hardwareConcurrency, coarse = false, saveData = false,
+  renderer = null, maxRenderSize = 4096,
 } = {}) {
   const nodes = new Map();
   const pending = new Map();
   const images = [];
   const textureRequests = [];
+  const textureUploads = [];
+  const scratchCanvases = [];
+  const contextRequests = [];
+  const resources = { texture: [], framebuffer: [], program: [], buffer: [] };
+  const deleted = { texture: [], framebuffer: [], program: [], buffer: [] };
   const targetAllocations = [];
   const renderPasses = [];
   const compiledShaders = [];
@@ -82,7 +89,7 @@ function harness({
   const frames = [];
   const uniforms = new Map();
   const storage = new Map();
-  storage.set('noxevyr-quality', quality);
+  if (quality !== null && quality !== undefined) storage.set('noxevyr-quality', quality);
   const mutationObservers = new Set();
   let now = 1000;
   let nextId = 0;
@@ -93,6 +100,7 @@ function harness({
   let boundTexture = null;
   let boundFramebuffer = null;
   let halfFloatChecks = 0;
+  let peakLiveTextures = 0;
   const HALF_FLOAT = 36193;
   // Native MutationObserver delivers attribute changes at the microtask checkpoint.
   class MutationObserver {
@@ -149,9 +157,25 @@ function harness({
   noops.forEach(name => { gl[name] = () => {}; });
   ['createShader', 'createProgram', 'createTexture', 'createFramebuffer', 'createBuffer']
     .forEach(name => { gl[name] = () => ({}); });
+  for (const [kind, suffix] of [['texture', 'Texture'], ['framebuffer', 'Framebuffer'],
+    ['program', 'Program'], ['buffer', 'Buffer']]) {
+    gl[`create${suffix}`] = () => {
+      const resource = { kind, id: resources[kind].length + 1 };
+      resources[kind].push(resource);
+      if (kind === 'texture') peakLiveTextures = Math.max(peakLiveTextures,
+        resources.texture.filter(texture => !texture.deleted).length);
+      return resource;
+    };
+    gl[`delete${suffix}`] = resource => {
+      if (!resource || resource.deleted) return;
+      resource.deleted = true;
+      deleted[kind].push(resource);
+    };
+  }
   Object.assign(gl, {
-    getParameter: () => 4096,
+    getParameter: parameter => parameter === 0x9246 ? renderer : maxRenderSize,
     getExtension(name) {
+      if (renderer && name === 'WEBGL_debug_renderer_info') return { UNMASKED_RENDERER_WEBGL: 0x9246 };
       if (halfFloat && name === 'OES_texture_half_float') return { HALF_FLOAT_OES: HALF_FLOAT };
       if (halfFloat && ['OES_texture_half_float_linear', 'EXT_color_buffer_half_float'].includes(name)) return {};
       if (gradientSampling && ['OES_standard_derivatives', 'EXT_shader_texture_lod'].includes(name)) return {};
@@ -166,11 +190,21 @@ function harness({
     getProgramParameter: () => true,
     bindTexture: (_target, texture) => { boundTexture = texture; },
     bindFramebuffer: (_target, framebuffer) => { boundFramebuffer = framebuffer; },
-    framebufferTexture2D: (_target, _attachment, _textureTarget, texture) => { boundFramebuffer.texture = texture; },
+    framebufferTexture2D: (_target, _attachment, _textureTarget, texture) => {
+      boundFramebuffer.texture = texture;
+      if (texture) texture.isTarget = true;
+    },
     texImage2D(...args) {
-      if (args.length !== 9) return;
+      if (args.length === 6) {
+        const input = args[5];
+        textureUploads.push({ texture: boundTexture, source: input,
+          width: input.naturalWidth || input.width, height: input.naturalHeight || input.height,
+          fromImage: images.includes(input), url: input.src });
+        return;
+      }
+      if (args.length !== 9) throw Error(`Unexpected texImage2D signature: ${args.length}`);
       Object.assign(boundTexture, { width: args[3], height: args[4], type: args[7] });
-      targetAllocations.push({ texture: boundTexture, width: args[3], height: args[4], type: args[7] });
+      if (boundTexture.isTarget) targetAllocations.push({ texture: boundTexture, width: args[3], height: args[4], type: args[7] });
     },
     checkFramebufferStatus() {
       const type = boundFramebuffer.texture.type;
@@ -198,7 +232,10 @@ function harness({
       });
     },
   });
-  node('#blackhole-canvas').getContext = () => contextAvailable ? gl : null;
+  node('#blackhole-canvas').getContext = (type, attributes) => {
+    contextRequests.push({ type, attributes });
+    return contextAvailable ? gl : null;
+  };
   const document = {
     ...eventTarget(), hidden,
     body: element(), documentElement: element(),
@@ -211,7 +248,11 @@ function harness({
       if (selector === '.orbit-controls button') return [...orbitControls, node('#scene-retry')];
       return [];
     },
-    createElement: () => ({ getContext: () => ({ drawImage() {} }) }),
+    createElement: () => {
+      const scratch = { width: 0, height: 0, getContext: () => ({ drawImage() {} }) };
+      scratchCanvases.push(scratch);
+      return scratch;
+    },
   };
   const reduced = { ...eventTarget(), matches: paused };
   const context = {
@@ -222,14 +263,23 @@ function harness({
       getItem: key => storage.get(key) ?? null,
       setItem: (key, value) => storage.set(key, String(value)),
     },
-    matchMedia: () => reduced,
+    matchMedia: query => query.includes('prefers-reduced-motion') ? reduced : { ...eventTarget(), matches: coarse },
+    navigator: { deviceMemory, hardwareConcurrency, connection: { saveData } },
     scrollY: pastHero ? 900 : 0,
     devicePixelRatio: dpr,
     scrollTo() {},
     Image: class {
-      constructor() { images.push(this); }
+      constructor() { images.push(this); this.removed = []; }
       get src() { return this.url; }
-      set src(value) { this.url = value; textureRequests.push({ image: this, url: value }); }
+      set src(value) {
+        this.url = value;
+        const dimensions = value.includes('flow-standard') ? [2048, 1024]
+          : value.includes('turbulence-standard') ? [1024, 512]
+          : value.includes('plasma-flow') ? [4096, 2048] : [1774, 887];
+        [this.width, this.height] = [this.naturalWidth, this.naturalHeight] = dimensions;
+        textureRequests.push({ image: this, url: value });
+      }
+      removeAttribute(name) { this.removed.push(name); if (name === 'src') this.url = ''; }
     },
     requestAnimationFrame(callback) {
       const id = ++nextId;
@@ -247,16 +297,18 @@ function harness({
 
   async function settle() {
     // Include retry chains, Promise.all, and the terminal success/fallback handler.
-    for (let i = 0; i < 8; i++) await Promise.resolve();
+    for (let i = 0; i < 16; i++) await Promise.resolve();
   }
 
   return {
     document, context, frames, node, controls, orbitControls, textureRequests, targetAllocations,
+    textureUploads, scratchCanvases, contextRequests, resources, deleted, images, settle,
     renderPasses, compiledShaders, warnings, gl,
     get pending() { return pending.size; },
     get now() { return now; },
     get requests() { return rafRequests; },
     get reloads() { return reloads; },
+    get peakLiveTextures() { return peakLiveTextures; },
     async load(index) {
       assert.ok(images[index], `texture ${index} was requested`);
       images[index].onload();
@@ -345,8 +397,12 @@ async function test(name, callback) {
 await test('texture completion submits its first image through RAF', async () => {
   const h = harness();
   assert.equal(h.pending, 0);
+  assert.equal(h.textureRequests.length, 1, 'only the flow image starts decoding initially');
+  assert.match(h.textureRequests[0].url, /plasma-flow\.png/);
   await h.load(0);
   assert.equal(h.pending, 0, 'both textures are required');
+  assert.equal(h.textureRequests.length, 2, 'turbulence starts after flow upload finishes');
+  assert.match(h.textureRequests[1].url, /plasma-turbulence\.png/);
   await h.load(1);
   assert.equal(h.frames.length, 0, 'texture completion must not draw synchronously');
   assert.equal(h.pending, 1);
@@ -538,18 +594,20 @@ await test('project-opening exits exploration and releases dialog inert state be
   assert.equal(h.frames.length, before);
 });
 
-await test('DPR 1.5 uses 1920 × 1080 high and 2880 × 1620 ultra, including toggles', async () => {
+await test('DPR 1.5 retains high and ultra resolution and switches between them without material loads', async () => {
   const h = await loaded({ dpr: 1.5 });
   h.run(13);
   resolution(h.frames, 1920, 1080);
-  for (const [quality, width, height] of [['ultra', 2880, 1620], ['high', 1920, 1080]]) {
-    const before = h.frames.length;
-    h.node('#render-quality').emit('click');
-    assert.equal(h.frames.length, before, 'quality change must use the shared scheduler');
-    h.run(13);
-    resolution(h.frames.slice(before), width, height);
-    assert.equal(h.context.localStorage.getItem('noxevyr-quality'), quality);
-  }
+  const before = h.frames.length;
+  const textureCount = h.resources.texture.length;
+  h.node('#render-quality').emit('click');
+  await h.settle();
+  assert.equal(h.frames.length, before, 'quality change must use the shared scheduler');
+  h.run(13);
+  resolution(h.frames.slice(before), 2880, 1620);
+  assert.equal(h.context.localStorage.getItem('noxevyr-quality'), 'ultra');
+  assert.equal(h.textureRequests.length, 2, 'high and ultra share the uploaded materials');
+  assert.equal(h.resources.texture.length, textureCount, 'resolution changes allocate no new material handles');
   const restored = await loaded({ dpr: 1.5, quality: 'ultra' });
   restored.advance();
   resolution(restored.frames, 2880, 1620);
@@ -604,14 +662,15 @@ await test('loading controls become available only after the first complete rend
 
 await test('one texture network failure retries the same resource and recovers', async () => {
   const h = harness();
-  assert.equal(h.textureRequests.length, 2);
+  assert.equal(h.textureRequests.length, 1);
   await h.failRequest(0);
-  assert.equal(h.textureRequests.length, 3, 'only the failed texture gets one retry');
-  assert.equal(new URL(h.textureRequests[2].url, 'https://example.test').pathname,
+  assert.equal(h.textureRequests.length, 2, 'only the failed texture gets one retry');
+  assert.equal(new URL(h.textureRequests[1].url, 'https://example.test').pathname,
     new URL(h.textureRequests[0].url, 'https://example.test').pathname);
   assert.equal(h.node('#blackhole-canvas').hidden, false, 'first network failure must not enter fallback');
-  await h.loadRequest(2);
   await h.loadRequest(1);
+  assert.equal(h.textureRequests.length, 3, 'second material waits for the successful retry');
+  await h.loadRequest(2);
   assert.equal(h.frames.length, 0, 'retry completion still uses RAF');
   h.advance();
   assert.equal(h.frames.length, 1);
@@ -621,12 +680,13 @@ await test('one texture network failure retries the same resource and recovers',
 await test('two texture network failures stop cleanly and leave manual retry available', async () => {
   const h = harness({ allowFallback: true });
   await h.failRequest(0);
-  await h.failRequest(2);
-  assert.equal(h.textureRequests.length, 3, 'automatic texture retry is bounded to one');
+  await h.failRequest(1);
+  assert.equal(h.textureRequests.length, 2, 'automatic texture retry is bounded to one');
   fallbackState(h, 'texture');
-  await h.loadRequest(1);
+  assert.equal(h.images[0].onload, null, 'failed loads release their completion handler');
+  assert.equal(h.images[0].onerror, null, 'failed loads release their error handler');
   h.run(120);
-  assert.equal(h.frames.length, 0, 'late success of another texture cannot revive a failed scene');
+  assert.equal(h.frames.length, 0, 'failed serial loading cannot revive or request the next texture');
   fallbackState(h, 'texture');
   h.node('#scene-retry').emit('click');
   assert.equal(h.reloads, 1, 'manual retry reloads the page');
@@ -701,6 +761,251 @@ await test('context loss after rendering exposes retry and stops further drawing
   assert.equal(h.frames.length, before);
   h.node('#scene-retry').emit('click');
   assert.equal(h.reloads, 1);
+});
+
+await test('WebGL omits unused depth, stencil and preserved drawing buffers', async () => {
+  const h = await loaded();
+  const { type, attributes } = h.contextRequests[0];
+  assert.equal(type, 'webgl');
+  for (const name of ['depth', 'stencil', 'preserveDrawingBuffer', 'antialias']) {
+    assert.equal(attributes[name], false, `${name} must not allocate an unnecessary buffer`);
+  }
+});
+
+await test('automatic quality uses conservative defaults and only explicit capable discrete GPUs select high', async () => {
+  const capable = { deviceMemory: 8, hardwareConcurrency: 8, maxRenderSize: 16384,
+    renderer: 'ANGLE (NVIDIA, NVIDIA GeForce RTX 3070 Laptop GPU Direct3D11)' };
+  const cases = [
+    ['missing capability information', {}, false],
+    ['capable NVIDIA', capable, true],
+    ['capable AMD RX', { ...capable, renderer: 'AMD Radeon RX 6800' }, true],
+    ['capable AMD R9', { ...capable, renderer: 'AMD Radeon R9 390' }, true],
+    ['capable AMD R7', { ...capable, renderer: 'AMD Radeon R7 370' }, true],
+    ['capable Intel Arc', { ...capable, renderer: 'Intel(R) Arc(TM) A770 Graphics' }, true],
+    ['integrated AMD', { ...capable, renderer: 'AMD Radeon(TM) Graphics' }, false],
+    ['integrated Intel', { ...capable, renderer: 'Intel(R) Iris(R) Xe Graphics' }, false],
+    ['masked renderer', { ...capable, renderer: null }, false],
+    ['coarse pointer', { ...capable, coarse: true }, false],
+    ['save-data preference', { ...capable, saveData: true }, false],
+    ['low system memory', { ...capable, deviceMemory: 4 }, false],
+    ['missing system memory', { ...capable, deviceMemory: undefined }, false],
+    ['few logical processors', { ...capable, hardwareConcurrency: 4 }, false],
+    ['missing processor count', { ...capable, hardwareConcurrency: undefined }, false],
+    ['small texture limit', { ...capable, maxRenderSize: 4096 }, false],
+  ];
+  for (const [name, options, high] of cases) {
+    const h = await loaded({ ...options, quality: null, dpr: 1.5 });
+    h.advance();
+    assert.match(h.node('#render-quality').textContent, /自动/, name);
+    assert.equal(h.textureRequests[0].url.includes('flow-standard'), !high, name);
+    resolution(h.frames, high ? 1920 : 1600, high ? 1080 : 900);
+    assert.notEqual(h.context.localStorage.getItem('noxevyr-quality'), 'ultra', 'auto never selects ultra');
+  }
+  const invalid = await loaded({ quality: 'obsolete-quality-name' });
+  assert.match(invalid.node('#render-quality').textContent, /自动/);
+  assert.match(invalid.textureRequests[0].url, /flow-standard/);
+  for (const quality of ['standard', 'high', 'ultra']) {
+    const h = await loaded({ quality, coarse: true, deviceMemory: 2, dpr: 1.5 });
+    h.advance();
+    assert.equal(h.context.localStorage.getItem('noxevyr-quality'), quality, 'explicit saved preference is preserved');
+    assert.equal(h.textureRequests[0].url.includes('flow-standard'), quality === 'standard');
+    resolution(h.frames, quality === 'standard' ? 1600 : quality === 'high' ? 1920 : 2880,
+      quality === 'standard' ? 900 : quality === 'high' ? 1080 : 1620);
+  }
+});
+
+for (const [pastHero, fps] of [[false, 24], [true, 6]]) {
+  await test(`standard quality preserves half-float dark detail, its 1.44M pixel budget and ${fps} fps cadence`, async () => {
+    const h = await loaded({ quality: 'standard', halfFloat: true, dpr: 2, pastHero });
+    const firstTickAt = h.now + RAF_MS;
+    h.run(240);
+    resolution(h.frames, 1600, 900);
+    cadence(h.frames, fps);
+    assert.ok(h.frames.length >= fps * 2 - 1 && h.frames.length <= fps * 2);
+    assert.ok(h.renderPasses.filter(pass => pass.framebuffer).every(pass => pass.type === 36193),
+      'standard lowers resolution and material size without quantizing away faint streams');
+    assert.ok(h.frames.every(frame => frame.width * frame.height <= 1440000));
+    for (const frame of h.frames) almostEqual(frame.time, (frame.at - firstTickAt) / 1000, 'standard follows wall time');
+  });
+}
+
+await test('standard caps DPR at 1.5 even when its pixel budget has headroom', async () => {
+  const h = await loaded({ quality: 'standard', dpr: 3, sceneWidth: 640, sceneHeight: 360 });
+  h.advance();
+  resolution(h.frames, 960, 540);
+  assert.ok(h.renderPasses.filter(pass => pass.framebuffer).every(pass => pass.type === h.gl.UNSIGNED_BYTE),
+    'RGBA8 remains available when half-float support is absent');
+});
+
+await test('serial material loading uploads matching Images directly and releases decoded-image references', async () => {
+  for (const quality of ['standard', 'high']) {
+    const h = harness({ quality });
+    assert.equal(h.images.length, 1, 'only one decoder is active');
+    assert.match(h.textureRequests[0].url, quality === 'standard' ? /flow-standard\.png/ : /plasma-flow\.png/);
+    await h.load(0);
+    assert.equal(h.images.length, 2);
+    assert.equal(h.images[0].onload, null);
+    assert.equal(h.images[0].onerror, null);
+    assert.ok(h.images[0].removed.includes('src'));
+    assert.equal(h.textureUploads[0].fromImage, true, 'POT flow texture needs no staging canvas');
+    assert.equal(h.scratchCanvases.length, 0, 'flow upload should avoid a redundant 32 MiB canvas');
+    await h.load(1);
+    assert.ok(h.images.every(image => image.onload === null && image.onerror === null && image.removed.includes('src')));
+    assert.equal(h.textureUploads.length, 2);
+    assert.deepEqual(h.textureUploads.map(upload => [upload.width, upload.height]),
+      quality === 'standard' ? [[2048, 1024], [1024, 512]] : [[4096, 2048], [2048, 1024]]);
+    if (quality === 'standard') {
+      assert.equal(h.scratchCanvases.length, 0, 'pre-sized standard textures avoid all staging canvases');
+      assert.ok(h.textureUploads.every(upload => upload.fromImage));
+    } else {
+      assert.equal(h.scratchCanvases.length, 1, 'only the non-POT turbulence image needs normalization');
+      assert.ok(h.scratchCanvases.every(scratch => scratch.width <= 1 && scratch.height <= 1), 'staging buffers are released');
+    }
+  }
+});
+
+await test('quality cycles auto → standard → high → ultra → auto and commits only completed material switches', async () => {
+  const h = await loaded({ quality: null, dpr: 1.5 });
+  h.advance();
+  const firstMaterials = h.resources.texture.filter(texture => !texture.isTarget);
+  h.node('#render-quality').emit('click');
+  await h.settle();
+  assert.equal(h.context.localStorage.getItem('noxevyr-quality'), 'standard');
+  assert.equal(h.textureRequests.length, 2, 'auto-standard to explicit standard needs no reload');
+  assert.equal(h.node('#render-quality').disabled, false);
+
+  h.node('#render-quality').emit('click');
+  await h.settle();
+  assert.equal(h.node('#render-quality').disabled, true);
+  assert.equal(h.context.localStorage.getItem('noxevyr-quality'), 'standard', 'pending mode is not persisted');
+  assert.equal(h.textureRequests.length, 3, 'only replacement flow starts first');
+  const during = h.frames.length;
+  h.run(60);
+  assert.ok(h.frames.length > during, 'previous materials continue rendering during downloads');
+  resolution(h.frames.slice(during), 1600, 900);
+  h.node('#render-quality').emit('click');
+  await h.settle();
+  assert.equal(h.textureRequests.length, 3, 'even programmatic rapid clicks cannot enqueue duplicate material batches');
+  assert.ok(firstMaterials.every(texture => !texture.deleted), 'old materials remain usable until replacement is complete');
+  await h.loadRequest(2);
+  assert.equal(h.textureRequests.length, 4);
+  assert.equal(h.context.localStorage.getItem('noxevyr-quality'), 'standard');
+  await h.loadRequest(3);
+  assert.equal(h.context.localStorage.getItem('noxevyr-quality'), 'high');
+  assert.equal(h.node('#render-quality').disabled, false);
+  assert.ok(firstMaterials.every(texture => texture.deleted), 'successful switch deletes both previous material handles');
+  const highFrom = h.frames.length;
+  h.run(24);
+  resolution(h.frames.slice(highFrom), 1920, 1080);
+
+  h.node('#render-quality').emit('click');
+  await h.settle();
+  assert.equal(h.context.localStorage.getItem('noxevyr-quality'), 'ultra');
+  assert.equal(h.textureRequests.length, 4, 'high to ultra does not decode images again');
+  h.node('#render-quality').emit('click');
+  await h.settle();
+  assert.equal(h.context.localStorage.getItem('noxevyr-quality'), 'ultra');
+  assert.equal(h.textureRequests.length, 5);
+  await h.loadRequest(4);
+  await h.loadRequest(5);
+  assert.equal(h.context.localStorage.getItem('noxevyr-quality'), 'auto');
+  assert.match(h.node('#render-quality').textContent, /自动/);
+  assert.equal(h.resources.texture.filter(texture => !texture.deleted).length, 5, 'only three RT and two material textures remain live');
+  assert.ok(h.peakLiveTextures <= 7, 'at most one previous and one replacement material pair coexist');
+});
+
+for (const paused of [true, false]) {
+  await test(`asynchronous material switches preserve camera and ${paused ? 'paused' : 'running'} animation`, async () => {
+    const h = await loaded({ quality: 'standard', paused });
+    h.run(25);
+    h.key('ArrowLeft');
+    h.run(12);
+    const previous = h.frames.at(-1);
+    const preference = h.context.localStorage.getItem('noxevyr-motion');
+    h.node('#render-quality').emit('click');
+    await h.settle();
+    h.run(120);
+    await h.loadRequest(2);
+    h.run(120);
+    await h.loadRequest(3);
+    h.run(12);
+    const current = h.frames.at(-1);
+    for (const uniform of ['eye', 'right', 'up']) assert.deepEqual(current[uniform], previous[uniform]);
+    assert.equal(h.context.localStorage.getItem('noxevyr-motion'), preference);
+    assert.equal(h.node('#motion-toggle').getAttribute('aria-pressed'), String(paused));
+    if (paused) {
+      almostEqual(current.time, previous.time, 'material downloads cannot unpause the scene');
+      assert.equal(h.pending, 0);
+    } else {
+      assert.ok(current.time > previous.time + 1.8, 'animation continues while new materials download');
+    }
+  });
+}
+
+await test('standard to high reuses same-size render targets and preserves half-float precision', async () => {
+  const h = await loaded({ quality: 'standard', halfFloat: true, sceneWidth: 640, sceneHeight: 360, dpr: 1 });
+  h.advance();
+  resolution(h.frames, 640, 360);
+  const initialTargets = new Set(h.targetAllocations.filter(target => target.type === 36193).map(target => target.texture));
+  assert.equal(initialTargets.size, 3);
+  const allocationCount = h.targetAllocations.length;
+  const targetHandles = h.resources.texture.filter(texture => texture.isTarget);
+  h.node('#render-quality').emit('click');
+  await h.settle();
+  await h.loadRequest(2);
+  await h.loadRequest(3);
+  const from = h.renderPasses.length;
+  h.run(12);
+  resolution(h.frames, 640, 360);
+  assert.ok(h.renderPasses.slice(from).filter(pass => pass.framebuffer).every(pass => pass.type === 36193));
+  assert.equal(h.targetAllocations.length, allocationCount, 'same dimensions and format do not reallocate render targets');
+  assert.deepEqual(h.resources.texture.filter(texture => texture.isTarget), targetHandles,
+    'material changes do not create unnecessary render-target handles');
+});
+
+await test('failed quality download deletes staged textures and retains the previous working mode', async () => {
+  const h = await loaded({ quality: 'standard', halfFloat: true });
+  h.run(13);
+  const oldMaterials = h.resources.texture.filter(texture => !texture.isTarget);
+  const originalPreference = h.context.localStorage.getItem('noxevyr-quality');
+  h.node('#render-quality').emit('click');
+  await h.settle();
+  await h.loadRequest(2);
+  const stagedMaterials = h.resources.texture.filter(texture => !texture.isTarget && !oldMaterials.includes(texture));
+  assert.equal(stagedMaterials.length, 2);
+  await h.failRequest(3);
+  await h.failRequest(4);
+  assert.equal(h.context.localStorage.getItem('noxevyr-quality'), originalPreference);
+  assert.equal(h.node('#render-quality').disabled, false);
+  assert.equal(h.node('#blackhole-canvas').hidden, false, 'a replacement network failure must not discard working rendering');
+  assert.equal(h.node('.hero-scene').dataset.failure, undefined);
+  assert.ok(oldMaterials.every(texture => !texture.deleted));
+  assert.ok(stagedMaterials.every(texture => texture.deleted));
+  assert.ok(h.images.every(image => image.onload === null && image.onerror === null && image.removed.includes('src')));
+  const from = h.frames.length;
+  h.run(120);
+  assert.ok(h.frames.length > from, 'old rendering continues after download failure');
+  assert.equal(h.resources.texture.filter(texture => !texture.deleted).length, 5);
+  h.node('#render-quality').emit('click');
+  await h.settle();
+  await h.loadRequest(5);
+  await h.loadRequest(6);
+  assert.equal(h.context.localStorage.getItem('noxevyr-quality'), 'high', 'a later retry can still succeed');
+  assert.ok(h.peakLiveTextures <= 7, 'failed and successful retry batches cannot accumulate GPU handles');
+});
+
+await test('initialization failure releases allocated GPU resources and staging buffers', async () => {
+  const h = harness({ quality: 'high', allowFallback: true });
+  await h.loadRequest(0);
+  await h.failRequest(1);
+  await h.failRequest(2);
+  fallbackState(h, 'texture');
+  for (const kind of ['texture', 'framebuffer', 'program', 'buffer']) {
+    assert.ok(h.resources[kind].every(resource => resource.deleted), `failed startup must delete all ${kind} resources`);
+  }
+  assert.ok(h.images.every(image => image.onload === null && image.onerror === null && image.removed.includes('src')));
+  assert.ok(h.node('#blackhole-canvas').width <= 1 && h.node('#blackhole-canvas').height <= 1,
+    'failed scenes do not retain a large drawing buffer');
 });
 
 console.log('All render scheduler regressions passed.');

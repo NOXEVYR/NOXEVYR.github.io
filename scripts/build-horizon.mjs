@@ -18,7 +18,7 @@ for (const p of data.projects) {
   }
 }
 let html = await readFile(resolve(source, 'horizon.html'), 'utf8');
-const files = new Set(['app.js', 'horizon.css', 'horizon.js', 'blackhole.js', 'assets/noxevyr-social.jpg', 'assets/plasma-flow.png', 'assets/plasma-turbulence.png']);
+const files = new Set(['app.js', 'horizon.css', 'horizon.js', 'blackhole.js', 'assets/noxevyr-social.jpg', 'assets/plasma-flow.png', 'assets/plasma-turbulence.png', 'assets/plasma-flow-standard.png', 'assets/plasma-turbulence-standard.png']);
 for (const match of html.matchAll(/(?:src|href)="(assets\/[^"?#]+)(?:[?#][^"]*)?"/g)) files.add(match[1]);
 for (const p of data.projects) {
   for (const field of ['icon', 'image']) if (p[field]) files.add(p[field]);
