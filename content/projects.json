@@ -1,5 +1,5 @@
 {
-  "checkedAt": "2026-09-19",
+  "checkedAt": "2026-09-23",
   "projects": [
     {
       "id": "yingxu",
@@ -7,7 +7,7 @@
       "english": "YingXu",
       "category": "creative",
       "label": "创作与管理",
-      "version": "0.4.15",
+      "version": "0.4.18",
       "status": "已发布",
       "symbol": "YX",
       "color": "mint",
@@ -25,21 +25,21 @@
       "imageNote": "功能结构示意",
       "downloads": [
         {
-          "label": "Windows 0.4.15",
-          "url": "https://github.com/turnsolesama/yingxu/releases/tag/yingxu-v0.4.15",
+          "label": "Windows 0.4.18",
+          "url": "https://github.com/NOXEVYR/yingxu/releases/tag/yingxu-v0.4.18",
           "channel": "stable"
         },
         {
-          "label": "macOS 0.4.15-mac.1 试用版",
-          "url": "https://github.com/turnsolesama/yingxu/releases/tag/yingxu-v0.4.15-mac.1",
+          "label": "macOS 0.4.16-mac.1 试用版",
+          "url": "https://github.com/NOXEVYR/yingxu/releases/tag/yingxu-v0.4.16-mac.1",
           "channel": "mac"
         }
       ],
       "sync": "platforms",
-      "update": "Windows 截图线宽支持直接选择，保留近期截图绘制、回收站与笔记体验修复；macOS 同步版本。",
-      "date": "2026-09-18",
+      "update": "在设置 → 截图中点击快捷键按钮，直接按下新组合，按钮实时显示按键。",
+      "date": "2026-09-22",
       "type": "software",
-      "icon": "assets/icons/yingxu-29cea82d75c4.png"
+      "icon": "assets/icons/yingxu-2d29d6378951.png"
     },
     {
       "id": "ai-hub",
@@ -71,7 +71,7 @@
       "update": "新增工作环境、来源体检、项目目录与工具规则交接。",
       "date": "2026-09-11",
       "type": "software",
-      "icon": "assets/icons/ai-hub-d6d9293c3b34.png"
+      "icon": "assets/icons/ai-hub-5f7d43f453f2.png"
     },
     {
       "id": "frameweave",
@@ -105,7 +105,7 @@
       "update": "新增历史任务参数复用与再次生成、队列搜索筛选，以及工作流包收藏归档。",
       "date": null,
       "type": "software",
-      "icon": "assets/icons/frameweave-c4bf1d8e0d06.png"
+      "icon": "assets/icons/frameweave-a1f24438f75a.png"
     },
     {
       "id": "proxy-switch",
@@ -130,12 +130,12 @@
       "downloads": [
         {
           "label": "Windows 3.8.4",
-          "url": "https://github.com/turnsolesama/proxy-switch/releases/tag/v3.8.4",
+          "url": "https://github.com/NOXEVYR/proxy-switch/releases/tag/v3.8.4",
           "channel": "stable"
         },
         {
           "label": "macOS 0.1.0-preview.3 测试版",
-          "url": "https://github.com/turnsolesama/proxy-switch/releases/tag/macos-v0.1.0-preview.3",
+          "url": "https://github.com/NOXEVYR/proxy-switch/releases/tag/macos-v0.1.0-preview.3",
           "channel": "mac"
         }
       ],
@@ -143,7 +143,7 @@
       "update": "新图标覆盖窗口、任务栏、快捷方式；小尺寸采用兼容 Windows 图标格式，保留透明度。",
       "date": "2026-09-19",
       "type": "software",
-      "icon": "assets/icons/proxy-switch-2702ae1bd076.png"
+      "icon": "assets/icons/proxy-switch-cd6b53f84043.png"
     },
     {
       "id": "codex-switcher",
@@ -175,7 +175,7 @@
       "update": "当前公开版本 2.4.1；历史安装包继续保留。",
       "date": null,
       "type": "software",
-      "icon": "assets/icons/codex-switcher-fa74f9db7441.png"
+      "icon": "assets/icons/codex-switcher-41f9a1e034b4.png"
     },
     {
       "id": "video-catch",
@@ -212,7 +212,7 @@
       "update": "桌面程序与扩展 0.3.0 配套使用。",
       "date": null,
       "type": "software",
-      "icon": "assets/icons/video-catch-f9c0ca04c723.png"
+      "icon": "assets/icons/video-catch-a0a616ebda70.png"
     },
     {
       "id": "classicdesk",
@@ -220,7 +220,7 @@
       "english": "桌面方案编辑",
       "category": "tools",
       "label": "系统与效率",
-      "version": "0.10.0-preview",
+      "version": "0.11.15-preview",
       "status": "预览版",
       "symbol": "CD",
       "color": "blue",
@@ -236,16 +236,16 @@
       "requirements": "Windows 11 x64 与 .NET 8 Desktop Runtime。当前包没有增强引擎，不能直接启用真实桌面改造。",
       "downloads": [
         {
-          "label": "Windows 0.10.0-preview",
-          "url": "https://github.com/turnsolesama/classicdesk/releases/tag/v0.10.0-preview",
+          "label": "Windows 0.11.15-preview",
+          "url": "https://github.com/NOXEVYR/classicdesk/releases/tag/v0.11.15-preview",
           "channel": "stable"
         }
       ],
       "sync": "manual",
-      "update": "ClassicDesk 0.10.0 · 布局与皮肤预览版 已发布，查看完整更新与平台说明。",
-      "date": "2026-09-19",
+      "update": "ClassicDesk 0.11.15-preview · 开机方案管理 已发布，查看完整更新与平台说明。",
+      "date": "2026-09-22",
       "type": "software",
-      "icon": "assets/icons/classicdesk-58092aa6a243.png"
+      "icon": "assets/icons/classicdesk-4a2feca24709.png"
     },
     {
       "id": "env-anchor",
@@ -270,7 +270,7 @@
       "downloads": [
         {
           "label": "Windows 0.6.0",
-          "url": "https://github.com/turnsolesama/env-anchor/releases/tag/v0.6.0",
+          "url": "https://github.com/NOXEVYR/env-anchor/releases/tag/v0.6.0",
           "channel": "stable"
         }
       ],
@@ -278,7 +278,7 @@
       "update": "文件复制和校验改为后台任务，窗口保持响应，显示当前阶段及校验进度；操作期间阻止重复提交和意外关闭。",
       "date": "2026-09-19",
       "type": "software",
-      "icon": "assets/icons/env-anchor-b0fd80143a42.png"
+      "icon": "assets/icons/env-anchor-ef5f5d454c70.png"
     },
     {
       "id": "codex-pet",
@@ -305,7 +305,7 @@
       "downloads": [
         {
           "label": "Windows 0.5.9",
-          "url": "https://github.com/turnsolesama/codex-pet/releases/tag/v0.5.9",
+          "url": "https://github.com/NOXEVYR/codex-pet/releases/tag/v0.5.9",
           "channel": "stable"
         }
       ],
@@ -313,7 +313,7 @@
       "update": "v0.5.9 · 自由放置、超大号与交互修复 已发布，查看完整更新与平台说明。",
       "date": "2026-09-19",
       "type": "software",
-      "icon": "assets/icons/codex-pet-5e0298b16dc1.png"
+      "icon": "assets/icons/codex-pet-9c14c6b78cf9.png"
     },
     {
       "id": "michelle-pet",
@@ -340,7 +340,7 @@
       "downloads": [
         {
           "label": "Windows 0.3.8",
-          "url": "https://github.com/turnsolesama/michelle-pet/releases/tag/v0.3.8",
+          "url": "https://github.com/NOXEVYR/michelle-pet/releases/tag/v0.3.8",
           "channel": "stable"
         }
       ],
@@ -348,7 +348,7 @@
       "update": "经典制服继续保留双马尾；宿舍「原版长发」与「轻盈长发」均可在「搭子造型」选择。",
       "date": "2026-09-19",
       "type": "software",
-      "icon": "assets/icons/michelle-pet-7569e4cd2046.png"
+      "icon": "assets/icons/michelle-pet-045112d00412.png"
     }
   ]
 }

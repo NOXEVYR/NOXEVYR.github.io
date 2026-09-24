@@ -10,7 +10,8 @@
   const hint = document.querySelector('#orbit-hint');
   const retry = document.querySelector('#scene-retry');
   const reduced = matchMedia('(prefers-reduced-motion: reduce)');
-  const qualityButton = document.querySelector('#render-quality');
+  const qualitySelect = document.querySelector('#render-quality');
+  const qualityStatus = document.querySelector('#quality-status');
   const projectDialog = document.querySelector('#project-dialog');
   const buildQuery=new URL(document.currentScript.src).search;
   const qMultiply=(a,b)=>[
@@ -24,19 +25,26 @@
   const qRotate=(q,v)=>qMultiply(qMultiply(q,[...v,0]),[-q[0],-q[1],-q[2],q[3]]).slice(0,3);
   const defaults = { rotation:qView(.45,.075,.045), distance:17.5 };
   let camera = { rotation:[...defaults.rotation],distance:defaults.distance }, paused = reduced.matches, expanded = false;
-  const qualityModes=['auto','standard','high','ultra'];
-  const qualityNames={auto:'自动',standard:'标准',high:'高清',ultra:'超清'};
+  const qualityModes=['auto','eco','standard','high','ultra','cinematic'];
+  const qualityNames={auto:'自动推荐',eco:'节能',standard:'标准',high:'高清',ultra:'超清',cinematic:'极致'};
   const qualityProfiles={
-    standard:{budget:1440000,maxRatio:1.5,scale:1,fps:24,backgroundFps:6},
-    high:{budget:3686400,maxRatio:2,scale:1,fps:30,backgroundFps:8},
-    ultra:{budget:8294400,maxRatio:3,scale:1.5,fps:30,backgroundFps:8},
+    eco:{budget:921600,maxRatio:1.25,scale:1,fps:20,interactionFps:24,aniso:2,smallMaterials:true},
+    standard:{budget:1440000,maxRatio:1.5,scale:1,fps:24,interactionFps:24,aniso:4,smallMaterials:true},
+    high:{budget:3686400,maxRatio:2,scale:1,fps:30,interactionFps:30,aniso:8},
+    ultra:{budget:8294400,maxRatio:3,scale:1.5,fps:30,interactionFps:30,aniso:16},
+    cinematic:{budget:11796480,maxRatio:4,scale:2,fps:30,interactionFps:30,aniso:16},
   };
-  let qualityMode='auto',quality='standard',autoQuality='standard',qualityLoading=false;
+  let qualityMode='auto',quality='eco',qualityLoading=false,autoScale=1,autoFps=20;
+  let sceneRect,heroHeight=1,layoutDirty=true,pastHero=false;
+  let performanceWindow=null,lastTickAt=0,slowestRaf=0,interactionUntil=0;
+  let timerExtension=null,gpuQuery=null,gpuQueryPending=false;
   let gl;
   const resources={textures:new Set(),framebuffers:new Set(),programs:new Set(),buffers:new Set()};
   function releaseTexture(texture){if(resources.textures.delete(texture))gl.deleteTexture(texture);}
   function releaseGraphics(){
     if(!gl)return;
+    if(gpuQuery)timerExtension.deleteQueryEXT(gpuQuery);
+    gpuQuery=null;gpuQueryPending=false;
     for(const texture of [...resources.textures])releaseTexture(texture);
     for(const framebuffer of resources.framebuffers)gl.deleteFramebuffer(framebuffer);
     for(const program of resources.programs)gl.deleteProgram(program);
@@ -50,7 +58,7 @@
   const pointers = new Map();
   try { paused ||= localStorage.getItem('noxevyr-motion') === 'paused'; } catch {}
   try { const saved=localStorage.getItem('noxevyr-quality');if(qualityModes.includes(saved))qualityMode=saved; } catch {}
-  quality=qualityMode==='auto'?autoQuality:qualityMode;
+  quality=qualityMode==='auto'?'eco':qualityMode;
   const clamp = (value, min, max) => Math.min(max, Math.max(min, value));
   function state() {
     if(failed)return;
@@ -60,16 +68,18 @@
     toggle.querySelector('.motion-symbol').textContent = paused ? '▷' : 'Ⅱ';
     const elevation=Math.asin(clamp(qRotate(camera.rotation,[0,0,1])[1],-1,1))*180/Math.PI;
     readout.textContent = `${Math.round(elevation)}° / ${(defaults.distance / camera.distance).toFixed(1)}×`;
-    const next=qualityModes[(qualityModes.indexOf(qualityMode)+1)%qualityModes.length];
     const label=(qualityMode==='auto'?'自动·':'')+qualityNames[quality];
-    qualityButton.textContent=qualityLoading?'切换中…':label;
-    qualityButton.setAttribute('aria-label',qualityLoading?'正在切换画质':`当前${label}，点击切换为${qualityNames[next]}`);
-    qualityButton.setAttribute('aria-busy',String(qualityLoading));
-    qualityButton.dataset.quality=quality;
-    qualityButton.dataset.mode=qualityMode;
+    qualitySelect.value=qualityMode;
+    qualitySelect.setAttribute('aria-label','画面清晰度');
+    qualitySelect.setAttribute('aria-busy',String(qualityLoading));
+    qualitySelect.dataset.quality=quality;
+    qualitySelect.dataset.mode=qualityMode;
+    const dimensions=ready&&sceneTarget?.width?` · ${sceneTarget.width} × ${sceneTarget.height}`:'';
+    const status=qualityLoading?'正在切换…':`${label}${dimensions}${qualityMode==='auto'?` · 闲置上限 ${autoFps} FPS`:''}`;
+    if(qualityStatus&&qualityStatus.textContent!==status)qualityStatus.textContent=status;
   }
   function controlsDisabled(value){
-    document.querySelectorAll('.orbit-controls button, #motion-toggle').forEach(button => { button.disabled = value; });
+    document.querySelectorAll('.orbit-controls button, .orbit-controls select, #motion-toggle').forEach(control => { control.disabled = value; });
   }
   function fallback(reason,error) {
     if(failed)return;
@@ -79,7 +89,9 @@
     scene.classList.remove('is-ready'); canvas.hidden = true;
     scene.dataset.failure=reason;
     controlsDisabled(true);
-    document.querySelectorAll('.orbit-controls button').forEach(button=>{button.hidden=button!==retry;});
+    document.querySelectorAll('.orbit-controls button, .orbit-controls select').forEach(control=>{control.hidden=control!==retry;});
+    if(qualityStatus)qualityStatus.textContent='静态封面';
+    const qualitySetting=document.querySelector('.quality-setting');if(qualitySetting)qualitySetting.hidden=true;
     readout.hidden=true;
     const messages={context:'浏览器未能启动 3D，暂时显示封面',shader:'3D 场景启动失败，请重试',texture:'黑洞素材加载失败，请重试',render:'3D 画面初始化失败，请重试',lost:'3D 画面已中断，请重新加载'};
     hint.textContent = messages[reason] || messages.render;
@@ -95,18 +107,10 @@
   try { gl = canvas.getContext('webgl', { alpha: false, antialias: false, depth:false, stencil:false, preserveDrawingBuffer:false, powerPreference: 'high-performance' }); } catch {}
   if (!gl) { fallback('context'); return; }
   const maxRenderSize=Math.min(gl.getParameter(gl.MAX_TEXTURE_SIZE),gl.getParameter(gl.MAX_RENDERBUFFER_SIZE));
-  // Device hints are coarse and may be hidden. Choose once, conservatively;
-  // never lower resolution during dragging or after an arbitrary frame count.
-  try{
-    const device=typeof navigator==='undefined'?{}:navigator;
-    const debug=gl.getExtension('WEBGL_debug_renderer_info');
-    const renderer=debug?String(gl.getParameter(debug.UNMASKED_RENDERER_WEBGL)):'';
-    const discrete=/NVIDIA|(?:AMD|ATI).*Radeon.*(?:RX|R[579])\s*\d|Intel.*Arc/i.test(renderer)
-      && !/SwiftShader|llvmpipe|software/i.test(renderer);
-    if(!matchMedia('(pointer: coarse)').matches&&!device.connection?.saveData
-      &&device.deviceMemory>=8&&device.hardwareConcurrency>=8&&maxRenderSize>=8192&&discrete)autoQuality='high';
-  }catch{}
-  quality=qualityMode==='auto'?autoQuality:qualityMode;
+  // Start everyone conservatively. Renderer names and hardware hints do not
+  // measure available GPU time, especially on shared integrated graphics.
+  timerExtension=gl.getExtension('EXT_disjoint_timer_query');
+  const anisotropy=gl.getExtension('EXT_texture_filter_anisotropic');
   state();
   const halfFloat=gl.getExtension('OES_texture_half_float');
   let gradientSampling=!!(gl.getExtension('OES_standard_derivatives')&&gl.getExtension('EXT_shader_texture_lod'));
@@ -304,9 +308,14 @@
         +sourceLight(p+uTexel*vec2(-1.,1.))+sourceLight(p+uTexel*vec2(1.,1.)))*.25;
       return max(c-vec3(1.1),vec3(0));
     }
-    void main(){vec3 c=sampleLight(vUv)*.227027;
-      c+=(sampleLight(vUv+uStep*1.384615)+sampleLight(vUv-uStep*1.384615))*.316216;
-      c+=(sampleLight(vUv+uStep*3.230769)+sampleLight(vUv-uStep*3.230769))*.070270;
+    // A continuous radius-8, sigma-3 Gaussian, paired into nine bilinear taps.
+    // Keep uStep at one source texel: stretching a paired kernel leaves gaps
+    // and stamps periodic bright beads around the thin photon ring.
+    void main(){vec3 c=sampleLight(vUv)*0.133571220;
+      c+=(sampleLight(vUv+uStep*1.458429517)+sampleLight(vUv-uStep*1.458429517))*0.233308433;
+      c+=(sampleLight(vUv+uStep*3.403984807)+sampleLight(vUv-uStep*3.403984807))*0.135927811;
+      c+=(sampleLight(vUv+uStep*5.351805780)+sampleLight(vUv-uStep*5.351805780))*0.051383178;
+      c+=(sampleLight(vUv+uStep*7.302940716)+sampleLight(vUv-uStep*7.302940716))*0.012594969;
       gl_FragColor=vec4(log(1.+c)/log(33.),1.);}`;
   const compositeFragment = `precision highp float;
     varying vec2 vUv;uniform sampler2D uScene;uniform sampler2D uBloom;
@@ -383,18 +392,72 @@
     sceneTarget=target();bloomA=target();bloomB=target();
     filamentsUniform=gl.getUniformLocation(program,'uFilaments');
   } catch(error) { fallback(initializationStage,error); return; }
-  function draw() {
+  function measureLayout(){
+    if(!layoutDirty)return;
+    sceneRect=scene.getBoundingClientRect();heroHeight=Math.max(hero.offsetHeight,1);layoutDirty=false;
+  }
+  function resetPerformance(){performanceWindow=null;lastTickAt=0;slowestRaf=0;}
+  function observePerformance(time,cost,limit){
+    if(qualityMode!=='auto'||qualityLoading||paused||pointers.size||time<interactionUntil){resetPerformance();return;}
+    if(!performanceWindow)performanceWindow={start:time,samples:0,slow:0,fast:0};
+    const window=performanceWindow;window.samples++;
+    if(cost>limit)window.slow++;
+    // Test the cost of the NEXT step, not spare time at the current resolution.
+    // Otherwise a constant workload can bounce up/down forever every 15 seconds.
+    const restoreScale=Math.min(1,Math.round((autoScale+.15)*100)/100);
+    const pixelCost=autoScale<1?(restoreScale/autoScale)**2:1;
+    const budgetRatio=autoScale===1&&autoFps<20?autoFps/(autoFps===12?16:20):1;
+    if(cost*pixelCost<limit*budgetRatio*.9)window.fast++;
+    const duration=time-window.start;
+    let nextScale=autoScale,nextFps=autoFps;
+    // Require several seconds of sustained overload, not one slow compilation,
+    // tab restore, drag or download. Recovery waits much longer to avoid pulsing.
+    if(duration>=3000&&window.samples>=12&&window.slow/window.samples>.25){
+      // Plasma moves slowly: preserve its spatial detail before spending more
+      // GPU time on idle motion. Manual eco still uses its fixed 20 FPS cap.
+      if(autoFps>12)nextFps=autoFps===20?16:12;
+      else nextScale=Math.max(.7,Math.round((autoScale-.15)*100)/100);
+    }else if(duration>=12000&&window.samples>=40&&window.fast/window.samples>.9){
+      if(autoScale<1)nextScale=Math.min(1,Math.round((autoScale+.15)*100)/100);
+      else if(autoFps<20)nextFps=autoFps===12?16:20;
+    }
+    if(nextScale!==autoScale||nextFps!==autoFps){autoScale=nextScale;autoFps=nextFps;resetPerformance();dirty=true;state();}
+    else if(duration>=12000)resetPerformance();
+  }
+  function startGpuTiming(time,interval){
+    if(!timerExtension)return false;
+    if(gpuQueryPending){
+      // Query only completed timings. Never gl.finish/readPixels to benchmark.
+      if(!timerExtension.getQueryObjectEXT(gpuQuery,timerExtension.QUERY_RESULT_AVAILABLE_EXT))return false;
+      const disjoint=gl.getParameter(timerExtension.GPU_DISJOINT_EXT);
+      const duration=timerExtension.getQueryObjectEXT(gpuQuery,timerExtension.QUERY_RESULT_EXT)/1e6;
+      gpuQueryPending=false;
+      if(!disjoint)observePerformance(time,duration,interval*.75);else resetPerformance();
+    }
+    if(qualityMode!=='auto')return false;
+    if(!gpuQuery)gpuQuery=timerExtension.createQueryEXT();
+    if(!gpuQuery)return false;
+    timerExtension.beginQueryEXT(timerExtension.TIME_ELAPSED_EXT,gpuQuery);
+    return true;
+  }
+  function draw(time,interval) {
     if (!ready || failed) return;
-    const rect=scene.getBoundingClientRect();
+    measureLayout();const rect=sceneRect;
     const profile=qualityProfiles[quality];
     const nativeRatio=Math.max(1,window.devicePixelRatio||1);
     const requestedRatio=Math.min(profile.maxRatio,nativeRatio*profile.scale);
-    const ratio=Math.min(requestedRatio,Math.sqrt(profile.budget/Math.max(rect.width*rect.height,1)),maxRenderSize/Math.max(rect.width,rect.height));
+    const ratio=Math.min(requestedRatio,Math.sqrt(profile.budget/Math.max(rect.width*rect.height,1)),maxRenderSize/Math.max(rect.width,rect.height))*(qualityMode==='auto'?autoScale:1);
     const width=Math.max(1,Math.floor(rect.width*ratio)),height=Math.max(1,Math.floor(rect.height*ratio));
+    let timed=false;
     try {
+      const changed=canvas.width!==width||canvas.height!==height;
       if(canvas.width!==width||canvas.height!==height){canvas.width=width;canvas.height=height;}
       gl.activeTexture(gl.TEXTURE0);
       resizeTargets(width,height);
+      if(changed){
+        state();qualitySelect.title=`${width} × ${height} · ${profile.smallMaterials?'保留 3D 与泛光，降低渲染负荷':'保留精细流线'}${qualityMode==='auto'?' · 持续负荷较高时自动调节分辨率':''}`;
+      }
+      timed=startGpuTiming(time,interval);
       gl.useProgram(program);gl.bindFramebuffer(gl.FRAMEBUFFER,sceneTarget.framebuffer);gl.viewport(0,0,width,height);
       gl.activeTexture(gl.TEXTURE2);gl.bindTexture(gl.TEXTURE_2D,plasmaTexture);gl.uniform1i(plasmaUniform,2);
       gl.activeTexture(gl.TEXTURE3);gl.bindTexture(gl.TEXTURE_2D,filamentsTexture);gl.uniform1i(filamentsUniform,3);
@@ -402,49 +465,57 @@
       gl.uniform3fv(eyeUniform,qRotate(camera.rotation,[0,0,camera.distance]));
       gl.uniform3fv(rightUniform,qRotate(camera.rotation,[1,0,0]));
       gl.uniform3fv(upUniform,qRotate(camera.rotation,[0,1,0]));
-      qualityButton.title=`${width} × ${height} · ${quality==='standard'?'标准档更省内存':'保留精细流线'} · 自动 / 标准 / 高清 / 超清`;
       const small=rect.width<700;
-      const travel=expanded?0:clamp(scrollY/Math.max(hero.offsetHeight*.8,1),0,1);
+      const travel=expanded?0:clamp(scrollY/(heroHeight*.8),0,1);
       const centerX=expanded?.5:(small?.5:.67-travel*.06);
       const centerY=expanded?.5:(small?1-Math.min(270,rect.height*.37)/rect.height:.50);
       gl.uniform2f(centerUniform,centerX,centerY);
       gl.uniform1f(timeUniform,elapsed);gl.drawArrays(gl.TRIANGLES,0,6);
       gl.activeTexture(gl.TEXTURE0);gl.useProgram(blurProgram);gl.uniform1i(sourceUniform,0);gl.viewport(0,0,bloomA.width,bloomA.height);
       gl.bindFramebuffer(gl.FRAMEBUFFER,bloomA.framebuffer);gl.bindTexture(gl.TEXTURE_2D,sceneTarget.texture);
-      gl.uniform2f(stepUniform,1.8/bloomA.width,0);gl.uniform2f(texelUniform,1/width,1/height);gl.uniform1f(extractUniform,1);gl.drawArrays(gl.TRIANGLES,0,6);
+      gl.uniform2f(stepUniform,1/bloomA.width,0);gl.uniform2f(texelUniform,1/width,1/height);gl.uniform1f(extractUniform,1);gl.drawArrays(gl.TRIANGLES,0,6);
       gl.bindFramebuffer(gl.FRAMEBUFFER,bloomB.framebuffer);gl.bindTexture(gl.TEXTURE_2D,bloomA.texture);
-      gl.uniform2f(stepUniform,0,1.8/bloomA.height);gl.uniform1f(extractUniform,0);gl.drawArrays(gl.TRIANGLES,0,6);
+      gl.uniform2f(stepUniform,0,1/bloomA.height);gl.uniform1f(extractUniform,0);gl.drawArrays(gl.TRIANGLES,0,6);
       gl.useProgram(compositeProgram);gl.bindFramebuffer(gl.FRAMEBUFFER,null);gl.viewport(0,0,width,height);
       gl.activeTexture(gl.TEXTURE0);gl.bindTexture(gl.TEXTURE_2D,sceneTarget.texture);gl.uniform1i(sceneUniform,0);
       gl.activeTexture(gl.TEXTURE1);gl.bindTexture(gl.TEXTURE_2D,bloomB.texture);gl.uniform1i(bloomUniform,1);gl.drawArrays(gl.TRIANGLES,0,6);
-    } catch(error) {fallback('render',error);return;}
+    } catch(error) {if(timed){timerExtension.endQueryEXT(timerExtension.TIME_ELAPSED_EXT);timed=false;}fallback('render',error);return;}
+    finally{if(timed&&gpuQuery){timerExtension.endQueryEXT(timerExtension.TIME_ELAPSED_EXT);gpuQueryPending=true;}}
     if(!scene.classList.contains('is-ready')){
       scene.classList.add('is-ready');delete scene.dataset.failure;
       controlsDisabled(false);retry.hidden=true;retry.disabled=true;
       hint.textContent='拖动环绕 · 边缘拖动倾斜';
     }
   }
+  function sceneVisible(){return expanded||!pastHero;}
+  function canRender(){return ready&&!failed&&pageActive&&!document.hidden&&!projectDialog?.open&&(sceneVisible()||!scene.classList.contains('is-ready'));}
   function tick(time) {
     running=0;
-    if(!ready||failed||!pageActive||document.hidden||projectDialog?.open){last=0;return;}
-    // Animation time is independent of render cadence, so quieter backgrounds
-    // keep the same flow speed. Pausing/hiding resets the clock, not the image.
+    if(!canRender()){last=0;resetPerformance();return;}
+    if(lastTickAt)slowestRaf=Math.max(slowestRaf,time-lastTickAt);
+    lastTickAt=time;
+    // Freeze the existing composited image outside the hero; restoration excludes
+    // all hidden time and preserves the user's independent pause preference.
     if(!paused&&last)elapsed+=Math.max(0,time-last)/1000;
     last=paused?0:time;
     const profile=qualityProfiles[quality];
-    const interval=1000/(document.body.classList.contains('past-hero')&&!expanded?profile.backgroundFps:profile.fps);
+    const interval=1000/((pointers.size||time<interactionUntil)?profile.interactionFps:(qualityMode==='auto'?autoFps:profile.fps));
     if((dirty||!paused)&&time-lastDrawAt>=interval-.5){
-      dirty=false;lastDrawAt=time;draw();
+      // Without GPU timers, use unthrottled RAF delivery as a coarse pressure
+      // signal. Submitted-frame gaps include our own cap and cannot predict
+      // whether a faster target has spare capacity.
+      if(!timerExtension&&slowestRaf)observePerformance(time,slowestRaf,interval*1.45);
+      dirty=false;lastDrawAt=time;draw(time,interval);slowestRaf=0;
     }
     schedule();
   }
   function schedule(){
-    if(!running&&ready&&!failed&&pageActive&&!document.hidden&&!projectDialog?.open&&(dirty||!paused))running=requestAnimationFrame(tick);
+    if(!running&&canRender()&&(dirty||!paused))running=requestAnimationFrame(tick);
   }
-  function resume(){cancelAnimationFrame(running);running=0;last=0;schedule();}
+  function resume(){cancelAnimationFrame(running);running=0;last=0;resetPerformance();schedule();}
   // Every repaint shares the same cadence, including paused dragging and resize.
   function requestDraw(){dirty=true;schedule();}
-  function change(){camera.rotation=qNormalize(camera.rotation);camera.distance=clamp(camera.distance,11,34);state();requestDraw();}
+  function change(){interactionUntil=performance.now()+500;camera.rotation=qNormalize(camera.rotation);camera.distance=clamp(camera.distance,11,34);state();requestDraw();}
   function trackball(x,y){
     const rect=canvas.getBoundingClientRect(),scale=Math.min(rect.width,rect.height)*.48;
     const cx=expanded?.5:(rect.width<700?.5:.67),cy=expanded?.5:(rect.width<700?Math.min(270,rect.height*.37)/rect.height:.5);
@@ -479,13 +550,13 @@
   document.querySelector('#orbit-reset').addEventListener('click',()=>{camera={rotation:[...defaults.rotation],distance:defaults.distance};change();});
   document.querySelector('#orbit-top').addEventListener('click',()=>{camera.rotation=qView(.45,1.40);change();});
   document.querySelector('#orbit-side').addEventListener('click',()=>{camera.rotation=qView(.45,.001);change();});
-  qualityButton.addEventListener('click',async()=>{
-    if(qualityLoading||!ready||failed)return;
-    const nextMode=qualityModes[(qualityModes.indexOf(qualityMode)+1)%qualityModes.length];
-    const nextQuality=nextMode==='auto'?autoQuality:nextMode;
-    qualityLoading=true;qualityButton.disabled=true;state();
+  qualitySelect.addEventListener('change',async()=>{
+    const nextMode=qualitySelect.value;
+    if(qualityLoading||!ready||failed||!qualityModes.includes(nextMode)||nextMode===qualityMode){state();return;}
+    const nextQuality=nextMode==='auto'?'eco':nextMode;
+    qualityLoading=true;qualitySelect.disabled=true;state();
     try{
-      if((nextQuality==='standard')!==(quality==='standard')){
+      if(!!qualityProfiles[nextQuality].smallMaterials!==!!qualityProfiles[quality].smallMaterials){
         // Keep the current scene usable if a new material download fails. Only
         // one small+large pair can coexist, and the old pair is deleted at commit.
         const next=await loadMaterials(nextQuality);
@@ -493,7 +564,8 @@
         releaseTexture(filamentsTexture);releaseTexture(plasmaTexture);
         filamentsTexture=next.flow;plasmaTexture=next.plasma;
       }
-      qualityMode=nextMode;quality=nextQuality;
+      qualityMode=nextMode;quality=nextQuality;autoScale=1;autoFps=20;resetPerformance();
+      applyMaterialFiltering(filamentsTexture,gl.TEXTURE3,quality);applyMaterialFiltering(plasmaTexture,gl.TEXTURE2,quality);
       try{localStorage.setItem('noxevyr-quality',qualityMode);}catch{}
       hint.textContent=expanded?'自由旋转 · 边缘拖动倾斜 · ESC 返回':'拖动环绕 · 边缘拖动倾斜';
     }catch(error){
@@ -501,13 +573,14 @@
       console.warn('Quality switch kept the previous material:',error?.message);
     }finally{
       qualityLoading=false;
-      if(!failed){qualityButton.disabled=false;state();requestDraw();}
+      if(!failed){qualitySelect.disabled=false;state();requestDraw();}
     }
   });
   document.querySelector('#orbit-in').addEventListener('click',()=>{camera.distance-=2;change();});
   document.querySelector('#orbit-out').addEventListener('click',()=>{camera.distance+=2;change();});
   function expand(value){
     expanded=value;hero.classList.toggle('is-exploring',value);document.documentElement.classList.toggle('exploring-hole',value);
+    layoutDirty=true;
     explore.textContent=value?'退出探索 ↙':'展开探索 ↗';explore.setAttribute('aria-expanded',String(value));
     hint.textContent=value?'自由旋转 · 边缘拖动倾斜 · ESC 返回':'拖动环绕 · 边缘拖动倾斜';
     if(value){savedScroll=scrollY;document.querySelectorAll('body > :not(main):not(.hero-scene):not(.cosmic-veil), main > :not(#home)').forEach(el=>{if(!el.inert){el.inert=true;el.dataset.orbitInert='true';}});canvas.focus({preventScroll:true});}
@@ -522,7 +595,7 @@
   document.addEventListener('keydown',event=>{
     if(expanded&&event.key==='Escape'){event.preventDefault();expand(false);}
     if(expanded&&event.key==='Tab'){
-      const stops=[canvas,...[...hero.querySelectorAll('.orbit-controls button')].filter(button=>!button.hidden&&!button.disabled),toggle];
+      const stops=[canvas,...[...hero.querySelectorAll('.orbit-controls button, .orbit-controls select')].filter(control=>!control.hidden&&!control.disabled),toggle];
       const index=stops.indexOf(document.activeElement);
       if(event.shiftKey&&index===0){event.preventDefault();stops.at(-1).focus();}
       else if(!event.shiftKey&&index===stops.length-1){event.preventDefault();canvas.focus();}
@@ -534,17 +607,27 @@
   let scrollFrame=0;
   function scrollScene(){
     scrollFrame=0;
-    const progress=clamp(scrollY/Math.max(hero.offsetHeight*.7,1),0,1);
+    measureLayout();
+    const progress=clamp(scrollY/(heroHeight*.7),0,1);
     document.body.style.setProperty('--cosmic-dim',String(progress*.64));
     document.body.classList.toggle('past-hero',progress>.8);
-    if(paused)requestDraw();
+    const nextPastHero=scrollY>=heroHeight;
+    if(nextPastHero!==pastHero){pastHero=nextPastHero;resume();}
+    if(paused||sceneVisible())requestDraw();
   }
   addEventListener('scroll',()=>{if(!scrollFrame)scrollFrame=requestAnimationFrame(scrollScene);},{passive:true});
   scrollScene();
-  if('ResizeObserver' in window)new ResizeObserver(requestDraw).observe(scene);else addEventListener('resize',requestDraw);
+  function resizeScene(){layoutDirty=true;scrollScene();requestDraw();}
+  if('ResizeObserver' in window){const observer=new ResizeObserver(resizeScene);observer.observe(scene);observer.observe(hero);}
+  addEventListener('resize',resizeScene);
   canvas.addEventListener('webglcontextlost',event=>{event.preventDefault();fallback('lost');});
-  addEventListener('pagehide',()=>{pageActive=false;resume();});addEventListener('pageshow',()=>{pageActive=true;resume();requestDraw();});
-  function loadTexture(path,texture,unit,requestedWidth){return new Promise((resolve,reject)=>{
+  addEventListener('pagehide',()=>{pageActive=false;resume();});addEventListener('pageshow',()=>{pageActive=true;layoutDirty=true;scrollScene();resume();requestDraw();});
+  function applyMaterialFiltering(texture,unit,tier){
+    if(!anisotropy)return;
+    gl.activeTexture(unit);gl.bindTexture(gl.TEXTURE_2D,texture);
+    gl.texParameterf(gl.TEXTURE_2D,anisotropy.TEXTURE_MAX_ANISOTROPY_EXT,Math.min(qualityProfiles[tier].aniso,gl.getParameter(anisotropy.MAX_TEXTURE_MAX_ANISOTROPY_EXT)));
+  }
+  function loadTexture(path,texture,unit,requestedWidth,tier){return new Promise((resolve,reject)=>{
     const flowImage=new Image();
     let retried=false;
     function cleanImage(){flowImage.onload=null;flowImage.onerror=null;flowImage.removeAttribute('src');}
@@ -567,7 +650,7 @@
         gl.texParameteri(gl.TEXTURE_2D,gl.TEXTURE_WRAP_S,gl.REPEAT);gl.texParameteri(gl.TEXTURE_2D,gl.TEXTURE_WRAP_T,gl.REPEAT);
         gl.texParameteri(gl.TEXTURE_2D,gl.TEXTURE_MIN_FILTER,gl.LINEAR_MIPMAP_LINEAR);gl.texParameteri(gl.TEXTURE_2D,gl.TEXTURE_MAG_FILTER,gl.LINEAR);
         gl.generateMipmap(gl.TEXTURE_2D);
-        const aniso=gl.getExtension('EXT_texture_filter_anisotropic');if(aniso)gl.texParameterf(gl.TEXTURE_2D,aniso.TEXTURE_MAX_ANISOTROPY_EXT,Math.min(16,gl.getParameter(aniso.MAX_TEXTURE_MAX_ANISOTROPY_EXT)));
+        applyMaterialFiltering(texture,unit,tier);
         resolve();
       }catch(error){reject(error);}
       finally{if(temporary){temporary.width=1;temporary.height=1;}cleanImage();}
@@ -579,14 +662,14 @@
     flowImage.src=path+buildQuery;
   });}
   async function loadMaterials(tier){
-    const standard=tier==='standard',suffix=standard?'-standard':'';
+    const standard=qualityProfiles[tier].smallMaterials,suffix=standard?'-standard':'';
     let flow,plasma;
     try{
       flow=gl.createTexture();resources.textures.add(flow);
-      await loadTexture(`assets/plasma-flow${suffix}.png`,flow,gl.TEXTURE3,standard?2048:4096);
+      await loadTexture(`assets/plasma-flow${suffix}.png`,flow,gl.TEXTURE3,standard?2048:4096,tier);
       if(failed)throw Error('Scene no longer active');
       plasma=gl.createTexture();resources.textures.add(plasma);
-      await loadTexture(`assets/plasma-turbulence${suffix}.png`,plasma,gl.TEXTURE2,standard?1024:2048);
+      await loadTexture(`assets/plasma-turbulence${suffix}.png`,plasma,gl.TEXTURE2,standard?1024:2048,tier);
       return {flow,plasma};
     }catch(error){releaseTexture(flow);releaseTexture(plasma);throw error;}
   }
