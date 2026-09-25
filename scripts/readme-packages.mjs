@@ -11,5 +11,7 @@ export function findReadmePackage(repo, text) {
     for (let i = 0; i < 3; i++) if (x[i] !== y[i]) return y[i] - x[i];
     return Number(b.url.includes('/NOXEVYR/')) - Number(a.url.includes('/NOXEVYR/'));
   });
-  return matches[0] || null;
+  const latest = matches[0];
+  // Historical READMEs retain the old account name after the repository migration.
+  return latest ? {...latest, url: latest.url.replace('raw.githubusercontent.com/turnsolesama/', 'raw.githubusercontent.com/NOXEVYR/')} : null;
 }

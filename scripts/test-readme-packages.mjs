@@ -7,8 +7,10 @@ assert.equal(findReadmePackage('frameweave', `${link('frameweave', 'FrameWeave',
 assert.equal(findReadmePackage('frameweave', `${current}\n${link('frameweave', 'PrismCanvas', '0.10.0')}`).version, '0.10.0');
 assert.equal(findReadmePackage('frameweave', link('frameweave', 'FrameWeave', '0.3.0', 'turnsolesama')).version, '0.3.0');
 assert.equal(findReadmePackage('ai-hub', link('ai-hub', 'AI-Hub', '2.6.0')).version, '2.6.0');
+assert.equal(findReadmePackage('ai-hub', link('ai-hub', 'AI-Hub', '2.6.0', 'turnsolesama')).url, link('ai-hub', 'AI-Hub', '2.6.0'));
+assert.equal(findReadmePackage('frameweave', link('frameweave', 'FrameWeave', '0.3.0', 'turnsolesama')).url, link('frameweave', 'FrameWeave', '0.3.0'));
 for (const bad of [current.replace('/NOXEVYR/', '/unknown/'), current.replace('/frameweave/', '/another/'), current + '.txt', current.replace('0.5.0', '0.6.0-preview'), current.replace('Windows-x64', 'Source')]) {
   assert.equal(findReadmePackage('frameweave', bad), null, bad);
 }
 assert.equal(findReadmePackage('unknown', current), null);
-console.log('PASS README package rename, history, version order and source boundaries (11 cases)');
+console.log('PASS README package rename, history, version order and source boundaries (13 cases)');
