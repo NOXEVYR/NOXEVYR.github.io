@@ -18,15 +18,21 @@
 
 - `content/projects.json`：项目介绍、分类、平台说明、图标与下载入口。简介和功能范围按真实版本人工维护。
 - `content/icon-sources.json`：软件图标的公开仓库与资源路径。
+- `content/project-sources.json`：名称、介绍与展示图片的人工核对记录，包含固定来源提交、资源大小和哈希；不会混入正式页面的用户操作流程。
 - `public/horizon.html`、`public/horizon.css`：页面结构与样式。
 - `public/horizon.js`、`public/app.js`：导航、搜索筛选与软件详情。
 - `public/blackhole.js`：实时黑洞渲染与交互；视觉资源放在 `public/assets/`。
 - `scripts/sync.mjs`：同步公开版本与下载，再调用图标同步。
+- `scripts/readme-packages.mjs`：识别 README 的公开程序包，包括棱光改名前后的 PrismCanvas / FrameWeave 文件名，并选择最高正式版本。
 - `scripts/sync-icons.py`、`scripts/sync-icons.mjs`：读取登记图标，保留最大尺寸与透明度，全部成功后更新引用；Actions 使用临时隔离 Python 环境安装固定版本解码器并运行测试。
 - `scripts/build.mjs`、`scripts/build-horizon.mjs`：生成黑洞版静态网站。
 - `design/check-render-scheduler.mjs`、`design/analyze-ray-cost.mjs`：离线回归脚本。其余本地设计研究文件不上传仓库。
 
 新增软件时，先在 `projects.json` 登记真实项目资料，再在 `icon-sources.json` 登记图标来源；系统不会自动把所有新仓库当成作品发布。安装包继续存放在对应 GitHub 仓库或既有公开下载地址，本仓库不重复上传。角色素材与服装设计版权归原权利人，软件详情保留相关说明。
+
+精选区的软件名、英文名、简介、图标和主图从同一份项目资料构建；改名无需分别修改首页与详情。项目的 `aliases` 保留历史名称搜索，仓库 ID 与详情链接保持兼容。`screenshots` 登记图片地址、图注和原始尺寸；详情支持点击原图，后续图片延迟加载。真实界面、离屏界面、功能示意与角色素材必须在图注中准确区分；没有可信截图时不伪造。更新截图和介绍仍需人工核对公开版本，定时任务只同步公开包版本和已登记图标。
+
+2026-09-25 已核对十个软件仓库：帧织更名为棱光 PrismCanvas 0.5.0；映序公开下载为 0.4.19（不把 main 的 0.4.20 源码更新当成已发布版本）；流向为 3.9.0。其余按当前公开包核对名称与能力范围，米雪儿英文显示名使用 Michele Desktop Pet。
 
 ## 本地构建与检查
 

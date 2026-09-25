@@ -9,6 +9,7 @@ const output = resolve(projectRoot, production ? 'dist-production' : 'dist');
 // Only these two generated directories may be replaced by the build.
 if (dirname(output) !== projectRoot || !['dist', 'dist-production'].includes(output.slice(projectRoot.length + 1))) throw Error('Unsafe output directory');
 const data = JSON.parse(await readFile(resolve(projectRoot, 'content/projects.json'), 'utf8'));
+const escapeHtml = value => String(value ?? '').replace(/[&<>"']/g, character => ({'&':'&amp;', '<':'&lt;', '>':'&gt;', '"':'&quot;', "'":'&#39;'}[character]));
 const ids = new Set();
 for (const p of data.projects) {
   if (ids.has(p.id)) throw Error('Duplicate project'); ids.add(p.id);
@@ -22,7 +23,16 @@ const files = new Set(['app.js', 'horizon.css', 'horizon.js', 'blackhole.js', 'a
 for (const match of html.matchAll(/(?:src|href)="(assets\/[^"?#]+)(?:[?#][^"]*)?"/g)) files.add(match[1]);
 for (const p of data.projects) {
   for (const field of ['icon', 'image']) if (p[field]) files.add(p[field]);
-  html = html.replaceAll(`{{icon:${p.id}}}`, p.icon || 'assets/noxevyr-mark.svg');
+  for (const shot of p.screenshots || []) files.add(shot.src);
+  const preview = p.screenshots?.[0];
+  const fields = {
+    name: p.name, english: p.english, description: p.description,
+    icon: p.icon || 'assets/noxevyr-mark.svg',
+    preview: preview?.src || p.image,
+    previewWidth: preview?.width || 1600, previewHeight: preview?.height || 1000,
+    previewCaption: preview?.caption || p.imageNote,
+  };
+  for (const [field, value] of Object.entries(fields)) html = html.replaceAll(`{{${field}:${p.id}}}`, escapeHtml(value));
 }
 html = html.replaceAll('{{count:all}}', String(data.projects.length)).replaceAll('{{count:total}}', String(data.projects.length).padStart(2, '0'));
 for (const category of ['creative', 'tools', 'play']) html = html.replaceAll(`{{count:${category}}}`, String(data.projects.filter(p => p.category === category).length));

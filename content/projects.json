@@ -1,5 +1,5 @@
 {
-  "checkedAt": "2026-09-23",
+  "checkedAt": "2026-09-25",
   "projects": [
     {
       "id": "yingxu",
@@ -7,26 +7,26 @@
       "english": "YingXu",
       "category": "creative",
       "label": "创作与管理",
-      "version": "0.4.18",
+      "version": "0.4.19",
       "status": "已发布",
       "symbol": "YX",
       "color": "mint",
-      "description": "让剧本、角色、分镜和每一次生成，都回到同一个创作项目。",
-      "details": "围绕作品组织图片、视频与文稿，在多标签工作区编辑 Markdown 和 Word 普通正文，通过素材分类、关联与制作状态连接创作过程。",
+      "description": "围绕创作项目整理素材、文稿与分镜，让每个文件和制作进度都有归处。",
+      "details": "以作品为中心组织图片、视频、音乐和文稿，在多标签工作区编辑 Markdown 与 Word 普通正文，关联角色、场景、分镜和生成版本。支持文件夹导入、独立文档阅览、项目目录同步与迁移。",
       "features": [
-        "项目与素材分类，多层文件夹",
-        "文稿编辑、全局搜索与画板",
-        "角色、分镜与生成版本关联",
-        "项目存放位置预览与迁移"
+        "项目分类、文件夹导入与目录同步",
+        "Markdown / Word 正文、多标签与画板",
+        "角色、分镜、素材关系与制作状态",
+        "音乐播放、截图与按需增量更新"
       ],
       "platform": "Windows · macOS 试用",
-      "requirements": "Windows 完整包自带运行环境。macOS 试用版面向 macOS 14+、Apple Silicon；不同平台功能与验收范围见发布说明。",
-      "image": "assets/yingxu.svg",
-      "imageNote": "功能结构示意",
+      "requirements": "Windows x64 完整包自带 Python、图片处理组件、FFmpeg 和 WebView2。macOS 试用包需 macOS 14+、Apple Silicon，未签名公证；截图、原生拖出等能力限 Windows。",
+      "image": "assets/previews/yingxu-ffb63406e02e.svg",
+      "imageNote": "映序 · 功能结构示意（非实机截图）",
       "downloads": [
         {
-          "label": "Windows 0.4.18",
-          "url": "https://github.com/NOXEVYR/yingxu/releases/tag/yingxu-v0.4.18",
+          "label": "Windows 0.4.19",
+          "url": "https://github.com/NOXEVYR/yingxu/releases/tag/yingxu-v0.4.19",
           "channel": "stable"
         },
         {
@@ -36,76 +36,92 @@
         }
       ],
       "sync": "platforms",
-      "update": "在设置 → 截图中点击快捷键按钮，直接按下新组合，按钮实时显示按键。",
-      "date": "2026-09-22",
+      "update": "Windows 0.4.19 修复兼容目录下的文件打开，加入按文件增量更新，并修复小屏截图工具栏越界。",
+      "date": "2026-09-24",
       "type": "software",
-      "icon": "assets/icons/yingxu-2d29d6378951.png"
+      "icon": "assets/icons/yingxu-29cea82d75c4.png"
     },
     {
       "id": "ai-hub",
-      "name": "AI Hub",
-      "english": "模型与资源工作台",
+      "name": "曜核",
+      "english": "原 AI Hub · 公开下载",
       "category": "creative",
       "label": "创作与管理",
       "version": "2.6.0",
       "status": "已发布",
       "symbol": "AH",
       "color": "blue",
-      "description": "把跨项目使用的模型、LoRA、工作流和出图库，整理成自己的资源库。",
-      "details": "创建或接入本地 AI 工作环境，登记模型与图库来源、分类检索资源，并记录工作流验证与运行情况。",
+      "description": "集中管理本地 AI 工作环境，以及跨项目复用的模型、LoRA、工作流和出图库。",
+      "details": "前身为 AI Hub，现已改名曜核；名称与图标已同步新版品牌，下方版本号与下载链接以公开发行包为准。新建或接入自己的工作目录，分配项目输入、过程、输出与交付位置；分类检索模型与 LoRA，查看生成图片和运行记录，并登记工作流依赖与验证证据。",
       "features": [
-        "工作环境与项目目录",
-        "模型与 LoRA 分类检索",
-        "出图库及运行记录",
-        "来源体检与工具规则交接"
+        "工作环境、来源体检与项目目录",
+        "模型 / LoRA 分类、评分与备注",
+        "出图库、运行记录与模型引用",
+        "工作流证据与 AI 工具规则交接"
       ],
       "platform": "Windows",
-      "requirements": "Windows x64、Python 3.9+、.NET Framework 4.8+ 和 WebView2。当前桌面包不捆绑 Python 与 WebView2，也不包含模型。",
+      "requirements": "Windows x64、Python 3.9+、.NET Framework 4.8+ 与 Microsoft Edge WebView2 Runtime。桌面包不捆绑 Python、WebView2 Runtime 或模型权重。",
       "downloads": [
         {
           "label": "Windows 2.6.0 ZIP",
-          "url": "https://raw.githubusercontent.com/turnsolesama/ai-hub/main/releases/AI-Hub-v2.6.0-Windows-x64.zip"
+          "url": "https://raw.githubusercontent.com/NOXEVYR/ai-hub/main/releases/AI-Hub-v2.6.0-Windows-x64.zip"
         }
       ],
       "sync": "manual",
-      "update": "新增工作环境、来源体检、项目目录与工具规则交接。",
+      "update": "2.6.0 支持工作环境、来源体检、项目目录与 AI 工具规则交接。",
       "date": "2026-09-11",
       "type": "software",
-      "icon": "assets/icons/ai-hub-5f7d43f453f2.png"
+      "icon": "assets/icons/ai-hub-0b4b80a9f85c.png",
+      "aliases": [
+        "AI Hub",
+        "AIHub"
+      ]
     },
     {
       "id": "frameweave",
-      "name": "帧织",
-      "english": "FrameWeave",
+      "name": "棱光",
+      "english": "PrismCanvas",
       "category": "creative",
       "label": "创作与管理",
-      "version": "0.3.0",
+      "version": "0.5.0",
       "status": "已发布",
       "symbol": "FW",
       "color": "violet",
-      "description": "在一张画布上连接提示词、参考图和生成任务，让创作过程看得见。",
-      "details": "AI 图片与视频生成画布，连接本地 ComfyUI，发现运行环境并检查所选工作流的节点与模型依赖。",
+      "description": "在同一张画布组织提示词、参考素材与生成任务，连接本地 AI 完成图片和视频创作。",
+      "details": "连接已有本地 ComfyUI，在无限画布上编排提示词、参考图、生成节点与结果。提供工作流包、环境与依赖检查，以及可供同机 AI 客户端调用的 MCP 接口。",
       "features": [
-        "无限画布与生成节点",
-        "工作流包参数、收藏与归档",
-        "本地 ComfyUI 环境发现",
-        "历史参数复用与队列搜索"
+        "无限画布与图片 / 视频生成节点",
+        "工作流包、任务历史与参数复用",
+        "本地 ComfyUI 环境及依赖检查",
+        "AI 接入与 14 个 MCP 工具"
       ],
       "platform": "Windows",
-      "requirements": "需已有可用的本地 ComfyUI 与对应模型。环境检查不等于推理成功；便携客户端不包含模型、PyTorch 或 CUDA。",
-      "image": "assets/frameweave.png",
-      "imageNote": "应用界面",
+      "requirements": "Windows x64 便携包无需另装 Python，使用系统 Edge 或默认浏览器。生成需已有可用本地 ComfyUI、兼容节点与模型；客户端不包含模型、PyTorch 或 CUDA。",
+      "image": "assets/previews/frameweave-e27ca247ef57.png",
+      "imageNote": "棱光 PrismCanvas 0.5.0 · 图片与视频工作台",
       "downloads": [
         {
-          "label": "Windows 0.3.0 ZIP",
-          "url": "https://raw.githubusercontent.com/turnsolesama/frameweave/main/releases/FrameWeave-v0.3.0-Windows-x64.zip"
+          "label": "Windows 0.5.0 ZIP",
+          "url": "https://raw.githubusercontent.com/NOXEVYR/frameweave/main/releases/PrismCanvas-v0.5.0-Windows-x64.zip"
         }
       ],
       "sync": "manual",
-      "update": "新增历史任务参数复用与再次生成、队列搜索筛选，以及工作流包收藏归档。",
-      "date": null,
+      "update": "0.5.0 更名为棱光 PrismCanvas，采用 E04 棱光切片图标，重组创作工作台并保留 AI 接入与旧数据兼容。",
+      "date": "2026-09-25",
       "type": "software",
-      "icon": "assets/icons/frameweave-a1f24438f75a.png"
+      "icon": "assets/icons/frameweave-2367c9255916.png",
+      "aliases": [
+        "帧织",
+        "FrameWeave"
+      ],
+      "screenshots": [
+        {
+          "src": "assets/previews/frameweave-e27ca247ef57.png",
+          "caption": "棱光 PrismCanvas 0.5.0 · 图片与视频工作台",
+          "width": 1600,
+          "height": 1000
+        }
+      ]
     },
     {
       "id": "proxy-switch",
@@ -113,24 +129,24 @@
       "english": "FlowSwitch",
       "category": "tools",
       "label": "系统与效率",
-      "version": "3.8.4",
+      "version": "3.9.0",
       "status": "已发布",
       "symbol": "FS",
       "color": "orange",
-      "description": "为程序选择合适的代理出口，让线路切换和网络排查更清楚。",
-      "details": "管理已有 HTTP / SOCKS5 代理、程序分流与本地网关，提供备用出口和失效入口诊断。",
+      "description": "统一管理已有代理，为程序和网站选择出口，并排查入口与连接问题。",
+      "details": "通过固定本地入口管理 HTTP / SOCKS5 出口、程序分流和网站例外，提供备用接替、真实连接证据、整组规则预览以及干净启动对照。",
       "features": [
-        "代理出口与程序线路切换",
-        "网站例外规则",
-        "备用出口与故障诊断",
-        "失效本地代理入口修复"
+        "固定入口与程序线路切换",
+        "网站例外与备用出口接替",
+        "连接证据与整组规则预览",
+        "干净启动与限时直连对照"
       ],
       "platform": "Windows · macOS 测试版",
-      "requirements": "Windows 10 1809+ / Windows 11 x64；macOS 测试版需 macOS 13+，提供 Apple 芯片与 Intel 包，自带代理内核但尚未公证。需自己的可用代理，不提供 VPN 服务、订阅或节点；Mac 功能范围与 Windows 不完全相同。",
+      "requirements": "Windows 10 1809+ / Windows 11 x64，使用系统自带 Windows PowerShell 5.1、.NET Framework 4.x 与 curl；完整包自带运行组件。macOS 测试版需 macOS 13+，提供 Apple 芯片与 Intel 包，尚未公证。需自己的可用代理；仅管理进入固定入口的流量，Mac 功能范围与 Windows 不完全相同。",
       "downloads": [
         {
-          "label": "Windows 3.8.4",
-          "url": "https://github.com/NOXEVYR/proxy-switch/releases/tag/v3.8.4",
+          "label": "Windows 3.9.0",
+          "url": "https://github.com/NOXEVYR/proxy-switch/releases/tag/v3.9.0",
           "channel": "stable"
         },
         {
@@ -140,10 +156,20 @@
         }
       ],
       "sync": "stable",
-      "update": "新图标覆盖窗口、任务栏、快捷方式；小尺寸采用兼容 Windows 图标格式，保留透明度。",
-      "date": "2026-09-19",
+      "update": "新增连接证据与整组规则预览、干净环境启动和最长五分钟的直连登录对照；统一程序、窗口与快捷方式图标。",
+      "date": "2026-09-24",
       "type": "software",
-      "icon": "assets/icons/proxy-switch-cd6b53f84043.png"
+      "icon": "assets/icons/proxy-switch-2702ae1bd076.png",
+      "screenshots": [
+        {
+          "src": "assets/previews/proxy-switch-db3f47081322.png",
+          "caption": "FlowSwitch 3.9.0 · 官方源码演示界面（演示数据）",
+          "width": 1276,
+          "height": 879
+        }
+      ],
+      "image": "assets/previews/proxy-switch-db3f47081322.png",
+      "imageNote": "FlowSwitch 3.9.0 · 官方源码演示界面（演示数据）"
     },
     {
       "id": "codex-switcher",
@@ -155,16 +181,16 @@
       "status": "已发布",
       "symbol": "CS",
       "color": "gray",
-      "description": "集中管理 API 服务与模型配置，预览变更，再切换到所需服务。",
-      "details": "Windows 本地配置工作台，支持服务配置导入、接口地址管理、变更预览与备份。",
+      "description": "集中管理 Codex 的 API 服务与模型配置，预览变更后手动切换。",
+      "details": "Windows 本地 Codex 服务配置工作台，可在官方账号模式与 Responses API 配置间切换，提供多格式导入、检查、备份恢复和不含密钥的配置导出。",
       "features": [
-        "API 服务与模型配置",
-        "多种配置格式导入",
-        "修改前预览与备份",
-        "本地管理服务信息"
+        "官方模式与 Responses 配置切换",
+        "JSON / TOML / cURL / SDK 示例导入",
+        "应用前检查、备份与恢复",
+        "不含密钥的配置导出"
       ],
       "platform": "Windows",
-      "requirements": "Python 3.11+（含 Tkinter）与 Windows 自带 .NET Framework 4.x。",
+      "requirements": "Windows x64、Python 3.11+（含 Tkinter）与 .NET Framework 4.x。EXE 不包含 Python；应用配置后需自行重新打开 Codex。",
       "downloads": [
         {
           "label": "Windows 2.4.1 ZIP",
@@ -172,10 +198,10 @@
         }
       ],
       "sync": "manual",
-      "update": "当前公开版本 2.4.1；历史安装包继续保留。",
+      "update": "公开版本仍为 2.4.1，保留原安装包；支持配置预览、手动应用与备份恢复。",
       "date": null,
       "type": "software",
-      "icon": "assets/icons/codex-switcher-41f9a1e034b4.png"
+      "icon": "assets/icons/codex-switcher-fa74f9db7441.png"
     },
     {
       "id": "video-catch",
@@ -187,16 +213,16 @@
       "status": "已发布",
       "symbol": "VC",
       "color": "rose",
-      "description": "从浏览器发现视频，把可下载的媒体交给本地程序保存。",
-      "details": "Chrome / Edge 扩展监听选定标签页的媒体请求，配合本地程序下载；也可导入视频直链或网页分享链接。",
+      "description": "从选定的浏览器标签页发现视频，把可下载的媒体交给本地程序保存。",
+      "details": "Chrome / Edge 扩展监听选定的前台或后台标签页媒体请求，配合本地程序下载；也可导入视频直链或网页分享链接，并合并可访问的音视频轨道。",
       "features": [
-        "选定标签页媒体监听",
-        "视频链接导入",
-        "本地下载与音视频合并",
-        "独立浏览器扩展"
+        "选定前台或后台标签页监听",
+        "直链与网页分享链接导入",
+        "本地下载与音视频无转码合并",
+        "独立扩展与本机配对连接"
       ],
       "platform": "Windows · Chrome / Edge",
-      "requirements": "Windows 10 / 11 x64。监听需要配套扩展；网站兼容性以实际访问条件为准，不绕过 DRM 或付费访问控制。",
+      "requirements": "Windows 10 / 11 x64，完整程序包自带 Python、yt-dlp、FFmpeg、Deno 等运行组件。监听需安装配套扩展（Chrome 120+ 或兼容 Edge），扩展目录须固定保留；网页兼容性以实际访问条件为准，不绕过 DRM 或付费访问控制。",
       "downloads": [
         {
           "label": "Windows 0.3.0 ZIP",
@@ -209,31 +235,31 @@
         }
       ],
       "sync": "manual",
-      "update": "桌面程序与扩展 0.3.0 配套使用。",
-      "date": null,
+      "update": "公开版本仍为 0.3.0；桌面程序与独立扩展配套使用，重启桌面程序后重新配对。",
+      "date": "2026-09-11",
       "type": "software",
-      "icon": "assets/icons/video-catch-a0a616ebda70.png"
+      "icon": "assets/icons/video-catch-f9c0ca04c723.png"
     },
     {
       "id": "classicdesk",
       "name": "ClassicDesk",
-      "english": "桌面方案编辑",
+      "english": "Windows 桌面布局与外观工具",
       "category": "tools",
       "label": "系统与效率",
       "version": "0.11.15-preview",
       "status": "预览版",
       "symbol": "CD",
       "color": "blue",
-      "description": "在启用改造之前，先把任务栏、资源管理器和右键菜单的方案想清楚。",
-      "details": "Windows 桌面修改方案编辑器，当前公开版提供三页参数编辑、图示联动、保存和撤销。",
+      "description": "预览任务栏、资源管理器与右键菜单的布局，管理自己的 Windows 桌面方案。",
+      "details": "Windows 11 布局与外观设置前端，支持四种布局、六款独立皮肤、方案库和 JSON 导入导出；已有配套服务的设备可对比并更新下次开机方案。",
       "features": [
-        "任务栏参数与图示",
-        "资源管理器方案选择",
-        "右键菜单方案",
-        "草稿保存与撤销"
+        "任务栏、资源管理器与菜单方案",
+        "四种布局与六款独立皮肤",
+        "方案库及 JSON 导入导出",
+        "配套服务的开机方案管理"
       ],
       "platform": "Windows 11",
-      "requirements": "Windows 11 x64 与 .NET 8 Desktop Runtime。当前包没有增强引擎，不能直接启用真实桌面改造。",
+      "requirements": "Windows 11 x64 与 .NET 8 Desktop Runtime x64。公开包未捆绑第三方增强运行组件，新电脑不能直接启用桌面改造；开机方案管理需已有经核对的 ClassicDesk 0.11.14 配套服务。不同方案真实管理员写入与重启后效果仍待实测。",
       "downloads": [
         {
           "label": "Windows 0.11.15-preview",
@@ -242,10 +268,26 @@
         }
       ],
       "sync": "manual",
-      "update": "ClassicDesk 0.11.15-preview · 开机方案管理 已发布，查看完整更新与平台说明。",
+      "update": "新增方案库、紧凑托盘与透明参数、开机方案对比与更新，以及下次开机停用入口。",
       "date": "2026-09-22",
       "type": "software",
-      "icon": "assets/icons/classicdesk-4a2feca24709.png"
+      "icon": "assets/icons/classicdesk-58092aa6a243.png",
+      "imageNote": "ClassicDesk 0.11.15-preview · 任务栏方案（源码离屏界面，未应用 Windows）",
+      "screenshots": [
+        {
+          "src": "assets/previews/classicdesk-70e668238a33.png",
+          "caption": "ClassicDesk 0.11.15-preview · 任务栏方案（源码离屏界面，未应用 Windows）",
+          "width": 1080,
+          "height": 820
+        },
+        {
+          "src": "assets/previews/classicdesk-31744201f2e2.png",
+          "caption": "ClassicDesk 0.11.15-preview · 皮肤资料库（源码离屏界面）",
+          "width": 1080,
+          "height": 820
+        }
+      ],
+      "image": "assets/previews/classicdesk-70e668238a33.png"
     },
     {
       "id": "env-anchor",
@@ -258,15 +300,15 @@
       "symbol": "EA",
       "color": "blue",
       "description": "把个人文件与软件配置安放到保留盘，让环境在系统还原后重新连接。",
-      "details": "面向 Windows 10 的个人文件与软件配置迁移工具。支持勾选多个目录、统一默认保存位置、复制校验、重新连接与撤销；单文件客户端在本地运行。",
+      "details": "面向 Windows 10 的个人文件与软件配置迁移工具。支持批量勾选、统一目标、后台复制与逐文件校验，显示阶段进度和连接状态，并可重新连接、换位置或仅撤销勾选项目。",
       "features": [
         "批量勾选与统一保存位置",
-        "逐文件 SHA-256 校验与备份",
+        "后台复制、SHA-256 校验与进度",
         "系统还原后重新连接",
-        "已有方案换位置与撤销"
+        "换位置与按勾选项目撤销"
       ],
       "platform": "Windows 10",
-      "requirements": "Windows 10 自带 .NET Framework 和 Windows PowerShell 5.1；目标为不会还原的非系统 NTFS 固定磁盘。不迁移整套用户目录或浏览器凭据，软件本体需另行保留。登录自动重新连接需要将启动项写入还原基线；真实关机还原和多屏高 DPI 尚未完成实测。",
+      "requirements": "Windows 10 自带 .NET Framework、Windows PowerShell 5.1 与 Robocopy；目标为不会还原的非系统 NTFS 固定磁盘。不迁移整套用户目录或浏览器凭据，软件本体需另行保留。登录自动重新连接需将启动入口保存进还原基线；真实关机还原、跨物理盘、多屏高 DPI 尚未完成实测。",
       "downloads": [
         {
           "label": "Windows 0.6.0",
@@ -275,10 +317,20 @@
         }
       ],
       "sync": "stable",
-      "update": "文件复制和校验改为后台任务，窗口保持响应，显示当前阶段及校验进度；操作期间阻止重复提交和意外关闭。",
+      "update": "后台复制与校验显示阶段进度；新增连接状态、按勾选项目撤销及独立登录设置保存。",
       "date": "2026-09-19",
       "type": "software",
-      "icon": "assets/icons/env-anchor-ef5f5d454c70.png"
+      "icon": "assets/icons/env-anchor-b0fd80143a42.png",
+      "imageNote": "环境锚点 · 应用界面（路径为示意数据）",
+      "screenshots": [
+        {
+          "src": "assets/previews/env-anchor-1942a69b87b6.png",
+          "caption": "环境锚点 · 应用界面（路径为示意数据）",
+          "width": 1096,
+          "height": 829
+        }
+      ],
+      "image": "assets/previews/env-anchor-1942a69b87b6.png"
     },
     {
       "id": "codex-pet",
@@ -290,18 +342,18 @@
       "status": "已发布",
       "symbol": "NP",
       "color": "pink",
-      "description": "换一套衣服，在桌面一角打个盹。属于四季夏目的小小日常。",
-      "details": "《星光咖啡馆与死神之蝶》四季夏目的个人同人 Windows 桌宠，包含两种 Q 版体型、五套服装和部位点击互动。",
+      "description": "两种 Q 版体型、五套服装，自由摆放在桌面，点击互动或贴边探头。",
+      "details": "《星光咖啡馆与死神之蝶》四季夏目的个人同人 Windows 桌宠，支持部位点击、表情和四档尺寸。默认拖到哪里停在哪里，可自行开启重力；沿屏幕边缘上下拖动调整收纳位置。",
       "features": [
-        "两种体型与五套服装",
-        "点击互动与表情",
-        "拖拽、落地与回弹",
-        "屏幕边缘收纳探头"
+        "两种 Q 版体型与五套服装",
+        "部位点击与表情回应",
+        "自由摆放与四档尺寸",
+        "贴边探头及沿边拖动"
       ],
       "platform": "Windows",
-      "requirements": "Windows 自带 .NET Framework 4.x。角色版权归原权利人所有，素材为个人 AI 同人创作。",
+      "requirements": "Windows 自带 .NET Framework 4.x，无需安装。公开包仅含两种 Q 版，不含游戏原始立绘或本地等身素材；角色版权归原权利人所有，公开素材为个人 AI 同人创作。其他 DPI 与长期运行体验尚未全面验收。",
       "image": "assets/natsume.png",
-      "imageNote": "桌宠角色素材",
+      "imageNote": "README 公开 Q 版角色预览",
       "downloads": [
         {
           "label": "Windows 0.5.9",
@@ -310,33 +362,47 @@
         }
       ],
       "sync": "stable",
-      "update": "v0.5.9 · 自由放置、超大号与交互修复 已发布，查看完整更新与平台说明。",
+      "update": "默认无重力并支持自由摆放，新增 432 超大号，修复沿边拖动、抓框裁切与高 DPI 动画刷新。",
       "date": "2026-09-19",
       "type": "software",
-      "icon": "assets/icons/codex-pet-9c14c6b78cf9.png"
+      "icon": "assets/icons/codex-pet-5e0298b16dc1.png",
+      "screenshots": [
+        {
+          "src": "assets/previews/codex-pet-a7d8cc912dda.png",
+          "caption": "标准 Q 版女仆 · 官方角色预览",
+          "width": 503,
+          "height": 552
+        },
+        {
+          "src": "assets/previews/codex-pet-a298dcbdc1ad.png",
+          "caption": "大头 Q 版旗袍 · 官方角色预览",
+          "width": 392,
+          "height": 432
+        }
+      ]
     },
     {
       "id": "michelle-pet",
       "name": "米雪儿桌宠",
-      "english": "MichelePet",
+      "english": "Michele Desktop Pet",
       "category": "play",
       "label": "桌面伙伴",
       "version": "0.3.8",
       "status": "已发布",
       "symbol": "MP",
       "color": "pink",
-      "description": "会回应点击、轻轻跳起，也会贴在屏幕边缘探头的米雪儿。",
-      "details": "《卡拉彼丘》米雪儿的个人同人 Windows 桌宠，保留四套服装、睡眠与左右贴墙互动，新增中英切换和经典制服键鼠搭子。",
+      "description": "换装、贴边探头，也能作为跟随键鼠动作的米雪儿桌面伙伴。",
+      "details": "《卡拉彼丘》米雪儿的个人同人 Windows 桌宠。普通模式提供四套服装、睡眠与左右贴墙；游戏搭子支持经典制服和宿舍造型，可摸头、戳脸、加油并自动眨眼，同一程序即时切换中英文。",
       "features": [
-        "四套服装与点击回应",
-        "睡眠与左右贴墙收纳",
-        "经典制服键鼠搭子",
+        "四套普通服装与贴边收纳",
+        "经典制服及宿舍键鼠搭子",
+        "摸头、表情与自动眨眼",
         "简体中文 / English 即时切换"
       ],
       "platform": "Windows",
-      "requirements": "Windows 自带 .NET Framework 4.x。采用分层 2D 动画，非 Live2D；键鼠搭子目前仅支持经典制服，具体游戏与混合 DPI、多屏环境尚未全面实测。角色版权归原权利人所有。",
+      "requirements": "Windows 自带 .NET Framework 4.x。采用分层 2D 动画，非 Live2D；键鼠搭子支持经典制服及宿舍造型，宿舍可选原版或轻盈长发。具体游戏、独占全屏、反作弊及混合 DPI 多屏环境尚未全面实测。角色版权归原权利人所有。",
       "image": "assets/michelle.png",
-      "imageNote": "桌宠角色素材",
+      "imageNote": "经典制服 · 公开角色素材，非运行截图",
       "downloads": [
         {
           "label": "Windows 0.3.8",
@@ -345,10 +411,14 @@
         }
       ],
       "sync": "stable",
-      "update": "经典制服继续保留双马尾；宿舍「原版长发」与「轻盈长发」均可在「搭子造型」选择。",
+      "update": "新增摸头、害羞鼓脸、加油及自动眨眼；经典制服保留双马尾，宿舍原版长发与轻盈长发均可切换。",
       "date": "2026-09-19",
       "type": "software",
-      "icon": "assets/icons/michelle-pet-045112d00412.png"
+      "icon": "assets/icons/michelle-pet-7569e4cd2046.png",
+      "aliases": [
+        "MichelePet"
+      ]
     }
-  ]
+  ],
+  "reviewedAt": "2026-09-25"
 }

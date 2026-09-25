@@ -3,7 +3,9 @@
     "path": "desktop/brand.ico"
   },
   "ai-hub": {
-    "path": "frontend/brand.ico"
+    "repo": "NOXEVYR.github.io",
+    "path": "public/assets/icons/ai-hub-0b4b80a9f85c.png",
+    "note": "Owner-confirmed installed brand asset. Keep the new name and icon while the software repository still contains AI Hub 2.6.0 branding; revisit after its branded public release."
   },
   "frameweave": {
     "path": "assets/frameweave.ico"

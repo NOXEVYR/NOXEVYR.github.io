@@ -1,4 +1,5 @@
 import {readFile,writeFile} from 'node:fs/promises';
+import {findReadmePackage, hasReadmePackages} from './readme-packages.mjs';
 const path=new URL('../content/projects.json',import.meta.url);
 const data=JSON.parse(await readFile(path,'utf8'));
 const headers={'User-Agent':'noxevyr-personal-site','Accept':'application/vnd.github+json'};
@@ -43,14 +44,17 @@ await Promise.all(data.projects.map(async p=>{try{
   if(mac)p.downloads=[...p.downloads.filter(d=>d.channel!=='mac'),{label:`macOS ${version(mac.tag_name)||mac.tag_name} ${p.id==='proxy-switch'?'测试版':'试用版'}`,url:mac.html_url,channel:'mac'}];
  }
  // Some projects publish packages in their repository instead of attaching a new Release.
- const readmePackages={'ai-hub':'AI-Hub',frameweave:'FrameWeave'};
- if(readmePackages[p.id]){
+ if(hasReadmePackages(p.id)){
   const r=await fetch(`https://api.github.com/repos/NOXEVYR/${p.id}/contents/README.md`,{headers,signal:AbortSignal.timeout(20000)});
   if(!r.ok)throw Error(`${p.id} README HTTP ${r.status}`);
   const doc=await r.json();if(doc.encoding!=='base64')throw Error(`${p.id}: unsupported README encoding`);
   const text=Buffer.from(doc.content,'base64').toString('utf8');
-  const match=text.match(new RegExp(`https://raw\\.githubusercontent\\.com/(?:NOXEVYR|turnsolesama)/${p.id}/main/releases/${readmePackages[p.id]}-v(\\d+\\.\\d+\\.\\d+)-Windows-x64\\.zip`));
-  if(match&&compare(match[1],p.version)>0){p.version=match[1];p.downloads=[{label:`Windows ${p.version} ZIP`,url:match[0]}];p.date=null;p.update=`${p.version} 已提供下载，完整改动见项目说明。`}
+  const published=findReadmePackage(p.id,text);
+  if(published&&compare(published.version,p.version)>=0){
+   const changed=published.version!==p.version;
+   p.version=published.version;p.downloads=[{label:`Windows ${p.version} ZIP`,url:published.url}];
+   if(changed){p.date=null;p.update=`${p.version} 已提供下载，完整改动见项目说明。`}
+  }
  }
  console.log(`${p.id}: ${p.version}`);
 }catch(e){failed=true;console.error(e.message)}}));
