@@ -37,9 +37,10 @@
     },
     {
       "id": "video-catch",
-      "commit": "a2fe15f47ee195621a2aa5d674c4a7948c637e20",
-      "version": "0.3.0",
-      "readme": "https://github.com/NOXEVYR/video-catch/blob/a2fe15f47ee195621a2aa5d674c4a7948c637e20/README.md"
+      "commit": "d49cc14f282d6b342b7bd8fc312ea9d5d5b3dd78",
+      "version": "0.4.2",
+      "readme": "https://github.com/NOXEVYR/video-catch/blob/d49cc14f282d6b342b7bd8fc312ea9d5d5b3dd78/README.md",
+      "release": "https://github.com/NOXEVYR/video-catch/releases/tag/v0.4.2"
     },
     {
       "id": "classicdesk",
@@ -147,14 +148,14 @@
     {
       "id": "video-catch",
       "kind": "icon",
-      "path": "assets/videocatch.ico",
-      "commit": "a2fe15f47ee195621a2aa5d674c4a7948c637e20",
-      "bytes": 41876,
-      "blob": "fc6cc6179d901374ac50d0a38a4e78f55cb582f7",
-      "url": "https://raw.githubusercontent.com/NOXEVYR/video-catch/a2fe15f47ee195621a2aa5d674c4a7948c637e20/assets/videocatch.ico",
-      "caption": "",
-      "websitePath": "assets/icons/video-catch-f9c0ca04c723.png",
-      "websiteSha256": "f9c0ca04c723c76561401935e838d3b91302ae159a92b92aed80a24950f9e385"
+      "path": "assets/videocatch.png",
+      "commit": "d49cc14f282d6b342b7bd8fc312ea9d5d5b3dd78",
+      "bytes": 158072,
+      "blob": "07555c18ca146b513e10e115f23631ffd536eae0",
+      "url": "https://raw.githubusercontent.com/NOXEVYR/video-catch/d49cc14f282d6b342b7bd8fc312ea9d5d5b3dd78/assets/videocatch.png",
+      "caption": "0.4.2 落日光轨图标，与程序保持一致",
+      "websitePath": "assets/icons/video-catch-f1677f59050e.png",
+      "websiteSha256": "f1677f59050e28a385681c4d7b8274e85d966ccdcfb35e479556a6a5af4d8918"
     },
     {
       "id": "classicdesk",
@@ -300,5 +301,10 @@
         }
       ]
     }
-  ]
+  ],
+  "preservedLiveSnapshot": {
+    "date": "2026-09-25",
+    "source": "https://noxevyr.github.io/data.js",
+    "scope": "Other catalog entries and icons preserved from the deployed website during the VideoCatch-only update."
+  }
 }

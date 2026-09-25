@@ -39,7 +39,7 @@
       "update": "Windows 0.4.19 修复兼容目录下的文件打开，加入按文件增量更新，并修复小屏截图工具栏越界。",
       "date": "2026-09-24",
       "type": "software",
-      "icon": "assets/icons/yingxu-29cea82d75c4.png"
+      "icon": "assets/icons/yingxu-2d29d6378951.png"
     },
     {
       "id": "ai-hub",
@@ -71,7 +71,7 @@
       "update": "2.6.0 支持工作环境、来源体检、项目目录与 AI 工具规则交接。",
       "date": "2026-09-11",
       "type": "software",
-      "icon": "assets/icons/ai-hub-0b4b80a9f85c.png",
+      "icon": "assets/icons/ai-hub-1f88dcbf474a.png",
       "aliases": [
         "AI Hub",
         "AIHub"
@@ -109,7 +109,7 @@
       "update": "0.5.0 更名为棱光 PrismCanvas，采用 E04 棱光切片图标，重组创作工作台并保留 AI 接入与旧数据兼容。",
       "date": "2026-09-25",
       "type": "software",
-      "icon": "assets/icons/frameweave-2367c9255916.png",
+      "icon": "assets/icons/frameweave-9f9e28aa426d.png",
       "aliases": [
         "帧织",
         "FrameWeave"
@@ -159,7 +159,7 @@
       "update": "新增连接证据与整组规则预览、干净环境启动和最长五分钟的直连登录对照；统一程序、窗口与快捷方式图标。",
       "date": "2026-09-24",
       "type": "software",
-      "icon": "assets/icons/proxy-switch-2702ae1bd076.png",
+      "icon": "assets/icons/proxy-switch-cd6b53f84043.png",
       "screenshots": [
         {
           "src": "assets/previews/proxy-switch-db3f47081322.png",
@@ -201,7 +201,7 @@
       "update": "公开版本仍为 2.4.1，保留原安装包；支持配置预览、手动应用与备份恢复。",
       "date": null,
       "type": "software",
-      "icon": "assets/icons/codex-switcher-fa74f9db7441.png"
+      "icon": "assets/icons/codex-switcher-41f9a1e034b4.png"
     },
     {
       "id": "video-catch",
@@ -209,36 +209,36 @@
       "english": "VideoCatch",
       "category": "tools",
       "label": "系统与效率",
-      "version": "0.3.0",
+      "version": "0.4.2",
       "status": "已发布",
       "symbol": "VC",
       "color": "rose",
-      "description": "从选定的浏览器标签页发现视频，把可下载的媒体交给本地程序保存。",
-      "details": "Chrome / Edge 扩展监听选定的前台或后台标签页媒体请求，配合本地程序下载；也可导入视频直链或网页分享链接，并合并可访问的音视频轨道。",
+      "description": "捕获网页视频、下载到本机，再按时间裁剪片段；支持 AI 助手控制。",
+      "details": "Chrome / Edge 扩展监听选定标签页的媒体请求，配合本地程序下载；支持按起止时间裁剪本地视频，并通过默认关闭的本机配对接口让 AI 助手控制监听、下载和裁剪。",
       "features": [
-        "选定前台或后台标签页监听",
-        "直链与网页分享链接导入",
-        "本地下载与音视频无转码合并",
-        "独立扩展与本机配对连接"
+        "网页监听、直链与分享链接导入",
+        "本地视频精确裁剪，保留原片",
+        "本机 AI 接口：下载、裁剪、查询与取消",
+        "落日光轨图标与深紫灰暖杏色界面"
       ],
       "platform": "Windows · Chrome / Edge",
       "requirements": "Windows 10 / 11 x64，完整程序包自带 Python、yt-dlp、FFmpeg、Deno 等运行组件。监听需安装配套扩展（Chrome 120+ 或兼容 Edge），扩展目录须固定保留；网页兼容性以实际访问条件为准，不绕过 DRM 或付费访问控制。",
       "downloads": [
         {
-          "label": "Windows 0.3.0 ZIP",
-          "url": "https://github.com/turnsolesama/portfolio/releases/download/videocatch-v0.3.0/VideoCatch-v0.3.0-Windows-x64.zip"
+          "label": "Windows 0.4.2 ZIP",
+          "url": "https://github.com/NOXEVYR/video-catch/releases/download/v0.4.2/VideoCatch-v0.4.2-Windows-x64.zip"
         },
         {
-          "label": "Chrome / Edge 扩展",
-          "url": "https://github.com/turnsolesama/portfolio/releases/download/videocatch-v0.3.0/VideoCatch-Extension-v0.3.0.zip",
+          "label": "Chrome / Edge 扩展 0.4.2",
+          "url": "https://github.com/NOXEVYR/video-catch/releases/download/v0.4.2/VideoCatch-Extension-v0.4.2.zip",
           "channel": "extension"
         }
       ],
       "sync": "manual",
-      "update": "公开版本仍为 0.3.0；桌面程序与独立扩展配套使用，重启桌面程序后重新配对。",
-      "date": "2026-09-11",
+      "update": "0.4.2 新增 AI 控制和本地裁剪，更新落日光轨图标与界面；扩展更新后重新加载并配对。",
+      "date": "2026-09-25",
       "type": "software",
-      "icon": "assets/icons/video-catch-f9c0ca04c723.png"
+      "icon": "assets/icons/video-catch-f1677f59050e.png"
     },
     {
       "id": "classicdesk",
@@ -271,7 +271,7 @@
       "update": "新增方案库、紧凑托盘与透明参数、开机方案对比与更新，以及下次开机停用入口。",
       "date": "2026-09-22",
       "type": "software",
-      "icon": "assets/icons/classicdesk-58092aa6a243.png",
+      "icon": "assets/icons/classicdesk-4a2feca24709.png",
       "imageNote": "ClassicDesk 0.11.15-preview · 任务栏方案（源码离屏界面，未应用 Windows）",
       "screenshots": [
         {
@@ -320,7 +320,7 @@
       "update": "后台复制与校验显示阶段进度；新增连接状态、按勾选项目撤销及独立登录设置保存。",
       "date": "2026-09-19",
       "type": "software",
-      "icon": "assets/icons/env-anchor-b0fd80143a42.png",
+      "icon": "assets/icons/env-anchor-ef5f5d454c70.png",
       "imageNote": "环境锚点 · 应用界面（路径为示意数据）",
       "screenshots": [
         {
@@ -365,7 +365,7 @@
       "update": "默认无重力并支持自由摆放，新增 432 超大号，修复沿边拖动、抓框裁切与高 DPI 动画刷新。",
       "date": "2026-09-19",
       "type": "software",
-      "icon": "assets/icons/codex-pet-5e0298b16dc1.png",
+      "icon": "assets/icons/codex-pet-9c14c6b78cf9.png",
       "screenshots": [
         {
           "src": "assets/previews/codex-pet-a7d8cc912dda.png",
@@ -414,7 +414,7 @@
       "update": "新增摸头、害羞鼓脸、加油及自动眨眼；经典制服保留双马尾，宿舍原版长发与轻盈长发均可切换。",
       "date": "2026-09-19",
       "type": "software",
-      "icon": "assets/icons/michelle-pet-7569e4cd2046.png",
+      "icon": "assets/icons/michelle-pet-045112d00412.png",
       "aliases": [
         "MichelePet"
       ]

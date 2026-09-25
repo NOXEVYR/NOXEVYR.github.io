@@ -24,6 +24,8 @@ jobs:
         with:
           node-version: '22'
       - name: Refresh public project releases
+        # Preserve a reviewed live catalog snapshot for targeted product updates.
+        if: github.event_name != 'push' || !contains(github.event.head_commit.message, '[catalog-only]')
         run: node scripts/sync.mjs
         env:
           GITHUB_TOKEN: ${{ github.token }}
