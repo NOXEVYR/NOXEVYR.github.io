@@ -37,10 +37,11 @@
     },
     {
       "id": "video-catch",
-      "commit": "d49cc14f282d6b342b7bd8fc312ea9d5d5b3dd78",
-      "version": "0.4.2",
-      "readme": "https://github.com/NOXEVYR/video-catch/blob/d49cc14f282d6b342b7bd8fc312ea9d5d5b3dd78/README.md",
-      "release": "https://github.com/NOXEVYR/video-catch/releases/tag/v0.4.2"
+      "commit": "aad937a58d8900c9c464e7d54d4cf825c07879a2",
+      "version": "0.5.0",
+      "readme": "https://github.com/NOXEVYR/video-catch/blob/aad937a58d8900c9c464e7d54d4cf825c07879a2/README.md",
+      "release": "https://github.com/NOXEVYR/video-catch/releases/tag/v0.5.0",
+      "reviewedAt": "2026-09-26"
     },
     {
       "id": "classicdesk",

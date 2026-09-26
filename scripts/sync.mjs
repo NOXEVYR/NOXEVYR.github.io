@@ -1,5 +1,6 @@
 import {readFile,writeFile} from 'node:fs/promises';
 import {findReadmePackage, hasReadmePackages} from './readme-packages.mjs';
+import {syncVideoCatch} from './sync-videocatch.mjs';
 const path=new URL('../content/projects.json',import.meta.url);
 const data=JSON.parse(await readFile(path,'utf8'));
 const headers={'User-Agent':'noxevyr-personal-site','Accept':'application/vnd.github+json'};
@@ -24,6 +25,11 @@ function windows(r){return !r.draft&&r.assets?.some(a=>/\.(zip|exe|msi)$/i.test(
 let failed=false;
 await Promise.all(data.projects.map(async p=>{try{
  const all=await releases(p.id);
+ if(p.id==='video-catch'){
+  syncVideoCatch(p,all,{version,compare,summary});
+  console.log(`${p.id}: ${p.version}`);
+  return;
+ }
  const eligible=all.filter(r=>windows(r)&&version(r.tag_name)&&(!preview(r)||p.id==='classicdesk')).sort((a,b)=>compare(version(b.tag_name),version(a.tag_name))||b.published_at.localeCompare(a.published_at));
  const newest=eligible[0];
  if(newest&&compare(version(newest.tag_name),p.version)>=0){

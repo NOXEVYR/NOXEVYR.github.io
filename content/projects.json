@@ -1,5 +1,5 @@
 {
-  "checkedAt": "2026-09-25",
+  "checkedAt": "2026-09-26",
   "projects": [
     {
       "id": "yingxu",
@@ -83,7 +83,7 @@
       "english": "PrismCanvas",
       "category": "creative",
       "label": "创作与管理",
-      "version": "0.5.0",
+      "version": "0.7.0",
       "status": "已发布",
       "symbol": "FW",
       "color": "violet",
@@ -101,13 +101,13 @@
       "imageNote": "棱光 PrismCanvas 0.5.0 · 图片与视频工作台",
       "downloads": [
         {
-          "label": "Windows 0.5.0 ZIP",
-          "url": "https://raw.githubusercontent.com/NOXEVYR/frameweave/main/releases/PrismCanvas-v0.5.0-Windows-x64.zip"
+          "label": "Windows 0.7.0 ZIP",
+          "url": "https://raw.githubusercontent.com/NOXEVYR/frameweave/main/releases/PrismCanvas-v0.7.0-Windows-x64.zip"
         }
       ],
       "sync": "manual",
-      "update": "0.5.0 更名为棱光 PrismCanvas，采用 E04 棱光切片图标，重组创作工作台并保留 AI 接入与旧数据兼容。",
-      "date": "2026-09-25",
+      "update": "0.7.0 已提供下载，完整改动见项目说明。",
+      "date": null,
       "type": "software",
       "icon": "assets/icons/frameweave-9f9e28aa426d.png",
       "aliases": [
@@ -209,34 +209,45 @@
       "english": "VideoCatch",
       "category": "tools",
       "label": "系统与效率",
-      "version": "0.4.2",
+      "version": "0.5.0",
       "status": "已发布",
       "symbol": "VC",
       "color": "rose",
-      "description": "捕获网页视频、下载到本机，再按时间裁剪片段；支持 AI 助手控制。",
-      "details": "Chrome / Edge 扩展监听选定标签页的媒体请求，配合本地程序下载；支持按起止时间裁剪本地视频，并通过默认关闭的本机配对接口让 AI 助手控制监听、下载和裁剪。",
+      "description": "下载网页视频、录制屏幕与摄像头，再按时间裁剪片段；支持本机 AI 控制。",
+      "details": "将网页视频下载、本地精确裁剪、全屏 / 区域 / 窗口 / 摄像头录制和 PNG 截图集中在一个桌面程序中。支持摄像头画中画、暂停继续、画笔及可选全局快捷键；AI 通过默认关闭的本机配对接口控制下载、裁剪和录制。停止后须等任务显示「已保存」，才能取得完整 MP4。",
       "features": [
-        "网页监听、直链与分享链接导入",
-        "本地视频精确裁剪，保留原片",
-        "本机 AI 接口：下载、裁剪、查询与取消",
-        "落日光轨图标与深紫灰暖杏色界面"
+        "网页监听、链接下载与本地精确裁剪",
+        "屏幕 / 窗口 / 摄像头录制与 PNG 截图",
+        "画中画、暂停继续、画笔与全局快捷键",
+        "本机 AI 控制下载、裁剪和录制"
       ],
-      "platform": "Windows · Chrome / Edge",
-      "requirements": "Windows 10 / 11 x64，完整程序包自带 Python、yt-dlp、FFmpeg、Deno 等运行组件。监听需安装配套扩展（Chrome 120+ 或兼容 Edge），扩展目录须固定保留；网页兼容性以实际访问条件为准，不绕过 DRM 或付费访问控制。",
+      "platform": "Windows · macOS · Chrome / Edge",
+      "requirements": "Windows 10 / 11 x64；macOS 14+，Apple Silicon 选 arm64、Intel 选 x86_64，以发布页实际附件为准。Mac 全屏仅录主显示器，区域 / 窗口须在同一显示器；窗口录制是屏幕裁剪，遮挡会入镜，移动或缩放后会停止并保存。Mac 系统声音需已有且配置好的虚拟回环输入；屏幕、摄像头和麦克风需系统授权。Mac 包未作 Developer ID 签名或 Apple 公证，实际硬件采集与权限交互未人工验收。保留完整程序目录，Mac 的 VideoCatchAI 与 .app 放在同一目录。网页监听需固定保留扩展 0.4.2；不绕过 DRM 或付费访问控制。",
       "downloads": [
         {
-          "label": "Windows 0.4.2 ZIP",
-          "url": "https://github.com/NOXEVYR/video-catch/releases/download/v0.4.2/VideoCatch-v0.4.2-Windows-x64.zip"
+          "label": "Windows 0.5.0 ZIP",
+          "url": "https://github.com/NOXEVYR/video-catch/releases/download/v0.5.0/VideoCatch-v0.5.0-Windows-x64.zip",
+          "channel": "stable"
         },
         {
-          "label": "Chrome / Edge 扩展 0.4.2",
-          "url": "https://github.com/NOXEVYR/video-catch/releases/download/v0.4.2/VideoCatch-Extension-v0.4.2.zip",
+          "label": "macOS 0.5.0 · Apple Silicon ZIP",
+          "url": "https://github.com/NOXEVYR/video-catch/releases/download/v0.5.0/VideoCatch-v0.5.0-macOS-arm64.zip",
+          "channel": "mac-arm64"
+        },
+        {
+          "label": "macOS 0.5.0 · Intel ZIP",
+          "url": "https://github.com/NOXEVYR/video-catch/releases/download/v0.5.0/VideoCatch-v0.5.0-macOS-x86_64.zip",
+          "channel": "mac-x86_64"
+        },
+        {
+          "label": "Chrome / Edge 扩展",
+          "url": "https://github.com/NOXEVYR/video-catch/releases/download/v0.5.0/VideoCatch-Extension-v0.5.0.zip",
           "channel": "extension"
         }
       ],
       "sync": "manual",
-      "update": "0.4.2 新增 AI 控制和本地裁剪，更新落日光轨图标与界面；扩展更新后重新加载并配对。",
-      "date": "2026-09-25",
+      "update": "0.5.0 加入双平台录屏、摄像头画中画、PNG 截图与 AI 录制控制；Mac 的屏幕范围、系统声音和权限要求见详情。",
+      "date": "2026-09-26",
       "type": "software",
       "icon": "assets/icons/video-catch-f1677f59050e.png"
     },
@@ -246,7 +257,7 @@
       "english": "Windows 桌面布局与外观工具",
       "category": "tools",
       "label": "系统与效率",
-      "version": "0.11.15-preview",
+      "version": "0.11.16-preview",
       "status": "预览版",
       "symbol": "CD",
       "color": "blue",
@@ -262,14 +273,14 @@
       "requirements": "Windows 11 x64 与 .NET 8 Desktop Runtime x64。公开包未捆绑第三方增强运行组件，新电脑不能直接启用桌面改造；开机方案管理需已有经核对的 ClassicDesk 0.11.14 配套服务。不同方案真实管理员写入与重启后效果仍待实测。",
       "downloads": [
         {
-          "label": "Windows 0.11.15-preview",
-          "url": "https://github.com/NOXEVYR/classicdesk/releases/tag/v0.11.15-preview",
+          "label": "Windows 0.11.16-preview",
+          "url": "https://github.com/NOXEVYR/classicdesk/releases/tag/v0.11.16-preview",
           "channel": "stable"
         }
       ],
       "sync": "manual",
-      "update": "新增方案库、紧凑托盘与透明参数、开机方案对比与更新，以及下次开机停用入口。",
-      "date": "2026-09-22",
+      "update": "统一控件、焦点和禁用样式；改善小窗口排版、草稿修改摘要和预览；修复按页重置与选项同步。",
+      "date": "2026-09-25",
       "type": "software",
       "icon": "assets/icons/classicdesk-4a2feca24709.png",
       "imageNote": "ClassicDesk 0.11.15-preview · 任务栏方案（源码离屏界面，未应用 Windows）",
