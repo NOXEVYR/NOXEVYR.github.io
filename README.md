@@ -12,6 +12,8 @@
 
 同步会读取对应软件的公开发行记录、明确的程序包链接，以及公开仓库 `main` 分支中登记的图标。图标采用内容哈希文件名，作品数据使用内容哈希查询参数，避免更新后继续引用旧缓存。任一项目或图标同步失败都会停止发布，线上保留上次成功版本。同步不修改软件仓库，也不推测功能说明。
 
+曜核另有明确登记的公开候选渠道：`NOXEVYR/ai-hub` 的 `feat/aihub-collaboration-2.7.0` 分支、`updates/candidate.json`。同步器读取 feed 中的版本与固定包提交，再核对该提交下的发布 manifest、Windows 包字节数和 SHA-256。候选下载使用不可变提交链接，页面说明候选更新通道，并将当前曜核作为主下载；曜核是 AI Hub 更名后的同一软件，旧 AI Hub 包仅保留历史存档，不作为推荐备选；不会自动合并软件 PR。候选 feed、manifest 或包校验失败时停止发布，不把失败当成版本未更新。未来同一渠道更新 feed 后，现有定时任务会继续跟随，无需将网站硬编码到某一版本。
+
 只保存在本地的图标不会被云端读取；请先提交到对应软件的公开仓库。图标改名或移动位置时，更新 `content/icon-sources.json` 中的来源路径。
 
 ## 文件与内容维护
@@ -24,6 +26,7 @@
 - `public/blackhole.js`：实时黑洞渲染与交互；视觉资源放在 `public/assets/`。
 - `scripts/sync.mjs`：同步公开版本与下载，再调用图标同步。
 - `scripts/readme-packages.mjs`：识别 README 的公开程序包，包括棱光改名前后的 PrismCanvas / FrameWeave 文件名，并选择最高正式版本。
+- `scripts/sync-aihub.mjs`：校验曜核已登记候选渠道并选择候选 / 稳定下载；修改后运行 `node scripts/test-sync-aihub.mjs`。
 - `scripts/sync-icons.py`、`scripts/sync-icons.mjs`：读取登记图标，保留最大尺寸与透明度，全部成功后更新引用；Actions 使用临时隔离 Python 环境安装固定版本解码器并运行测试。
 - `scripts/build.mjs`、`scripts/build-horizon.mjs`：生成黑洞版静态网站。
 - `design/check-render-scheduler.mjs`、`design/analyze-ray-cost.mjs`：离线回归脚本。其余本地设计研究文件不上传仓库。

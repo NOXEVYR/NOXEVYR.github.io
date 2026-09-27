@@ -1,6 +1,18 @@
 // Public package names can change while repository IDs and historical links stay stable.
 const packageNames = {'ai-hub': ['AI-Hub'], frameweave: ['PrismCanvas', 'FrameWeave']};
 export const hasReadmePackages = repo => Object.hasOwn(packageNames, repo);
+export function applyReadmePackage(project, published, compare) {
+  if (!published || compare(published.version, project.version) < 0) return false;
+  const changed = published.version !== project.version || project.status === '候选版';
+  project.version = published.version;
+  project.status = '已发布';
+  project.downloads = [{label: `Windows ${project.version} ZIP`, url: published.url}];
+  if (changed) {
+    project.date = null;
+    project.update = `${project.version} 已提供下载，完整改动见项目说明。`;
+  }
+  return true;
+}
 export function findReadmePackage(repo, text) {
   const names = packageNames[repo];
   if (!names) return null;

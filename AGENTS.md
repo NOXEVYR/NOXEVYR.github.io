@@ -11,3 +11,4 @@
 - Keep the page context menu with Refresh; preserve native browser context menus on links, media, editable fields, selected text, and Shift + right-click. Quality selection must work with keyboard and touch, and preserve explicit user choices.
 - Report simulated scheduling checks separately from GPU measurements. GPU timings are device-specific and do not measure whole-computer power or total browser memory.
 - For README package synchronization changes, run `node scripts/test-readme-packages.mjs`; verify actual published README links as well as historical-name and preview exclusions.
+- 曜核是 AI Hub 更名后的当前软件；旧 AI Hub 包仅作历史存档，不与新版并列推荐。核对主分支当前发行包与公开分支候选包；使用 `scripts/sync-aihub.mjs` 读取明确登记的候选 feed，核对其固定提交 manifest、安装包大小和 SHA-256。候选必须显示“候选版”，不可合并软件 PR 或冒称稳定发行。修改该同步时运行 `node scripts/test-sync-aihub.mjs`；查看页面时同时核对版本、状态、当前说明和下载目标。

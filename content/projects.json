@@ -1,5 +1,5 @@
 {
-  "checkedAt": "2026-09-26",
+  "checkedAt": "2026-09-27",
   "projects": [
     {
       "id": "yingxu",
@@ -7,7 +7,7 @@
       "english": "YingXu",
       "category": "creative",
       "label": "创作与管理",
-      "version": "0.4.19",
+      "version": "0.4.20",
       "status": "已发布",
       "symbol": "YX",
       "color": "mint",
@@ -25,57 +25,62 @@
       "imageNote": "映序 · 功能结构示意（非实机截图）",
       "downloads": [
         {
-          "label": "Windows 0.4.19",
-          "url": "https://github.com/NOXEVYR/yingxu/releases/tag/yingxu-v0.4.19",
+          "label": "Windows 0.4.20",
+          "url": "https://github.com/NOXEVYR/yingxu/releases/tag/yingxu-v0.4.20",
           "channel": "stable"
         },
         {
-          "label": "macOS 0.4.16-mac.1 试用版",
-          "url": "https://github.com/NOXEVYR/yingxu/releases/tag/yingxu-v0.4.16-mac.1",
+          "label": "macOS 0.4.20-mac.1 试用版",
+          "url": "https://github.com/NOXEVYR/yingxu/releases/tag/yingxu-v0.4.20-mac.1",
           "channel": "mac"
         }
       ],
       "sync": "platforms",
-      "update": "Windows 0.4.19 修复兼容目录下的文件打开，加入按文件增量更新，并修复小屏截图工具栏越界。",
-      "date": "2026-09-24",
+      "update": "黑白图标启动动效只播放一次，正常启动不显示加载文字、不增加最低等待；尊重系统减少动态效果。",
+      "date": "2026-09-26",
       "type": "software",
       "icon": "assets/icons/yingxu-2d29d6378951.png"
     },
     {
       "id": "ai-hub",
       "name": "曜核",
-      "english": "原 AI Hub · 公开下载",
+      "english": "本地 AI 资产与协作工作台",
       "category": "creative",
       "label": "创作与管理",
-      "version": "2.6.0",
-      "status": "已发布",
+      "version": "2.13.2",
+      "status": "候选版",
       "symbol": "AH",
       "color": "blue",
-      "description": "集中管理本地 AI 工作环境，以及跨项目复用的模型、LoRA、工作流和出图库。",
-      "details": "前身为 AI Hub，现已改名曜核；名称与图标已同步新版品牌，下方版本号与下载链接以公开发行包为准。新建或接入自己的工作目录，分配项目输入、过程、输出与交付位置；分类检索模型与 LoRA，查看生成图片和运行记录，并登记工作流依赖与验证证据。",
+      "description": "管理模型、LoRA、工作流与出图库，并按用途和工作端整理 Skill、接口与协作任务。",
+      "details": "曜核（原 AI Hub）集中管理本地模型与创作资源，关联项目、报告和运行记录。能力中心按用途与工作端筛选 Skill、接口和环境状态，支持自定义发现来源、协作任务交接及软件更新；首次引导协助创建自己的工作区。发现能力或登记工作端不代表接口已经接通。",
       "features": [
-        "工作环境、来源体检与项目目录",
-        "模型 / LoRA 分类、评分与备注",
-        "出图库、运行记录与模型引用",
-        "工作流证据与 AI 工具规则交接"
+        "模型、LoRA、工作流与出图库管理",
+        "能力中心：Skill、接口与环境状态",
+        "工作端发现、自定义来源与协作任务",
+        "手动 / 自动软件更新与首次工作区引导"
       ],
       "platform": "Windows",
-      "requirements": "Windows x64、Python 3.9+、.NET Framework 4.8+ 与 Microsoft Edge WebView2 Runtime。桌面包不捆绑 Python、WebView2 Runtime 或模型权重。",
+      "requirements": "Windows x64、.NET Framework 4.8+、Python 3.9+ 与 Microsoft Edge WebView2 Runtime。MCP 适配器需 Python 3.10+，配置助手需 Python 3.11+。包内不含 Python、WebView2 Runtime 或模型权重。",
       "downloads": [
         {
-          "label": "Windows 2.6.0 ZIP",
-          "url": "https://raw.githubusercontent.com/NOXEVYR/ai-hub/main/releases/AI-Hub-v2.6.0-Windows-x64.zip"
+          "label": "曜核 2.13.2 · Windows",
+          "url": "https://raw.githubusercontent.com/NOXEVYR/ai-hub/2ff98cd194540497ec90152592fe90d2241da34e/releases/AI-Hub-v2.13.2-Windows-x64.zip",
+          "channel": "candidate"
         }
       ],
-      "sync": "manual",
-      "update": "2.6.0 支持工作环境、来源体检、项目目录与 AI 工具规则交接。",
-      "date": "2026-09-11",
+      "sync": "candidate",
+      "update": "曜核是 AI Hub 的改名升级。2.13.2 修复配套模型用途分类及更新器版本一致性；保留能力中心、右键菜单、工作区引导和人工标签。旧版仅作历史存档，请使用新版。",
+      "date": "2026-09-27",
       "type": "software",
       "icon": "assets/icons/ai-hub-1f88dcbf474a.png",
       "aliases": [
         "AI Hub",
         "AIHub"
-      ]
+      ],
+      "documentationUrl": "https://github.com/NOXEVYR/ai-hub/blob/2ff98cd194540497ec90152592fe90d2241da34e/README.md",
+      "sourceUrl": "https://github.com/NOXEVYR/ai-hub/tree/2ff98cd194540497ec90152592fe90d2241da34e",
+      "releaseNotesUrl": "https://github.com/NOXEVYR/ai-hub/blob/2ff98cd194540497ec90152592fe90d2241da34e/README.md",
+      "downloadNote": "曜核是原 AI Hub 优化改名后的当前版本，此下载使用候选更新通道；旧版本仅作历史存档。"
     },
     {
       "id": "frameweave",
@@ -83,7 +88,7 @@
       "english": "PrismCanvas",
       "category": "creative",
       "label": "创作与管理",
-      "version": "0.7.0",
+      "version": "0.11.1",
       "status": "已发布",
       "symbol": "FW",
       "color": "violet",
@@ -101,12 +106,12 @@
       "imageNote": "棱光 PrismCanvas 0.5.0 · 图片与视频工作台",
       "downloads": [
         {
-          "label": "Windows 0.7.0 ZIP",
-          "url": "https://raw.githubusercontent.com/NOXEVYR/frameweave/main/releases/PrismCanvas-v0.7.0-Windows-x64.zip"
+          "label": "Windows 0.11.1 ZIP",
+          "url": "https://raw.githubusercontent.com/NOXEVYR/frameweave/main/releases/PrismCanvas-v0.11.1-Windows-x64.zip"
         }
       ],
       "sync": "manual",
-      "update": "0.7.0 已提供下载，完整改动见项目说明。",
+      "update": "0.11.1 已提供下载，完整改动见项目说明。",
       "date": null,
       "type": "software",
       "icon": "assets/icons/frameweave-9f9e28aa426d.png",
@@ -249,7 +254,7 @@
       "update": "0.5.0 加入双平台录屏、摄像头画中画、PNG 截图与 AI 录制控制；Mac 的屏幕范围、系统声音和权限要求见详情。",
       "date": "2026-09-26",
       "type": "software",
-      "icon": "assets/icons/video-catch-f1677f59050e.png"
+      "icon": "assets/icons/video-catch-cf7f8c5e7b23.png"
     },
     {
       "id": "classicdesk",
@@ -431,5 +436,5 @@
       ]
     }
   ],
-  "reviewedAt": "2026-09-25"
+  "reviewedAt": "2026-09-27"
 }

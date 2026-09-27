@@ -1,5 +1,5 @@
 {
-  "reviewedAt": "2026-09-25",
+  "reviewedAt": "2026-09-27",
   "projects": [
     {
       "id": "yingxu",
@@ -10,11 +10,13 @@
     },
     {
       "id": "ai-hub",
-      "commit": "c28c935c8ffcea8f947541fd05479d8160cfef4b",
-      "version": "2.6.0",
-      "readme": "https://github.com/NOXEVYR/ai-hub/blob/c28c935c8ffcea8f947541fd05479d8160cfef4b/README.md",
-      "screenshotNote": "独立仓库releases目录和发行清单为2.6.0；GitHub Releases页仅旧2.5.0迁移下载入口，不能据此降级。",
-      "brandNote": "Name/icon follow the locally installed 曜核 2.8.0 brand. Public package version stays 2.6.0; no newer software release is implied."
+      "commit": "2ff98cd194540497ec90152592fe90d2241da34e",
+      "version": "2.13.2",
+      "readme": "https://github.com/NOXEVYR/ai-hub/blob/2ff98cd194540497ec90152592fe90d2241da34e/README.md",
+      "brandNote": "曜核是 AI Hub 优化改名后的同一软件；公开候选提供当前版本，旧 AI Hub 2.6.0 仅作历史存档，不推荐为稳定备选。当前金色眼形图标与公开品牌一致。",
+      "channel": "candidate",
+      "candidateFeed": "https://github.com/NOXEVYR/ai-hub/blob/feat/aihub-collaboration-2.7.0/updates/candidate.json",
+      "packageCommit": "2ff98cd194540497ec90152592fe90d2241da34e"
     },
     {
       "id": "frameweave",
@@ -245,11 +247,12 @@
     {
       "id": "ai-hub",
       "kind": "icon",
-      "source": "Owner installed product: 曜核 2.8.0; verified EXE ProductName/FileVersion and docs/BRAND_LUMACORE.md. Public software download remains AI Hub 2.6.0.",
+      "source": "Official public candidate brand asset; current website PNG preserves identical RGBA pixels.",
       "bytes": 70317,
       "websitePath": "assets/icons/ai-hub-0b4b80a9f85c.png",
       "websiteSha256": "0b4b80a9f85cd29520a72a12d4504e166d4074f7c5ce444bc08859fb5efb1d45",
-      "caption": "曜核 · 已确认的金色眼形应用图标"
+      "caption": "曜核 · 公开候选版金色眼形图标",
+      "url": "https://raw.githubusercontent.com/NOXEVYR/ai-hub/07a0a1bc4c2315a091082fbc1d2f2cac0e261989/frontend/brand-lumacore.png"
     }
   ],
   "generatedPreviews": [

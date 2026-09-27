@@ -1,6 +1,7 @@
 import {readFile,writeFile} from 'node:fs/promises';
-import {findReadmePackage, hasReadmePackages} from './readme-packages.mjs';
+import {findReadmePackage, hasReadmePackages, applyReadmePackage} from './readme-packages.mjs';
 import {syncVideoCatch} from './sync-videocatch.mjs';
+import {syncAIHubCandidate} from './sync-aihub.mjs';
 const path=new URL('../content/projects.json',import.meta.url);
 const data=JSON.parse(await readFile(path,'utf8'));
 const headers={'User-Agent':'noxevyr-personal-site','Accept':'application/vnd.github+json'};
@@ -22,6 +23,25 @@ function summary(r){const lines=(r.body||'').split(/\r?\n/);const bullet=lines.f
 // Only real downloadable binary releases qualify. Migration navigation and Source code archives never do.
 const preview=r=>r.prerelease||Boolean(version(r.tag_name)?.includes('-'));
 function windows(r){return !r.draft&&r.assets?.some(a=>/\.(zip|exe|msi)$/i.test(a.name)&&!/(source|extension|full[-_ ]?project|macos|darwin|linux|appimage|arm64)/i.test(a.name))}
+async function aiHubJson(path,ref){
+ const r=await fetch(`https://api.github.com/repos/NOXEVYR/ai-hub/contents/${path}?ref=${encodeURIComponent(ref)}`,{headers,signal:AbortSignal.timeout(20000)});
+ if(!r.ok)throw Error(`ai-hub ${path}: GitHub HTTP ${r.status}`);
+ const doc=await r.json();if(doc.encoding!=='base64')throw Error(`ai-hub ${path}: expected a JSON file`);
+ return JSON.parse(Buffer.from(doc.content,'base64').toString('utf8'));
+}
+async function aiHubBytes(path,ref,maxBytes){
+ const r=await fetch(`https://raw.githubusercontent.com/NOXEVYR/ai-hub/${ref}/${path}`,{signal:AbortSignal.timeout(30000)});
+ if(!r.ok)throw Error(`ai-hub package: HTTP ${r.status}`);
+ if(Number(r.headers.get('content-length'))>maxBytes){await r.body.cancel();throw Error('ai-hub package exceeds its declared size')}
+ const reader=r.body.getReader(),chunks=[];let bytes=0;
+ while(true){const {done,value}=await reader.read();if(done)break;bytes+=value.length;if(bytes>maxBytes){await reader.cancel();throw Error('ai-hub package exceeds its declared size')}chunks.push(value)}
+ return Buffer.concat(chunks,bytes);
+}
+async function aiHubCommit(ref){
+ const r=await fetch(`https://api.github.com/repos/NOXEVYR/ai-hub/git/commits/${ref}`,{headers,signal:AbortSignal.timeout(20000)});
+ if(!r.ok)throw Error(`ai-hub package commit: GitHub HTTP ${r.status}`);
+ return r.json();
+}
 let failed=false;
 await Promise.all(data.projects.map(async p=>{try{
  const all=await releases(p.id);
@@ -33,7 +53,7 @@ await Promise.all(data.projects.map(async p=>{try{
  const eligible=all.filter(r=>windows(r)&&version(r.tag_name)&&(!preview(r)||p.id==='classicdesk')).sort((a,b)=>compare(version(b.tag_name),version(a.tag_name))||b.published_at.localeCompare(a.published_at));
  const newest=eligible[0];
  if(newest&&compare(version(newest.tag_name),p.version)>=0){
-  const v=version(newest.tag_name);const changed=v!==p.version;
+  const v=version(newest.tag_name);const changed=v!==p.version||p.status==='候选版';
   p.version=v;p.date=newest.published_at.slice(0,10);p.status=preview(newest)?'预览版':'已发布';
   const extras=p.downloads.filter(d=>(d.channel&&!['stable','windows'].includes(d.channel))||/扩展|extension/i.test(d.label));
   const extension=newest.assets?.find(a=>/extension.*\.zip$/i.test(a.name));
@@ -56,12 +76,9 @@ await Promise.all(data.projects.map(async p=>{try{
   const doc=await r.json();if(doc.encoding!=='base64')throw Error(`${p.id}: unsupported README encoding`);
   const text=Buffer.from(doc.content,'base64').toString('utf8');
   const published=findReadmePackage(p.id,text);
-  if(published&&compare(published.version,p.version)>=0){
-   const changed=published.version!==p.version;
-   p.version=published.version;p.downloads=[{label:`Windows ${p.version} ZIP`,url:published.url}];
-   if(changed){p.date=null;p.update=`${p.version} 已提供下载，完整改动见项目说明。`}
-  }
+  applyReadmePackage(p,published,compare);
  }
+ if(p.id==='ai-hub')await syncAIHubCandidate(p,{readJson:aiHubJson,readBytes:aiHubBytes,readCommit:aiHubCommit,compare});
  console.log(`${p.id}: ${p.version}`);
 }catch(e){failed=true;console.error(e.message)}}));
 if(failed){console.error('Sync incomplete: preserved the previous catalog; deployment must not publish partial data.');process.exitCode=1}else{data.checkedAt=new Date().toISOString().slice(0,10);await writeFile(path,JSON.stringify(data,null,2)+'\n');console.log('Catalog refreshed; no remote repository was modified.')}

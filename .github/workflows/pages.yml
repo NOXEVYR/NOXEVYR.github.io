@@ -23,6 +23,11 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: '22'
+      - name: Validate release selection
+        run: |
+          node scripts/test-readme-packages.mjs
+          node scripts/test-sync-videocatch.mjs
+          node scripts/test-sync-aihub.mjs
       - name: Refresh public project releases
         # Preserve a reviewed live catalog snapshot for targeted product updates.
         if: github.event_name != 'push' || !contains(github.event.head_commit.message, '[catalog-only]')
