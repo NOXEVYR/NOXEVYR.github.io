@@ -3,187 +3,101 @@
   "projects": [
     {
       "id": "yingxu",
-      "commit": "032c19f688f081b240638b3f13a8a5c2669dc092",
-      "version": "0.4.19",
-      "readme": "https://github.com/NOXEVYR/yingxu/blob/032c19f688f081b240638b3f13a8a5c2669dc092/README.md",
-      "screenshotNote": "main源码已经0.4.20，但README明确完整包仍为0.4.19；本轮公开Releases首项是yingxu-v0.4.19。网站下载版本不得写成0.4.20。"
+      "reviewedAt": "2026-09-27",
+      "commit": "2a8f08064c8e76c6847b798c85f25bcca093f47e",
+      "version": "0.4.20",
+      "sourceVersion": "0.4.20",
+      "readme": "https://github.com/NOXEVYR/yingxu/blob/2a8f08064c8e76c6847b798c85f25bcca093f47e/README.md",
+      "download": "https://github.com/NOXEVYR/yingxu/releases/tag/yingxu-v0.4.20"
     },
     {
       "id": "ai-hub",
-      "commit": "2ff98cd194540497ec90152592fe90d2241da34e",
+      "reviewedAt": "2026-09-27",
+      "commit": "139a830d248f029f7925f2eb5dbb101246ad7828",
       "version": "2.13.2",
-      "readme": "https://github.com/NOXEVYR/ai-hub/blob/2ff98cd194540497ec90152592fe90d2241da34e/README.md",
-      "brandNote": "曜核是 AI Hub 优化改名后的同一软件；公开候选提供当前版本，旧 AI Hub 2.6.0 仅作历史存档，不推荐为稳定备选。当前金色眼形图标与公开品牌一致。",
-      "channel": "candidate",
-      "candidateFeed": "https://github.com/NOXEVYR/ai-hub/blob/feat/aihub-collaboration-2.7.0/updates/candidate.json",
-      "packageCommit": "2ff98cd194540497ec90152592fe90d2241da34e"
+      "sourceVersion": "2.13.2",
+      "readme": "https://github.com/NOXEVYR/ai-hub/blob/139a830d248f029f7925f2eb5dbb101246ad7828/README.md",
+      "download": "https://github.com/NOXEVYR/ai-hub/releases/tag/v2.13.2",
+      "packageCommit": "2ff98cd194540497ec90152592fe90d2241da34e",
+      "brandNote": "曜核是 AI Hub 持续优化、改名后的同一款软件。旧版仅历史存档。公开金色眼形图标来自应用仓库。"
     },
     {
       "id": "frameweave",
-      "commit": "adeda9b588168090246edd92ecd1ec18852c2ad9",
-      "version": "0.5.0",
-      "readme": "https://github.com/NOXEVYR/frameweave/blob/adeda9b588168090246edd92ecd1ec18852c2ad9/README.md",
-      "screenshotNote": "品牌和Windows入口已改为PrismCanvas；repo/id/Python包/API/数据路径仍保留frameweave。0.5.0使用仓库releases目录发布，GitHub Releases集合仍为旧0.2迁移入口。"
+      "reviewedAt": "2026-09-27",
+      "commit": "5ee67ebe2664ff65f1dd020effc9e9bbfe9c82f4",
+      "version": "0.11.1",
+      "sourceVersion": "0.11.2 源码预览",
+      "readme": "https://github.com/NOXEVYR/frameweave/blob/5ee67ebe2664ff65f1dd020effc9e9bbfe9c82f4/README.md",
+      "download": "https://github.com/NOXEVYR/frameweave/releases/tag/v0.11.1",
+      "packageCommit": "5119449dc5cf16fc975d1b41c92ad184c4d57539",
+      "releaseNote": "0.11.1是当前公开程序包；0.11.2源码预览不作为当前下载。"
     },
     {
       "id": "proxy-switch",
+      "reviewedAt": "2026-09-27",
       "commit": "d914e5227e555392442228e7ab0046426690a461",
       "version": "3.9.0",
-      "readme": "https://github.com/NOXEVYR/proxy-switch/blob/d914e5227e555392442228e7ab0046426690a461/README.md"
+      "sourceVersion": "Windows 3.9.0 / macOS 0.1.0-preview.3",
+      "readme": "https://github.com/NOXEVYR/proxy-switch/blob/d914e5227e555392442228e7ab0046426690a461/README.md",
+      "download": "https://github.com/NOXEVYR/proxy-switch/releases/tag/v3.9.0"
     },
     {
       "id": "codex-switcher",
+      "reviewedAt": "2026-09-27",
       "commit": "7b243feab1d22ef6bbe7c7d6b78faa484e85f0f9",
       "version": "2.4.1",
-      "readme": "https://github.com/NOXEVYR/codex-switcher/blob/7b243feab1d22ef6bbe7c7d6b78faa484e85f0f9/README.md"
+      "sourceVersion": "2.4.1",
+      "readme": "https://github.com/NOXEVYR/codex-switcher/blob/7b243feab1d22ef6bbe7c7d6b78faa484e85f0f9/README.md",
+      "download": "https://raw.githubusercontent.com/NOXEVYR/portfolio/d3b47d7fc4320f627e6b5fc8f653fcbd35007670/codex-switcher/releases/Codex-Switcher-v2.4.1-Windows-x64.zip"
     },
     {
       "id": "video-catch",
-      "commit": "aad937a58d8900c9c464e7d54d4cf825c07879a2",
+      "reviewedAt": "2026-09-27",
+      "commit": "33400a09895c066e54c508d22cd019134903c238",
       "version": "0.5.0",
-      "readme": "https://github.com/NOXEVYR/video-catch/blob/aad937a58d8900c9c464e7d54d4cf825c07879a2/README.md",
-      "release": "https://github.com/NOXEVYR/video-catch/releases/tag/v0.5.0",
-      "reviewedAt": "2026-09-26"
+      "sourceVersion": "0.5.0，扩展代码 0.4.2 / 协议 3",
+      "readme": "https://github.com/NOXEVYR/video-catch/blob/33400a09895c066e54c508d22cd019134903c238/README.md",
+      "download": "https://github.com/NOXEVYR/video-catch/releases/download/v0.5.0/VideoCatch-v0.5.0-Windows-x64.zip"
     },
     {
       "id": "classicdesk",
-      "commit": "3c7a359e7a014e969bf3bd365ca6c42ac2340c5f",
-      "version": "0.11.15-preview",
-      "readme": "https://github.com/NOXEVYR/classicdesk/blob/3c7a359e7a014e969bf3bd365ca6c42ac2340c5f/README.md",
-      "release": "https://github.com/NOXEVYR/classicdesk/releases/tag/v0.11.15-preview"
+      "reviewedAt": "2026-09-27",
+      "commit": "1ed091525f3d4d8e50a9ff053f64b08d45a3cf6f",
+      "version": "0.11.16-preview",
+      "sourceVersion": "0.11.16-preview",
+      "readme": "https://github.com/NOXEVYR/classicdesk/blob/1ed091525f3d4d8e50a9ff053f64b08d45a3cf6f/README.md",
+      "download": "https://github.com/NOXEVYR/classicdesk/releases/tag/v0.11.16-preview",
+      "previewNote": "预览版；现有界面截图来自0.11.15-preview，页面明确标注历史界面。"
     },
     {
       "id": "env-anchor",
+      "reviewedAt": "2026-09-27",
       "commit": "38fc611dee4d8681ea0bf0b64da1ec7238eccf34",
       "version": "0.6.0",
+      "sourceVersion": "0.6.0",
       "readme": "https://github.com/NOXEVYR/env-anchor/blob/38fc611dee4d8681ea0bf0b64da1ec7238eccf34/README.md",
-      "release": "https://github.com/NOXEVYR/env-anchor/releases/tag/v0.6.0"
+      "download": "https://github.com/NOXEVYR/env-anchor/releases/tag/v0.6.0"
     },
     {
       "id": "codex-pet",
+      "reviewedAt": "2026-09-27",
       "commit": "4d992a3478d636043828e5874b79cf5af5c98aca",
       "version": "0.5.9",
+      "sourceVersion": "0.5.9",
       "readme": "https://github.com/NOXEVYR/codex-pet/blob/4d992a3478d636043828e5874b79cf5af5c98aca/README.md",
-      "release": "https://github.com/NOXEVYR/codex-pet/releases/tag/v0.5.9"
+      "download": "https://github.com/NOXEVYR/codex-pet/releases/tag/v0.5.9"
     },
     {
       "id": "michelle-pet",
+      "reviewedAt": "2026-09-27",
       "commit": "80cd7695e28e94ef0eef79c98c29c752113cf0fa",
       "version": "0.3.8",
+      "sourceVersion": "0.3.8",
       "readme": "https://github.com/NOXEVYR/michelle-pet/blob/80cd7695e28e94ef0eef79c98c29c752113cf0fa/README.md",
-      "release": "https://github.com/NOXEVYR/michelle-pet/releases/tag/v0.3.8",
-      "screenshotNote": "当前没有公开实机截图；保留官方经典制服待机素材，未使用私人桌面截图或未合成的分层部件。"
+      "download": "https://github.com/NOXEVYR/michelle-pet/releases/tag/v0.3.8"
     }
   ],
   "assets": [
-    {
-      "id": "yingxu",
-      "kind": "icon",
-      "path": "desktop/brand.ico",
-      "commit": "032c19f688f081b240638b3f13a8a5c2669dc092",
-      "bytes": 361102,
-      "blob": "83f92e5e2585eb9bfc4c0425908c0b6bedcfefc1",
-      "url": "https://raw.githubusercontent.com/NOXEVYR/yingxu/032c19f688f081b240638b3f13a8a5c2669dc092/desktop/brand.ico",
-      "caption": "映序 · 四角取景框应用图标",
-      "websitePath": "assets/icons/yingxu-29cea82d75c4.png",
-      "websiteSha256": "29cea82d75c4b3f8d2652a5237ba210087f3e4a1f3d520a677af4f7b1199c9a3"
-    },
-    {
-      "id": "yingxu",
-      "kind": "diagram",
-      "path": "docs/assets/workspace-map.svg",
-      "commit": "032c19f688f081b240638b3f13a8a5c2669dc092",
-      "bytes": 2347,
-      "blob": "c0a2c869137ecbf30c2bc0ab9a1d9d9697e4322c",
-      "url": "https://raw.githubusercontent.com/NOXEVYR/yingxu/032c19f688f081b240638b3f13a8a5c2669dc092/docs/assets/workspace-map.svg",
-      "caption": "映序 · 功能结构示意（非实机截图）",
-      "websitePath": "assets/previews/yingxu-ffb63406e02e.svg",
-      "websiteSha256": "ffb63406e02ea35113e97256cb10f13d96073d7f6645414107c8f9e082ca54d4"
-    },
-    {
-      "id": "frameweave",
-      "kind": "icon",
-      "path": "assets/frameweave.ico",
-      "commit": "adeda9b588168090246edd92ecd1ec18852c2ad9",
-      "bytes": 40623,
-      "blob": "b53c1dafd64225ca4b0148328b0c25313041ee3b",
-      "url": "https://raw.githubusercontent.com/NOXEVYR/frameweave/adeda9b588168090246edd92ecd1ec18852c2ad9/assets/frameweave.ico",
-      "caption": "棱光 PrismCanvas · E04 棱光切片图标",
-      "websitePath": "assets/icons/frameweave-2367c9255916.png",
-      "websiteSha256": "2367c9255916a0e1bfc2d49d0491df6852f91985f56c3b996102b59582039959"
-    },
-    {
-      "id": "frameweave",
-      "kind": "preview",
-      "path": "docs/screenshot-v0.5.0.png",
-      "commit": "adeda9b588168090246edd92ecd1ec18852c2ad9",
-      "bytes": 184983,
-      "blob": "6a494f8298b761a77ea93602796f7e6dcd0f6e0b",
-      "url": "https://raw.githubusercontent.com/NOXEVYR/frameweave/adeda9b588168090246edd92ecd1ec18852c2ad9/docs/screenshot-v0.5.0.png",
-      "caption": "棱光 PrismCanvas 0.5.0 · 图片与视频工作台",
-      "websitePath": "assets/previews/frameweave-e27ca247ef57.png",
-      "websiteSha256": "e27ca247ef5704fb6f2cafe976a9f4e192d7fc675092e32b818f19c0d09bb17f"
-    },
-    {
-      "id": "proxy-switch",
-      "kind": "icon",
-      "path": "assets/FlowSwitch.ico",
-      "commit": "d914e5227e555392442228e7ab0046426690a461",
-      "bytes": 193561,
-      "blob": "b0b565b3e156a92370c7520cf1f9ebeaefba3f41",
-      "url": "https://raw.githubusercontent.com/NOXEVYR/proxy-switch/d914e5227e555392442228e7ab0046426690a461/assets/FlowSwitch.ico",
-      "caption": "",
-      "websitePath": "assets/icons/proxy-switch-2702ae1bd076.png",
-      "websiteSha256": "2702ae1bd0764df066530c2efeb49e195e977fc292dbe223368457dcd306fab2"
-    },
-    {
-      "id": "codex-switcher",
-      "kind": "icon",
-      "path": "switcher.ico",
-      "commit": "7b243feab1d22ef6bbe7c7d6b78faa484e85f0f9",
-      "bytes": 361102,
-      "blob": "b9e5ffc5b86cdfbb99d4d85c5d7307a1ac733300",
-      "url": "https://raw.githubusercontent.com/NOXEVYR/codex-switcher/7b243feab1d22ef6bbe7c7d6b78faa484e85f0f9/switcher.ico",
-      "caption": "",
-      "websitePath": "assets/icons/codex-switcher-fa74f9db7441.png",
-      "websiteSha256": "fa74f9db74418737f2c822ff1f60cd25cd15661d31e438fe10892ed7bef7bf1d"
-    },
-    {
-      "id": "video-catch",
-      "kind": "icon",
-      "path": "assets/videocatch.png",
-      "commit": "d49cc14f282d6b342b7bd8fc312ea9d5d5b3dd78",
-      "bytes": 158072,
-      "blob": "07555c18ca146b513e10e115f23631ffd536eae0",
-      "url": "https://raw.githubusercontent.com/NOXEVYR/video-catch/d49cc14f282d6b342b7bd8fc312ea9d5d5b3dd78/assets/videocatch.png",
-      "caption": "0.4.2 落日光轨图标，与程序保持一致",
-      "websitePath": "assets/icons/video-catch-f1677f59050e.png",
-      "websiteSha256": "f1677f59050e28a385681c4d7b8274e85d966ccdcfb35e479556a6a5af4d8918"
-    },
-    {
-      "id": "classicdesk",
-      "kind": "icon",
-      "path": "src/ClassicDesk/Assets/brand-starlight.png",
-      "commit": "3c7a359e7a014e969bf3bd365ca6c42ac2340c5f",
-      "bytes": 12112,
-      "blob": "7c70c8e8a37705e472e361195efdc3845065671a",
-      "url": "https://raw.githubusercontent.com/NOXEVYR/classicdesk/3c7a359e7a014e969bf3bd365ca6c42ac2340c5f/src/ClassicDesk/Assets/brand-starlight.png",
-      "caption": "当前 icon-sources.json 使用路径",
-      "websitePath": "assets/icons/classicdesk-58092aa6a243.png",
-      "websiteSha256": "58092aa6a243c67958031d52163dd4c1a36c56be3a1f13f326e9f2ecde3edc72"
-    },
-    {
-      "id": "env-anchor",
-      "kind": "icon",
-      "path": "assets/app.ico",
-      "commit": "38fc611dee4d8681ea0bf0b64da1ec7238eccf34",
-      "bytes": 38325,
-      "blob": "b234bbfd987d1ae625bab44bbf398cbd70a7df43",
-      "url": "https://raw.githubusercontent.com/NOXEVYR/env-anchor/38fc611dee4d8681ea0bf0b64da1ec7238eccf34/assets/app.ico",
-      "caption": "build.py /win32icon 明确引用",
-      "websitePath": "assets/icons/env-anchor-b0fd80143a42.png",
-      "websiteSha256": "b0fd80143a4234d68ffe6d5338cb96fe7a4c841fed0a5dcce2e7cf47e49dd30e"
-    },
     {
       "id": "env-anchor",
       "kind": "preview",
@@ -195,18 +109,6 @@
       "caption": "环境锚点 · 应用界面（路径为示意数据）",
       "websitePath": "assets/previews/env-anchor-1942a69b87b6.png",
       "websiteSha256": "1942a69b87b6fbe770aebb4f962288e2879781f7058cc8b1f63bb4d02d1070e8"
-    },
-    {
-      "id": "codex-pet",
-      "kind": "icon",
-      "path": "assets/natsume/app-icon-v1/icon.ico",
-      "commit": "4d992a3478d636043828e5874b79cf5af5c98aca",
-      "bytes": 171075,
-      "blob": "ea6f46cc52cfa6f016250ea1f5c8bdc2902308f0",
-      "url": "https://raw.githubusercontent.com/NOXEVYR/codex-pet/4d992a3478d636043828e5874b79cf5af5c98aca/assets/natsume/app-icon-v1/icon.ico",
-      "caption": "公开构建 EXE 和 App.Icon 资源",
-      "websitePath": "assets/icons/codex-pet-5e0298b16dc1.png",
-      "websiteSha256": "5e0298b16dc1ad597cb5b5a313dcd84a0e5eaeeadf8ff8b673962ccc70b18392"
     },
     {
       "id": "codex-pet",
@@ -233,6 +135,114 @@
       "websiteSha256": "a298dcbdc1ad1d3360f3c41e47fe076ef705d5166bcaefe91b466f049d04f823"
     },
     {
+      "id": "yingxu",
+      "kind": "icon",
+      "path": "desktop/brand.ico",
+      "commit": "2a8f08064c8e76c6847b798c85f25bcca093f47e",
+      "bytes": 361102,
+      "blob": "83f92e5e2585eb9bfc4c0425908c0b6bedcfefc1",
+      "url": "https://raw.githubusercontent.com/NOXEVYR/yingxu/2a8f08064c8e76c6847b798c85f25bcca093f47e/desktop/brand.ico",
+      "caption": "映序 · 当前公开应用图标",
+      "websitePath": "assets/icons/yingxu-29cea82d75c4.png",
+      "websiteSha256": "29cea82d75c4b3f8d2652a5237ba210087f3e4a1f3d520a677af4f7b1199c9a3"
+    },
+    {
+      "id": "ai-hub",
+      "kind": "icon",
+      "path": "frontend/brand-lumacore.png",
+      "commit": "139a830d248f029f7925f2eb5dbb101246ad7828",
+      "bytes": 70317,
+      "blob": "eb92dcd6175ccb38296640f083d1aa596855494f",
+      "url": "https://raw.githubusercontent.com/NOXEVYR/ai-hub/139a830d248f029f7925f2eb5dbb101246ad7828/frontend/brand-lumacore.png",
+      "caption": "曜核 · 当前公开应用图标",
+      "websitePath": "assets/icons/ai-hub-5d36e8f13b3e.png",
+      "websiteSha256": "5d36e8f13b3e75e9b833fe8e55ee742e4d4629dfe693a59b8d0a6df77ebbb022"
+    },
+    {
+      "id": "frameweave",
+      "kind": "icon",
+      "path": "assets/frameweave.ico",
+      "commit": "5ee67ebe2664ff65f1dd020effc9e9bbfe9c82f4",
+      "bytes": 40623,
+      "blob": "b53c1dafd64225ca4b0148328b0c25313041ee3b",
+      "url": "https://raw.githubusercontent.com/NOXEVYR/frameweave/5ee67ebe2664ff65f1dd020effc9e9bbfe9c82f4/assets/frameweave.ico",
+      "caption": "棱光 · 当前公开应用图标",
+      "websitePath": "assets/icons/frameweave-2367c9255916.png",
+      "websiteSha256": "2367c9255916a0e1bfc2d49d0491df6852f91985f56c3b996102b59582039959"
+    },
+    {
+      "id": "proxy-switch",
+      "kind": "icon",
+      "path": "assets/FlowSwitch.ico",
+      "commit": "d914e5227e555392442228e7ab0046426690a461",
+      "bytes": 193561,
+      "blob": "b0b565b3e156a92370c7520cf1f9ebeaefba3f41",
+      "url": "https://raw.githubusercontent.com/NOXEVYR/proxy-switch/d914e5227e555392442228e7ab0046426690a461/assets/FlowSwitch.ico",
+      "caption": "流向 · 当前公开应用图标",
+      "websitePath": "assets/icons/proxy-switch-2702ae1bd076.png",
+      "websiteSha256": "2702ae1bd0764df066530c2efeb49e195e977fc292dbe223368457dcd306fab2"
+    },
+    {
+      "id": "codex-switcher",
+      "kind": "icon",
+      "path": "switcher.ico",
+      "commit": "7b243feab1d22ef6bbe7c7d6b78faa484e85f0f9",
+      "bytes": 361102,
+      "blob": "b9e5ffc5b86cdfbb99d4d85c5d7307a1ac733300",
+      "url": "https://raw.githubusercontent.com/NOXEVYR/codex-switcher/7b243feab1d22ef6bbe7c7d6b78faa484e85f0f9/switcher.ico",
+      "caption": "Codex Switcher · 当前公开应用图标",
+      "websitePath": "assets/icons/codex-switcher-fa74f9db7441.png",
+      "websiteSha256": "fa74f9db74418737f2c822ff1f60cd25cd15661d31e438fe10892ed7bef7bf1d"
+    },
+    {
+      "id": "video-catch",
+      "kind": "icon",
+      "path": "assets/videocatch.ico",
+      "commit": "33400a09895c066e54c508d22cd019134903c238",
+      "bytes": 372526,
+      "blob": "975081982898ff794ab699ae1e15c335d935ebc0",
+      "url": "https://raw.githubusercontent.com/NOXEVYR/video-catch/33400a09895c066e54c508d22cd019134903c238/assets/videocatch.ico",
+      "caption": "拾影 · 当前公开应用图标",
+      "websitePath": "assets/icons/video-catch-c61fb3ca6fab.png",
+      "websiteSha256": "c61fb3ca6fabb156b4339525dff26a10d7a7cef1e1a7c9e7670c2642ab4c4857"
+    },
+    {
+      "id": "classicdesk",
+      "kind": "icon",
+      "path": "src/ClassicDesk/Assets/brand-starlight.png",
+      "commit": "1ed091525f3d4d8e50a9ff053f64b08d45a3cf6f",
+      "bytes": 12112,
+      "blob": "7c70c8e8a37705e472e361195efdc3845065671a",
+      "url": "https://raw.githubusercontent.com/NOXEVYR/classicdesk/1ed091525f3d4d8e50a9ff053f64b08d45a3cf6f/src/ClassicDesk/Assets/brand-starlight.png",
+      "caption": "ClassicDesk · 当前公开应用图标",
+      "websitePath": "assets/icons/classicdesk-58092aa6a243.png",
+      "websiteSha256": "58092aa6a243c67958031d52163dd4c1a36c56be3a1f13f326e9f2ecde3edc72"
+    },
+    {
+      "id": "env-anchor",
+      "kind": "icon",
+      "path": "assets/app.ico",
+      "commit": "38fc611dee4d8681ea0bf0b64da1ec7238eccf34",
+      "bytes": 38325,
+      "blob": "b234bbfd987d1ae625bab44bbf398cbd70a7df43",
+      "url": "https://raw.githubusercontent.com/NOXEVYR/env-anchor/38fc611dee4d8681ea0bf0b64da1ec7238eccf34/assets/app.ico",
+      "caption": "环境锚点 · 当前公开应用图标",
+      "websitePath": "assets/icons/env-anchor-b0fd80143a42.png",
+      "websiteSha256": "b0fd80143a4234d68ffe6d5338cb96fe7a4c841fed0a5dcce2e7cf47e49dd30e"
+    },
+    {
+      "id": "codex-pet",
+      "kind": "icon",
+      "path": "assets/natsume/app-icon-v1/icon.ico",
+      "commit": "4d992a3478d636043828e5874b79cf5af5c98aca",
+      "bytes": 171075,
+      "blob": "ea6f46cc52cfa6f016250ea1f5c8bdc2902308f0",
+      "url": "https://raw.githubusercontent.com/NOXEVYR/codex-pet/4d992a3478d636043828e5874b79cf5af5c98aca/assets/natsume/app-icon-v1/icon.ico",
+      "caption": "枣子姐桌宠 · 当前公开应用图标",
+      "websitePath": "assets/icons/codex-pet-5e0298b16dc1.png",
+      "websiteSha256": "5e0298b16dc1ad597cb5b5a313dcd84a0e5eaeeadf8ff8b673962ccc70b18392"
+    },
+    {
       "id": "michelle-pet",
       "kind": "icon",
       "path": "assets/icon/michele-dorm-refined.ico",
@@ -240,19 +250,57 @@
       "bytes": 369214,
       "blob": "9f7a4e8fbfcc087da421d90bf423e42e540896ca",
       "url": "https://raw.githubusercontent.com/NOXEVYR/michelle-pet/80cd7695e28e94ef0eef79c98c29c752113cf0fa/assets/icon/michele-dorm-refined.ico",
-      "caption": "build.ps1 明确的 EXE / App.Icon 来源",
+      "caption": "米雪儿桌宠 · 当前公开应用图标",
       "websitePath": "assets/icons/michelle-pet-7569e4cd2046.png",
       "websiteSha256": "7569e4cd204698711a3c22d760652190ab0ea11fcd0848e9392b2e220c5b7b03"
     },
     {
-      "id": "ai-hub",
-      "kind": "icon",
-      "source": "Official public candidate brand asset; current website PNG preserves identical RGBA pixels.",
-      "bytes": 70317,
-      "websitePath": "assets/icons/ai-hub-0b4b80a9f85c.png",
-      "websiteSha256": "0b4b80a9f85cd29520a72a12d4504e166d4074f7c5ce444bc08859fb5efb1d45",
-      "caption": "曜核 · 公开候选版金色眼形图标",
-      "url": "https://raw.githubusercontent.com/NOXEVYR/ai-hub/07a0a1bc4c2315a091082fbc1d2f2cac0e261989/frontend/brand-lumacore.png"
+      "id": "yingxu",
+      "kind": "preview",
+      "commit": "2a8f08064c8e76c6847b798c85f25bcca093f47e",
+      "version": "0.4.20",
+      "caption": "映序 0.4.20 · 文稿工作区（公开源码演示界面，虚构示例项目）",
+      "websitePath": "assets/previews/yingxu-bf4d45ec91ba.webp",
+      "websiteSha256": "bf4d45ec91bab16014c5273296b8916b3c60524918de576adc8372558a389cc3",
+      "bytes": 36734,
+      "width": 1600,
+      "height": 900
+    },
+    {
+      "id": "yingxu",
+      "kind": "preview",
+      "commit": "2a8f08064c8e76c6847b798c85f25bcca093f47e",
+      "version": "0.4.20",
+      "caption": "映序 0.4.20 · 项目资源面板特写（内置示例素材与制作状态）",
+      "websitePath": "assets/previews/yingxu-c637fff97675.webp",
+      "websiteSha256": "c637fff976758b5b726580dd4c1812bbc2883df03308f82c1586e5522d875d72",
+      "bytes": 49666,
+      "width": 1118,
+      "height": 838
+    },
+    {
+      "id": "frameweave",
+      "kind": "preview",
+      "commit": "5119449dc5cf16fc975d1b41c92ad184c4d57539",
+      "version": "0.11.1",
+      "caption": "棱光 0.11.1 · 工作流画布（示例项目，引擎未连接，结果未生成）",
+      "websitePath": "assets/previews/frameweave-aa097560c636.webp",
+      "websiteSha256": "aa097560c63667c0ffc8d2cb9a2f47b2bc42ac835a9ac810b76d0484dce97ccf",
+      "bytes": 126872,
+      "width": 1600,
+      "height": 1000
+    },
+    {
+      "id": "frameweave",
+      "kind": "preview",
+      "commit": "5119449dc5cf16fc975d1b41c92ad184c4d57539",
+      "version": "0.11.1",
+      "caption": "棱光 0.11.1 · 视频工作台（示例提示与参数，未提交生成）",
+      "websitePath": "assets/previews/frameweave-ad79f9387a8c.webp",
+      "websiteSha256": "ad79f9387a8c88746bf1b3e1e108f0ff59de6d1000adf40a8b3f8fbb85a586fc",
+      "bytes": 79572,
+      "width": 1600,
+      "height": 1000
     }
   ],
   "generatedPreviews": [
@@ -302,6 +350,58 @@
           "caption": "FlowSwitch 3.9.0 · 官方源码演示界面（演示数据）",
           "width": 1276,
           "height": 879
+        }
+      ]
+    },
+    {
+      "id": "yingxu",
+      "sourceCommit": "2a8f08064c8e76c6847b798c85f25bcca093f47e",
+      "sourceUrl": "https://github.com/NOXEVYR/yingxu/tree/2a8f08064c8e76c6847b798c85f25bcca093f47e",
+      "version": "0.4.20",
+      "capturedAt": "2026-09-27",
+      "method": "Unmodified public Python server, isolated empty data and project folders, built-in fictional demo, Chrome browser capture; no installed app or real projects used.",
+      "images": [
+        {
+          "src": "assets/previews/yingxu-bf4d45ec91ba.webp",
+          "label": "文稿工作区",
+          "caption": "映序 0.4.20 · 文稿工作区（公开源码演示界面，虚构示例项目）",
+          "version": "0.4.20",
+          "width": 1600,
+          "height": 900
+        },
+        {
+          "src": "assets/previews/yingxu-c637fff97675.webp",
+          "label": "素材管理",
+          "caption": "映序 0.4.20 · 项目资源面板特写（内置示例素材与制作状态）",
+          "version": "0.4.20",
+          "width": 1118,
+          "height": 838
+        }
+      ]
+    },
+    {
+      "id": "frameweave",
+      "sourceCommit": "5119449dc5cf16fc975d1b41c92ad184c4d57539",
+      "sourceUrl": "https://github.com/NOXEVYR/frameweave/tree/5119449dc5cf16fc975d1b41c92ad184c4d57539",
+      "version": "0.11.1",
+      "capturedAt": "2026-09-27",
+      "method": "Verified public 0.11.1 source and package, official launch.py with isolated data and unused backend port, Chrome capture. Status and environment endpoints return explicitly disconnected demo data. No diagnostics or generation run.",
+      "images": [
+        {
+          "src": "assets/previews/frameweave-aa097560c636.webp",
+          "label": "工作流画布",
+          "caption": "棱光 0.11.1 · 工作流画布（示例项目，引擎未连接，结果未生成）",
+          "version": "0.11.1",
+          "width": 1600,
+          "height": 1000
+        },
+        {
+          "src": "assets/previews/frameweave-ad79f9387a8c.webp",
+          "label": "视频工作台",
+          "caption": "棱光 0.11.1 · 视频工作台（示例提示与参数，未提交生成）",
+          "version": "0.11.1",
+          "width": 1600,
+          "height": 1000
         }
       ]
     }

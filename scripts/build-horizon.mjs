@@ -27,6 +27,7 @@ for (const p of data.projects) {
   const preview = p.screenshots?.[0];
   const fields = {
     name: p.name, english: p.english, description: p.description,
+    featuredHeadline: p.featuredHeadline || p.description, label: p.label,
     icon: p.icon || 'assets/noxevyr-mark.svg',
     preview: preview?.src || p.image,
     previewWidth: preview?.width || 1600, previewHeight: preview?.height || 1000,

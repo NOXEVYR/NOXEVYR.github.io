@@ -3,9 +3,8 @@
     "path": "desktop/brand.ico"
   },
   "ai-hub": {
-    "repo": "NOXEVYR.github.io",
-    "path": "public/assets/icons/ai-hub-0b4b80a9f85c.png",
-    "note": "Owner-confirmed installed brand asset. Keep the new name and icon while the software repository still contains AI Hub 2.6.0 branding; revisit after its branded public release."
+    "path": "frontend/brand-lumacore.png",
+    "note": "曜核当前公开金色眼形品牌；与应用仓库同步，不再引用网站内旧的固定图标副本。"
   },
   "frameweave": {
     "path": "assets/frameweave.ico"

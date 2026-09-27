@@ -55,14 +55,14 @@ await Promise.all(data.projects.map(async p=>{try{
  if(newest&&compare(version(newest.tag_name),p.version)>=0){
   const v=version(newest.tag_name);const changed=v!==p.version||p.status==='候选版';
   p.version=v;p.date=newest.published_at.slice(0,10);p.status=preview(newest)?'预览版':'已发布';
-  const extras=p.downloads.filter(d=>(d.channel&&!['stable','windows'].includes(d.channel))||/扩展|extension/i.test(d.label));
+  const extras=p.downloads.filter(d=>(d.channel&&!['stable','windows','preview'].includes(d.channel))||/扩展|extension/i.test(d.label));
   const extension=newest.assets?.find(a=>/extension.*\.zip$/i.test(a.name));
   if(extension){
    const old=extras.findIndex(d=>d.channel==='extension'||/扩展|extension/i.test(d.label));
    if(old>=0)extras.splice(old,1);
    extras.push({label:`Chrome / Edge 扩展 ${v}`,url:extension.browser_download_url,channel:'extension'});
   }
-  p.downloads=[{label:`Windows ${v}`,url:newest.html_url,channel:'stable'},...extras];
+  p.downloads=[{label:`Windows ${v}`,url:newest.html_url,channel:preview(newest)?'preview':'stable'},...extras];
   if(changed)p.update=summary(newest);
  }
  if(['yingxu','proxy-switch'].includes(p.id)){

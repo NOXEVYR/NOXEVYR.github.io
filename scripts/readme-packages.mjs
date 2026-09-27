@@ -3,6 +3,11 @@ const packageNames = {'ai-hub': ['AI-Hub'], frameweave: ['PrismCanvas', 'FrameWe
 export const hasReadmePackages = repo => Object.hasOwn(packageNames, repo);
 export function applyReadmePackage(project, published, compare) {
   if (!published || compare(published.version, project.version) < 0) return false;
+  // Preserve a verified Release entry when the README advertises the same version.
+  // A newer README package still participates, including repositories without Releases.
+  if (compare(published.version, project.version) === 0 && project.status === '已发布' &&
+      project.downloads?.some(d => d.channel === 'stable' &&
+        d.url?.startsWith(`https://github.com/NOXEVYR/${project.id}/releases/tag/`))) return false;
   const changed = published.version !== project.version || project.status === '候选版';
   project.version = published.version;
   project.status = '已发布';
