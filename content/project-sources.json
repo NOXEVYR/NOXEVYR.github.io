@@ -1,5 +1,32 @@
 {
   "reviewedAt": "2026-09-27",
+  "catalogPublicationReview": {
+    "checkedAt": "2026-10-02",
+    "source": "https://noxevyr.github.io/data.js?v=999c90df9332",
+    "scope": "Preserve the deployed catalog and its public download versions. Historical project and image source records below retain their original review dates and versions.",
+    "versions": {
+      "yingxu": "0.4.22",
+      "ai-hub": "2.13.2",
+      "frameweave": "0.11.1",
+      "proxy-switch": "3.9.6",
+      "codex-switcher": "2.4.1",
+      "video-catch": "0.5.0",
+      "classicdesk": "0.11.16-preview",
+      "env-anchor": "0.6.0",
+      "codex-pet": "0.5.9",
+      "michelle-pet": "0.3.8"
+    },
+    "additionalReleaseCheck": {
+      "id": "proxy-switch",
+      "url": "https://github.com/NOXEVYR/proxy-switch/releases/tag/v3.9.6",
+      "releaseId": 400922645,
+      "publishedAt": "2026-10-01T11:58:52Z",
+      "package": "FlowSwitch-v3.9.6-Windows-x64.zip",
+      "bytes": 71612120,
+      "githubDigest": "sha256:547a58d2e71484873e0588da63a517418d5a7d050deb6a42cf2967c350bfe1e6",
+      "verification": "Read public release metadata and match deployed catalog; no package download or local installation."
+    }
+  },
   "projects": [
     {
       "id": "yingxu",
@@ -301,6 +328,22 @@
       "bytes": 79572,
       "width": 1600,
       "height": 1000
+    },
+    {
+      "id": "michelle-pet",
+      "kind": "character",
+      "caption": "经典制服 · 现有公开角色素材，非当前应用运行截图",
+      "websitePath": "assets/michelle-display.webp",
+      "websiteSha256": "0f90c41c370bc60ab89bbf8cdfa54d8bb913c6d526e5f62defd47b72f20aaa69",
+      "bytes": 131502,
+      "width": 1145,
+      "height": 1374,
+      "originalSrc": "assets/michelle.png",
+      "originalSha256": "e40a01eaef379e9fdb2591c0d9329692cc0dd49d7e5c8a5f7e717ad8c880f635",
+      "originalBytes": 1577588,
+      "sourceNote": "Preserved website character asset from the source snapshot; no application capture or screenshot version claimed.",
+      "derivedAt": "2026-10-01",
+      "method": "Pillow CPU WebP encoding, quality=85, method=6, original dimensions preserved."
     }
   ],
   "generatedPreviews": [

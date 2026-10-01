@@ -1,5 +1,5 @@
 {
-  "checkedAt": "2026-09-27",
+  "checkedAt": "2026-10-01",
   "projects": [
     {
       "id": "yingxu",
@@ -7,7 +7,7 @@
       "english": "YingXu",
       "category": "creative",
       "label": "创作与管理",
-      "version": "0.4.20",
+      "version": "0.4.22",
       "status": "已发布",
       "symbol": "YX",
       "color": "mint",
@@ -25,8 +25,8 @@
       "imageNote": "映序 0.4.20 · 文稿工作区（公开源码演示界面，虚构示例项目）",
       "downloads": [
         {
-          "label": "Windows 0.4.20",
-          "url": "https://github.com/NOXEVYR/yingxu/releases/tag/yingxu-v0.4.20",
+          "label": "Windows 0.4.22",
+          "url": "https://github.com/NOXEVYR/yingxu/releases/tag/yingxu-v0.4.22",
           "channel": "stable"
         },
         {
@@ -36,10 +36,10 @@
         }
       ],
       "sync": "platforms",
-      "update": "黑白图标启动动效只播放一次，正常启动不显示加载文字、不增加最低等待；尊重系统减少动态效果。",
-      "date": "2026-09-26",
+      "update": "映序 0.4.22 · Windows x64 已发布，查看完整更新与平台说明。",
+      "date": "2026-09-30",
       "type": "software",
-      "icon": "assets/icons/yingxu-29cea82d75c4.png",
+      "icon": "assets/icons/yingxu-2d29d6378951.png",
       "featuredHeadline": "让素材与文稿各就其位。",
       "previewVersion": "0.4.20",
       "screenshots": [
@@ -59,7 +59,9 @@
           "width": 1118,
           "height": 838
         }
-      ]
+      ],
+      "imageWidth": 1600,
+      "imageHeight": 900
     },
     {
       "id": "ai-hub",
@@ -92,7 +94,7 @@
       "update": "曜核 2.13.2 已提供完整 Release 下载，修正软件更新版本识别，完善能力中心与工作端管理。",
       "date": "2026-09-27",
       "type": "software",
-      "icon": "assets/icons/ai-hub-5d36e8f13b3e.png",
+      "icon": "assets/icons/ai-hub-1f88dcbf474a.png",
       "aliases": [
         "AI Hub",
         "AIHub"
@@ -132,7 +134,7 @@
       "update": "棱光 0.11.1 已提供完整 Release 下载，包含 Windows 程序、公开源码与校验文件。",
       "date": "2026-09-27",
       "type": "software",
-      "icon": "assets/icons/frameweave-2367c9255916.png",
+      "icon": "assets/icons/frameweave-9f9e28aa426d.png",
       "aliases": [
         "帧织",
         "FrameWeave"
@@ -156,7 +158,9 @@
         }
       ],
       "featuredHeadline": "把提示词、参考素材与生成任务放进同一张画布。",
-      "previewVersion": "0.11.1"
+      "previewVersion": "0.11.1",
+      "imageWidth": 1600,
+      "imageHeight": 1000
     },
     {
       "id": "proxy-switch",
@@ -164,7 +168,7 @@
       "english": "FlowSwitch",
       "category": "tools",
       "label": "系统与效率",
-      "version": "3.9.0",
+      "version": "3.9.6",
       "status": "已发布",
       "symbol": "FS",
       "color": "orange",
@@ -180,8 +184,8 @@
       "requirements": "Windows 10 1809+ / Windows 11 x64，使用系统自带 Windows PowerShell 5.1、.NET Framework 4.x 与 curl；完整包自带运行组件。macOS 测试版需 macOS 13+，提供 Apple 芯片与 Intel 包，尚未公证。需自己的可用代理；仅管理进入固定入口的流量，Mac 功能范围与 Windows 不完全相同。",
       "downloads": [
         {
-          "label": "Windows 3.9.0",
-          "url": "https://github.com/NOXEVYR/proxy-switch/releases/tag/v3.9.0",
+          "label": "Windows 3.9.6",
+          "url": "https://github.com/NOXEVYR/proxy-switch/releases/tag/v3.9.6",
           "channel": "stable"
         },
         {
@@ -191,10 +195,10 @@
         }
       ],
       "sync": "stable",
-      "update": "新增连接证据与整组规则预览、干净环境启动和最长五分钟的直连登录对照；统一程序、窗口与快捷方式图标。",
-      "date": "2026-09-24",
+      "update": "普通程序选线先给出只读预览，确认后接回流向入口并补齐已核验的联网子进程；已有规则使用“应用线路并检查”。保留默认出口、当前备用、其他程序入口和网站例外。",
+      "date": "2026-10-01",
       "type": "software",
-      "icon": "assets/icons/proxy-switch-2702ae1bd076.png",
+      "icon": "assets/icons/proxy-switch-cd6b53f84043.png",
       "screenshots": [
         {
           "src": "assets/previews/proxy-switch-db3f47081322.png",
@@ -205,7 +209,9 @@
       ],
       "image": "assets/previews/proxy-switch-db3f47081322.png",
       "imageNote": "FlowSwitch 3.9.0 · 官方源码演示界面（演示数据）",
-      "previewVersion": "3.9.0"
+      "previewVersion": "3.9.0",
+      "imageWidth": 1276,
+      "imageHeight": 879
     },
     {
       "id": "codex-switcher",
@@ -237,7 +243,7 @@
       "update": "公开版本仍为 2.4.1，保留原安装包；支持配置预览、手动应用与备份恢复。",
       "date": null,
       "type": "software",
-      "icon": "assets/icons/codex-switcher-fa74f9db7441.png"
+      "icon": "assets/icons/codex-switcher-41f9a1e034b4.png"
     },
     {
       "id": "video-catch",
@@ -285,7 +291,7 @@
       "update": "0.5.0 加入双平台录屏、摄像头画中画、PNG 截图与 AI 录制控制；Mac 的屏幕范围、系统声音和权限要求见详情。",
       "date": "2026-09-26",
       "type": "software",
-      "icon": "assets/icons/video-catch-c61fb3ca6fab.png"
+      "icon": "assets/icons/video-catch-cf7f8c5e7b23.png"
     },
     {
       "id": "classicdesk",
@@ -318,7 +324,7 @@
       "update": "统一控件、焦点和禁用样式；改善小窗口排版、草稿修改摘要和预览；修复按页重置与选项同步。",
       "date": "2026-09-25",
       "type": "software",
-      "icon": "assets/icons/classicdesk-58092aa6a243.png",
+      "icon": "assets/icons/classicdesk-4a2feca24709.png",
       "imageNote": "ClassicDesk 0.11.15-preview · 任务栏方案（源码离屏界面，未应用 Windows）",
       "screenshots": [
         {
@@ -337,7 +343,9 @@
         }
       ],
       "image": "assets/previews/classicdesk-70e668238a33.png",
-      "previewVersion": "0.11.15-preview"
+      "previewVersion": "0.11.15-preview",
+      "imageWidth": 1080,
+      "imageHeight": 820
     },
     {
       "id": "env-anchor",
@@ -370,7 +378,7 @@
       "update": "后台复制与校验显示阶段进度；新增连接状态、按勾选项目撤销及独立登录设置保存。",
       "date": "2026-09-19",
       "type": "software",
-      "icon": "assets/icons/env-anchor-b0fd80143a42.png",
+      "icon": "assets/icons/env-anchor-ef5f5d454c70.png",
       "imageNote": "环境锚点 · 应用界面（路径为示意数据）",
       "screenshots": [
         {
@@ -381,7 +389,9 @@
         }
       ],
       "image": "assets/previews/env-anchor-1942a69b87b6.png",
-      "previewVersion": "0.6.0"
+      "previewVersion": "0.6.0",
+      "imageWidth": 1096,
+      "imageHeight": 829
     },
     {
       "id": "codex-pet",
@@ -416,7 +426,7 @@
       "update": "默认无重力并支持自由摆放，新增 432 超大号，修复沿边拖动、抓框裁切与高 DPI 动画刷新。",
       "date": "2026-09-19",
       "type": "software",
-      "icon": "assets/icons/codex-pet-5e0298b16dc1.png",
+      "icon": "assets/icons/codex-pet-9c14c6b78cf9.png",
       "screenshots": [
         {
           "src": "assets/previews/codex-pet-a7d8cc912dda.png",
@@ -432,7 +442,9 @@
           "height": 432,
           "label": "旗袍造型"
         }
-      ]
+      ],
+      "imageWidth": 503,
+      "imageHeight": 552
     },
     {
       "id": "michelle-pet",
@@ -454,8 +466,8 @@
       ],
       "platform": "Windows",
       "requirements": "Windows 自带 .NET Framework 4.x。采用分层 2D 动画，非 Live2D；键鼠搭子支持经典制服及宿舍造型，宿舍可选原版或轻盈长发。具体游戏、独占全屏、反作弊及混合 DPI 多屏环境尚未全面实测。角色版权归原权利人所有。",
-      "image": "assets/michelle.png",
-      "imageNote": "经典制服 · 公开角色素材，非运行截图",
+      "image": "assets/michelle-display.webp",
+      "imageNote": "经典制服 · 现有公开角色素材，非当前应用运行截图",
       "downloads": [
         {
           "label": "Windows 0.3.8",
@@ -467,11 +479,15 @@
       "update": "新增摸头、害羞鼓脸、加油及自动眨眼；经典制服保留双马尾，宿舍原版长发与轻盈长发均可切换。",
       "date": "2026-09-19",
       "type": "software",
-      "icon": "assets/icons/michelle-pet-7569e4cd2046.png",
+      "icon": "assets/icons/michelle-pet-045112d00412.png",
       "aliases": [
         "MichelePet"
       ],
-      "featuredHeadline": "桌面上，多一个小伙伴。"
+      "featuredHeadline": "桌面上，多一个小伙伴。",
+      "imageWidth": 1145,
+      "imageHeight": 1374,
+      "originalSrc": "assets/michelle.png",
+      "imageKind": "character"
     }
   ],
   "reviewedAt": "2026-09-27"

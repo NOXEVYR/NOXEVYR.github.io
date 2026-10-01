@@ -12,6 +12,9 @@
   const reduced = matchMedia('(prefers-reduced-motion: reduce)');
   const qualitySelect = document.querySelector('#render-quality');
   const qualityStatus = document.querySelector('#quality-status');
+  const qualityMetrics = document.querySelector('#quality-metrics');
+  const qualityReset = document.querySelector('#quality-reset');
+  const renderDetails = document.querySelector('#render-details');
   const projectDialog = document.querySelector('#project-dialog');
   const buildQuery=new URL(document.currentScript.src).search;
   const qMultiply=(a,b)=>[
@@ -25,6 +28,8 @@
   const qRotate=(q,v)=>qMultiply(qMultiply(q,[...v,0]),[-q[0],-q[1],-q[2],q[3]]).slice(0,3);
   const defaults = { rotation:qView(.45,.075,.045), distance:17.5 };
   let camera = { rotation:[...defaults.rotation],distance:defaults.distance }, paused = reduced.matches, expanded = false;
+  // System motion is the default; an explicit continue/pause choice overrides it.
+  let motionPreference=null;
   const qualityModes=['auto','eco','standard','high','ultra','cinematic'];
   const qualityNames={auto:'自动推荐',eco:'节能',standard:'标准',high:'高清',ultra:'超清',cinematic:'极致'};
   const qualityProfiles={
@@ -40,6 +45,8 @@
   let timerExtension=null,gpuQuery=null,gpuQueryPending=false;
   let gl;
   const resources={textures:new Set(),framebuffers:new Set(),programs:new Set(),buffers:new Set()};
+  const materialLoads=new Set();
+  let qualityRevision=0,currentQualityLoad=null,startupLoad=null;
   function releaseTexture(texture){if(resources.textures.delete(texture))gl.deleteTexture(texture);}
   function releaseGraphics(){
     if(!gl)return;
@@ -56,7 +63,7 @@
   let lastDrawAt = -Infinity;
   let savedScroll = 0, pinchDistance = 0, pinchAngle = null;
   const pointers = new Map();
-  try { paused ||= localStorage.getItem('noxevyr-motion') === 'paused'; } catch {}
+  try { const saved=localStorage.getItem('noxevyr-motion');if(saved==='paused'||saved==='running'){motionPreference=saved;paused=saved==='paused';} } catch {}
   try { const saved=localStorage.getItem('noxevyr-quality');if(qualityModes.includes(saved))qualityMode=saved; } catch {}
   quality=qualityMode==='auto'?'eco':qualityMode;
   const clamp = (value, min, max) => Math.min(max, Math.max(min, value));
@@ -74,32 +81,60 @@
     qualitySelect.setAttribute('aria-busy',String(qualityLoading));
     qualitySelect.dataset.quality=quality;
     qualitySelect.dataset.mode=qualityMode;
-    const dimensions=ready&&sceneTarget?.width?` · ${sceneTarget.width} × ${sceneTarget.height}`:'';
-    const status=qualityLoading?'正在切换…':`${label}${dimensions}${qualityMode==='auto'?` · 闲置上限 ${autoFps} FPS`:''}`;
+    const status=qualityLoading?'正在切换…':!ready?'正在加载…':paused?'已暂停':label;
     if(qualityStatus&&qualityStatus.textContent!==status)qualityStatus.textContent=status;
+    if(qualityMetrics){
+      const dimensions=ready&&sceneTarget?.width?`${sceneTarget.width} × ${sceneTarget.height} · `:'';
+      qualityMetrics.textContent=`${dimensions}闲置上限 ${qualityMode==='auto'?autoFps:qualityProfiles[quality].fps} FPS`;
+    }
   }
   function controlsDisabled(value){
     document.querySelectorAll('.orbit-controls button, .orbit-controls select, #motion-toggle').forEach(control => { control.disabled = value; });
+    if(qualityReset)qualityReset.disabled=false;
+    if(!failed)toggle.disabled=false;
   }
   function fallback(reason,error) {
     if(failed)return;
     failed = true; ready = false; cancelAnimationFrame(running); running = 0;
+    qualityRevision++;qualityLoading=false;
+    qualitySelect.setAttribute('aria-busy','false');
+    for(const load of [...materialLoads])load.cancel();
     releaseGraphics();
     if(expanded)expand(false);
     scene.classList.remove('is-ready'); canvas.hidden = true;
     scene.dataset.failure=reason;
     controlsDisabled(true);
-    document.querySelectorAll('.orbit-controls button, .orbit-controls select').forEach(control=>{control.hidden=control!==retry;});
+    document.querySelectorAll('.orbit-controls button, .orbit-controls select').forEach(control=>{control.hidden=control!==retry&&control!==qualityReset&&control!==qualitySelect;});
     if(qualityStatus)qualityStatus.textContent='静态封面';
-    const qualitySetting=document.querySelector('.quality-setting');if(qualitySetting)qualitySetting.hidden=true;
+    if(qualityMetrics)qualityMetrics.textContent='';
+    const qualitySetting=document.querySelector('.quality-setting');if(qualitySetting)qualitySetting.hidden=false;
+    if(renderDetails)renderDetails.open=true;
     readout.hidden=true;
     const messages={context:'浏览器未能启动 3D，暂时显示封面',shader:'3D 场景启动失败，请重试',texture:'黑洞素材加载失败，请重试',render:'3D 画面初始化失败，请重试',lost:'3D 画面已中断，请重新加载'};
     hint.textContent = messages[reason] || messages.render;
     toggle.querySelector('.motion-label').textContent = '静态画面';
     retry.hidden=false;retry.disabled=false;
+    if(qualityReset){qualityReset.hidden=false;qualityReset.disabled=false;}
     console.warn(`3D scene unavailable (${reason}):`,error?.message || reason);
   }
   retry.addEventListener('click',()=>location.reload());
+  qualityReset?.addEventListener('click',()=>{
+    // Invalidate before cancelling: rejected old awaits must never restore a tier.
+    qualityRevision++;
+    currentQualityLoad?.cancel();startupLoad?.cancel();
+    qualityLoading=false;
+    if(failed){
+      qualityMode='auto';quality='eco';qualitySelect.value='auto';
+      qualitySelect.dataset.mode='auto';qualitySelect.dataset.quality='eco';
+      try{localStorage.setItem('noxevyr-quality','auto');}catch{}return;
+    }
+    if(!ready){
+      qualityMode='auto';quality='eco';autoScale=1;autoFps=20;
+      try{localStorage.setItem('noxevyr-quality','auto');}catch{}
+      state();startMaterials();return;
+    }
+    switchQuality('auto',true);
+  });
   retry.hidden=true;
   controlsDisabled(true);
   hint.textContent='正在加载 3D 场景…';
@@ -550,17 +585,20 @@
   document.querySelector('#orbit-reset').addEventListener('click',()=>{camera={rotation:[...defaults.rotation],distance:defaults.distance};change();});
   document.querySelector('#orbit-top').addEventListener('click',()=>{camera.rotation=qView(.45,1.40);change();});
   document.querySelector('#orbit-side').addEventListener('click',()=>{camera.rotation=qView(.45,.001);change();});
-  qualitySelect.addEventListener('change',async()=>{
-    const nextMode=qualitySelect.value;
-    if(qualityLoading||!ready||failed||!qualityModes.includes(nextMode)||nextMode===qualityMode){state();return;}
+  async function switchQuality(nextMode,reset=false){
+    if((qualityLoading&&!reset)||!ready||failed||!qualityModes.includes(nextMode)||(nextMode===qualityMode&&!reset)){state();return;}
+    const revision=++qualityRevision;
     const nextQuality=nextMode==='auto'?'eco':nextMode;
     qualityLoading=true;qualitySelect.disabled=true;state();
+    let load;
     try{
       if(!!qualityProfiles[nextQuality].smallMaterials!==!!qualityProfiles[quality].smallMaterials){
         // Keep the current scene usable if a new material download fails. Only
         // one small+large pair can coexist, and the old pair is deleted at commit.
-        const next=await loadMaterials(nextQuality);
-        if(failed){releaseTexture(next.flow);releaseTexture(next.plasma);return;}
+        load=createMaterialLoad();currentQualityLoad=load;
+        const next=await loadMaterials(nextQuality,load);
+        if(failed||revision!==qualityRevision||load.cancelled){load.cancel();return;}
+        load.textures.clear();
         releaseTexture(filamentsTexture);releaseTexture(plasmaTexture);
         filamentsTexture=next.flow;plasmaTexture=next.plasma;
       }
@@ -569,13 +607,20 @@
       try{localStorage.setItem('noxevyr-quality',qualityMode);}catch{}
       hint.textContent=expanded?'自由旋转 · 边缘拖动倾斜 · ESC 返回':'拖动环绕 · 边缘拖动倾斜';
     }catch(error){
-      if(!failed)hint.textContent='画质切换未完成，已保留原档位，可重试';
+      if(revision!==qualityRevision)return;
+      if(!failed){
+        hint.textContent='画质切换未完成，已保留原档位，可重试';
+        if(renderDetails)renderDetails.open=true;
+      }
       console.warn('Quality switch kept the previous material:',error?.message);
     }finally{
-      qualityLoading=false;
-      if(!failed){qualitySelect.disabled=false;state();requestDraw();}
+      if(revision===qualityRevision){
+        currentQualityLoad=null;qualityLoading=false;
+        if(!failed){qualitySelect.disabled=false;state();requestDraw();}
+      }
     }
-  });
+  }
+  qualitySelect.addEventListener('change',()=>switchQuality(qualitySelect.value));
   document.querySelector('#orbit-in').addEventListener('click',()=>{camera.distance-=2;change();});
   document.querySelector('#orbit-out').addEventListener('click',()=>{camera.distance+=2;change();});
   function expand(value){
@@ -601,8 +646,8 @@
       else if(!event.shiftKey&&index===stops.length-1){event.preventDefault();canvas.focus();}
     }
   });
-  toggle.addEventListener('click',()=>{paused=!paused;try{localStorage.setItem('noxevyr-motion',paused?'paused':'running');}catch{}state();resume();});
-  reduced.addEventListener('change',event=>{paused=event.matches;state();resume();});
+  toggle.addEventListener('click',()=>{paused=!paused;motionPreference=paused?'paused':'running';try{localStorage.setItem('noxevyr-motion',motionPreference);}catch{}state();resume();});
+  reduced.addEventListener('change',event=>{if(motionPreference===null){paused=event.matches;state();resume();}});
   document.addEventListener('visibilitychange',resume);
   let scrollFrame=0;
   function scrollScene(){
@@ -627,14 +672,30 @@
     gl.activeTexture(unit);gl.bindTexture(gl.TEXTURE_2D,texture);
     gl.texParameterf(gl.TEXTURE_2D,anisotropy.TEXTURE_MAX_ANISOTROPY_EXT,Math.min(qualityProfiles[tier].aniso,gl.getParameter(anisotropy.MAX_TEXTURE_MAX_ANISOTROPY_EXT)));
   }
-  function loadTexture(path,texture,unit,requestedWidth,tier){return new Promise((resolve,reject)=>{
+  function createMaterialLoad(){
+    const load={cancelled:false,textures:new Set(),cancellers:new Set(),cancel(){
+      if(this.cancelled)return;
+      this.cancelled=true;
+      for(const cancel of [...this.cancellers])cancel();
+      for(const texture of this.textures)releaseTexture(texture);
+      this.textures.clear();materialLoads.delete(this);
+    }};
+    materialLoads.add(load);return load;
+  }
+  function loadTexture(path,texture,unit,requestedWidth,tier,load){return new Promise((resolve,reject)=>{
     const flowImage=new Image();
-    let retried=false;
-    function cleanImage(){flowImage.onload=null;flowImage.onerror=null;flowImage.removeAttribute('src');}
+    let retried=false,settled=false;
+    // One total deadline includes the retry, rather than restarting indefinitely.
+    const timeout=setTimeout(()=>finish(Error(`Timed out loading ${path}`)),15000);
+    const cancel=()=>finish(Error('Material load cancelled'));
+    load.cancellers.add(cancel);
+    function cleanImage(){clearTimeout(timeout);load.cancellers.delete(cancel);flowImage.onload=null;flowImage.onerror=null;flowImage.removeAttribute('src');}
+    function finish(error){if(settled)return;settled=true;cleanImage();if(error)reject(error);else resolve();}
     flowImage.onload=()=>{
+      if(settled)return;
       let temporary;
       try{
-        if(failed)throw Error('Scene no longer active');
+        if(failed||load.cancelled)throw Error('Scene no longer active');
         const width=2**Math.floor(Math.log2(Math.min(requestedWidth,maxRenderSize))),height=width/2;
         let source=flowImage;
         // A matching POT image can go straight to the GPU; avoid a second
@@ -651,30 +712,40 @@
         gl.texParameteri(gl.TEXTURE_2D,gl.TEXTURE_MIN_FILTER,gl.LINEAR_MIPMAP_LINEAR);gl.texParameteri(gl.TEXTURE_2D,gl.TEXTURE_MAG_FILTER,gl.LINEAR);
         gl.generateMipmap(gl.TEXTURE_2D);
         applyMaterialFiltering(texture,unit,tier);
-        resolve();
-      }catch(error){reject(error);}
-      finally{if(temporary){temporary.width=1;temporary.height=1;}cleanImage();}
+        finish();
+      }catch(error){finish(error);}
+      finally{if(temporary){temporary.width=1;temporary.height=1;}}
     };
     flowImage.onerror=()=>{
-      if(!retried&&!failed){retried=true;flowImage.src=path+buildQuery+(buildQuery?'&':'?')+'retry=1';}
-      else{cleanImage();reject(Error(`Could not load ${path}`));}
+      if(settled)return;
+      if(!retried&&!failed&&!load.cancelled){retried=true;flowImage.src=path+buildQuery+(buildQuery?'&':'?')+'retry=1';}
+      else finish(Error(`Could not load ${path}`));
     };
+    if(load.cancelled){cancel();return;}
     flowImage.src=path+buildQuery;
   });}
-  async function loadMaterials(tier){
+  async function loadMaterials(tier,load){
     const standard=qualityProfiles[tier].smallMaterials,suffix=standard?'-standard':'';
     let flow,plasma;
     try{
       flow=gl.createTexture();resources.textures.add(flow);
-      await loadTexture(`assets/plasma-flow${suffix}.png`,flow,gl.TEXTURE3,standard?2048:4096,tier);
-      if(failed)throw Error('Scene no longer active');
+      load.textures.add(flow);
+      await loadTexture(`assets/plasma-flow${suffix}.png`,flow,gl.TEXTURE3,standard?2048:4096,tier,load);
+      if(failed||load.cancelled)throw Error('Scene no longer active');
       plasma=gl.createTexture();resources.textures.add(plasma);
-      await loadTexture(`assets/plasma-turbulence${suffix}.png`,plasma,gl.TEXTURE2,standard?1024:2048,tier);
+      load.textures.add(plasma);
+      await loadTexture(`assets/plasma-turbulence${suffix}.png`,plasma,gl.TEXTURE2,standard?1024:2048,tier,load);
       return {flow,plasma};
-    }catch(error){releaseTexture(flow);releaseTexture(plasma);throw error;}
+    }catch(error){load.cancel();throw error;}
+    finally{materialLoads.delete(load);}
   }
-  loadMaterials(quality).then(materials=>{
-    if(failed){releaseTexture(materials.flow);releaseTexture(materials.plasma);return;}
-    filamentsTexture=materials.flow;plasmaTexture=materials.plasma;ready=true;requestDraw();
-  }).catch(error=>fallback('texture',error));
+  function startMaterials(){
+    const load=createMaterialLoad();startupLoad=load;
+    loadMaterials(quality,load).then(materials=>{
+      if(failed||load.cancelled||startupLoad!==load){load.cancel();return;}
+      load.textures.clear();startupLoad=null;
+      filamentsTexture=materials.flow;plasmaTexture=materials.plasma;ready=true;state();requestDraw();
+    }).catch(error=>{if(startupLoad===load&&!failed)fallback('texture',error);});
+  }
+  startMaterials();
 })();

@@ -72,9 +72,11 @@ function harness({
   shaderFailure = null, contextAvailable = true, allowFallback = false,
   deviceMemory, hardwareConcurrency, coarse = false, saveData = false,
   renderer = null, maxRenderSize = 4096, gpuDuration = null, gpuDisjoint = false,
+  reducedMotion = paused, motion = null, missingNodes = [],
 } = {}) {
   const nodes = new Map();
   const pending = new Map();
+  const timers = new Map();
   const images = [];
   const textureRequests = [];
   const textureUploads = [];
@@ -90,6 +92,7 @@ function harness({
   const uniforms = new Map();
   const storage = new Map();
   if (quality !== null && quality !== undefined) storage.set('noxevyr-quality', quality);
+  if (motion !== null) storage.set('noxevyr-motion', motion);
   const mutationObservers = new Set();
   let now = 1000;
   let nextId = 0;
@@ -141,7 +144,7 @@ function harness({
   node('#project-dialog').open = dialogOpen;
   node('#scene-retry').hidden = true;
   const orbitControls = ['#orbit-reset', '#orbit-top', '#orbit-side', '#orbit-in', '#orbit-out',
-    '#render-quality', '#explore-hole'].map(node);
+    '#render-quality', '#quality-reset', '#explore-hole'].filter(selector=>!missingNodes.includes(selector)).map(node);
   const controls = [...orbitControls, node('#motion-toggle')];
   const outsideElements = [node('#project-dialog'), element()];
   const gl = {};
@@ -247,7 +250,7 @@ function harness({
     ...eventTarget(), hidden,
     body: element(), documentElement: element(),
     currentScript: { src: 'https://example.test/blackhole.js?test=1' },
-    querySelector: node,
+    querySelector: selector => missingNodes.includes(selector) ? null : node(selector),
     querySelectorAll(selector) {
       if (selector === 'body > :not(main):not(.hero-scene):not(.cosmic-veil), main > :not(#home)') return outsideElements;
       if (selector === '[data-orbit-inert]') return outsideElements.filter(el => el.dataset.orbitInert);
@@ -261,7 +264,7 @@ function harness({
       return scratch;
     },
   };
-  const reduced = { ...eventTarget(), matches: paused };
+  const reduced = { ...eventTarget(), matches: reducedMotion };
   const context = {
     ...eventTarget(), document, URL, Promise, Float32Array, MutationObserver, performance: {now: () => now},
     console: { warn: (...args) => warnings.push(args) },
@@ -297,6 +300,8 @@ function harness({
       return id;
     },
     cancelAnimationFrame: id => pending.delete(id),
+    setTimeout(callback, delay) {const id=++nextId;timers.set(id,{callback,at:now+delay});return id;},
+    clearTimeout: id => timers.delete(id),
   };
   context.window = context;
   vm.runInNewContext(source, context, { filename: 'public/blackhole.js' });
@@ -318,6 +323,7 @@ function harness({
     get peakLiveTextures() { return peakLiveTextures; },
     get layoutReads() { return layoutReads; },
     get gpuTimings() { return gpuTimings; },
+    get pendingTimers() { return timers.size; },
     setGpuDuration(value) { gpuDuration=value; },
     async selectQuality(value) { node('#render-quality').value=value;node('#render-quality').emit('change');await settle(); },
     scroll(value) { context.scrollY=value;context.emit('scroll'); },
@@ -338,6 +344,7 @@ function harness({
     },
     advance(milliseconds = RAF_MS) {
       now += milliseconds;
+      for(const [id,timer] of [...timers])if(timer.at<=now&&timers.delete(id))timer.callback();
       const callbacks = [...pending.entries()];
       for (const [id, callback] of callbacks) {
         if (!pending.delete(id)) continue;
@@ -350,6 +357,8 @@ function harness({
     run(count) { for (let i = 0; i < count; i++) this.advance(); },
     key(key) { node('#blackhole-canvas').emit('keydown', { key, shiftKey: false }); },
     setHidden(value) { document.hidden = value; document.emit('visibilitychange'); },
+    setReduced(value) {reduced.matches=value;reduced.emit('change',{matches:value});},
+    async resetQuality() {node('#quality-reset').emit('click');await settle();},
     async setDialogOpen(value) {
       node('#project-dialog').open = value;
       await Promise.resolve();
@@ -388,8 +397,11 @@ function fallbackState(h, reason) {
   assert.equal(h.node('#blackhole-canvas').hidden, true, 'failed rendering shows the static cover');
   assert.equal(h.node('.hero-scene').classList.contains('is-ready'), false);
   assert.equal(h.node('.hero-scene').dataset.failure, reason, 'failure reason identifies the recovery path');
-  assert.ok(h.controls.every(control => control.disabled), 'unavailable 3D controls stay disabled');
-  assert.ok(h.orbitControls.every(control => control.hidden), 'unavailable orbit buttons must not crowd the mobile fallback');
+  assert.ok(h.controls.filter(control=>control!==h.node('#quality-reset')).every(control => control.disabled), 'unavailable 3D controls stay disabled');
+  assert.ok(h.orbitControls.filter(control=>![h.node('#render-quality'),h.node('#quality-reset')].includes(control)).every(control => control.hidden), 'unavailable orbit buttons must not crowd the mobile fallback');
+  assert.equal(h.node('.quality-setting').hidden,false,'fallback cannot hide the parent of auto recovery');
+  assert.equal(h.node('#quality-reset').hidden,false);assert.equal(h.node('#quality-reset').disabled,false);
+  assert.equal(h.node('#render-details').open,true,'fallback guidance is readable inside details');
   assert.equal(h.node('#orbit-readout').hidden, true, 'fallback hides the irrelevant camera readout');
   assert.equal(h.node('#orbit-hint').hidden, false, 'failure guidance stays visible');
   assert.ok(h.node('#orbit-hint').textContent.length > 0);
@@ -658,13 +670,15 @@ await test('large displays retain the high and ultra pixel budgets', async () =>
   }
 });
 
-await test('loading controls become available only after the first complete render', async () => {
+await test('loading keeps motion and auto recovery available before the first complete render', async () => {
   const h = harness();
-  assert.ok(h.controls.every(control => control.disabled), 'controls must be unavailable while textures load');
+  assert.ok(h.orbitControls.filter(control=>control!==h.node('#quality-reset')).every(control => control.disabled), 'orbit controls wait for textures');
+  assert.equal(h.node('#motion-toggle').disabled,false,'users can pause before materials finish');
+  assert.equal(h.node('#quality-reset').disabled,false,'auto recovery is always available');
   assert.match(h.node('#orbit-hint').textContent, /正在加载 3D 场景/);
   await h.load(0);
   await h.load(1);
-  assert.ok(h.controls.every(control => control.disabled), 'texture completion alone cannot enable controls');
+  assert.ok(h.orbitControls.filter(control=>control!==h.node('#quality-reset')).every(control => control.disabled), 'texture completion alone cannot enable orbit controls');
   h.advance();
   assert.equal(h.frames.length, 1);
   assert.ok(h.controls.every(control => !control.disabled));
@@ -956,6 +970,7 @@ await test('standard to high reuses same-size render targets and preserves half-
 await test('failed quality download deletes staged textures and retains the previous working mode', async () => {
   const h = await loaded({ quality: 'standard', halfFloat: true });
   h.run(13);
+  assert.equal(h.node('#render-details').open,false,'details start collapsed');
   const oldMaterials = h.resources.texture.filter(texture => !texture.isTarget);
   const originalPreference = h.context.localStorage.getItem('noxevyr-quality');
   await h.selectQuality('high');
@@ -965,6 +980,8 @@ await test('failed quality download deletes staged textures and retains the prev
   assert.equal(stagedMaterials.length, 2);
   await h.failRequest(3);
   await h.failRequest(4);
+  assert.equal(h.node('#render-details').open,true,'active failures expose guidance in collapsed details');
+  assert.match(h.node('#orbit-hint').textContent,/画质切换未完成，已保留原档位，可重试/);
   assert.equal(h.context.localStorage.getItem('noxevyr-quality'), originalPreference);
   assert.equal(h.node('#render-quality').disabled, false);
   assert.equal(h.node('#blackhole-canvas').hidden, false, 'a replacement network failure must not discard working rendering');
@@ -1042,11 +1059,11 @@ await test('auto responds only to sustained overload, recovers slowly and does n
     const h=await loaded({quality:null,gpuDuration});h.advance();
     const overload=count=>{for(let i=0;i<count;i++)h.advance(160);};
     overload(12);resolution(h.frames,1280,720);
-    assert.match(h.node('#quality-status').textContent,/20 FPS/,'short stalls do not change cadence');
+    assert.match(h.node('#quality-metrics').textContent,/20 FPS/,'short stalls do not change cadence');
     overload(12);resolution(h.frames,1280,720);
-    assert.match(h.node('#quality-status').textContent,/16 FPS/,'first overload response preserves detail');
+    assert.match(h.node('#quality-metrics').textContent,/16 FPS/,'first overload response preserves detail');
     overload(20);resolution(h.frames,1280,720);
-    assert.match(h.node('#quality-status').textContent,/12 FPS/,'second overload response still preserves detail');
+    assert.match(h.node('#quality-metrics').textContent,/12 FPS/,'second overload response still preserves detail');
     overload(44);
     assert.ok(h.frames.at(-1).width<1280,'resolution falls only after reaching the minimum idle cadence');
     const low=h.frames.at(-1).width;assert.ok(low>=896,'automatic downscaling is bounded');
@@ -1055,9 +1072,9 @@ await test('auto responds only to sustained overload, recovers slowly and does n
     assert.equal(h.frames.at(-1).width,low,'recovery waits longer than overload detection');
     h.run(120*24);
     assert.equal(h.frames.at(-1).width,1280,'sustained spare time restores the eco ceiling');
-    assert.match(h.node('#quality-status').textContent,/12 FPS/,'resolution recovers before the idle frame cap');
+    assert.match(h.node('#quality-metrics').textContent,/12 FPS/,'resolution recovers before the idle frame cap');
     h.run(120*30);
-    assert.match(h.node('#quality-status').textContent,/20 FPS/,'only sustained spare capacity restores higher idle cadence');
+    assert.match(h.node('#quality-metrics').textContent,/20 FPS/,'only sustained spare capacity restores higher idle cadence');
     await h.selectQuality('eco');
     if(gpuDuration!==null)h.setGpuDuration(100);
     const from=h.frames.length;
@@ -1071,10 +1088,10 @@ await test('measured moderate GPU pressure preserves 85 percent resolution at 12
   const h=await loaded({quality:null,gpuDuration:width=>80*(width/1280)**2});
   h.run(120*15);
   assert.equal(h.frames.at(-1).width,1088);
-  assert.match(h.node('#quality-status').textContent,/12 FPS/);
+  assert.match(h.node('#quality-metrics').textContent,/12 FPS/);
   const start=h.frames.length;h.run(120*30);
   resolution(h.frames.slice(start),1088,612);cadence(h.frames.slice(start),12);
-  assert.match(h.node('#quality-status').textContent,/12 FPS/,'moderate pressure cannot incorrectly recover a higher idle cap');
+  assert.match(h.node('#quality-metrics').textContent,/12 FPS/,'moderate pressure cannot incorrectly recover a higher idle cap');
   const interactionStart=h.frames.length;
   for(let i=0;i<120;i++){h.key('ArrowLeft');h.advance();}
   assert.ok(h.frames.length-interactionStart>=23,'auto retains the 24 FPS interaction cap');
@@ -1085,24 +1102,24 @@ await test('recovery predicts the next pixel and frame budgets instead of oscill
   for(const [cost,width] of [[value=>66.25*(value/1280)**2,1088],[47.5,1280]]){
     const h=await loaded({quality:null,gpuDuration:cost});h.run(120*15);
     assert.equal(h.frames.at(-1).width,width);
-    assert.match(h.node('#quality-status').textContent,/12 FPS/);
+    assert.match(h.node('#quality-metrics').textContent,/12 FPS/);
     const start=h.frames.length;h.run(120*180);
     resolution(h.frames.slice(start),width,width===1088?612:720);
     cadence(h.frames.slice(start),12);
-    assert.match(h.node('#quality-status').textContent,/12 FPS/,'a constant workload cannot trigger repeated upward probes');
+    assert.match(h.node('#quality-metrics').textContent,/12 FPS/,'a constant workload cannot trigger repeated upward probes');
   }
 });
 
 await test('RAF fallback ignores its own FPS cap and needs genuine delivery headroom before recovery', async () => {
   const h=await loaded({quality:null});
   for(let i=0;i<80;i++)h.advance(100);
-  assert.match(h.node('#quality-status').textContent,/12 FPS/);
+  assert.match(h.node('#quality-metrics').textContent,/12 FPS/);
   const start=h.frames.length;
   for(let i=0;i<1500;i++)h.advance(100);
   resolution(h.frames.slice(start),1280,720);
-  assert.match(h.node('#quality-status').textContent,/12 FPS/,'constant 100ms callback delivery cannot recover a 16 FPS target');
+  assert.match(h.node('#quality-metrics').textContent,/12 FPS/,'constant 100ms callback delivery cannot recover a 16 FPS target');
   h.run(120*40);
-  assert.match(h.node('#quality-status').textContent,/20 FPS/,'normally delivered RAF still recovers without a GPU extension');
+  assert.match(h.node('#quality-metrics').textContent,/20 FPS/,'normally delivered RAF still recovers without a GPU extension');
 });
 
 await test('invalid GPU timings and hidden intervals cannot lower automatic resolution', async () => {
@@ -1129,6 +1146,180 @@ await test('cinematic improves sampling over ultra even in a small DPR 2 viewpor
   const start=h.frames.length;await h.selectQuality('cinematic');h.run(12);
   resolution(h.frames.slice(start),3840,2160);
   assert.equal(h.textureRequests.length,2,'extra sampling reuses the original material pair');
+});
+
+await test('system reduced motion follows its default only until an explicit user choice', async () => {
+  const h=await loaded({quality:'eco'});h.run(24);
+  h.setReduced(true);h.run(24);
+  assert.equal(h.pending,0);assert.equal(h.node('#motion-toggle').getAttribute('aria-pressed'),'true');
+  h.setReduced(false);const before=h.frames.length;h.run(120);
+  assert.ok(h.frames.length>before,'default motion follows system restoration');
+  h.node('#motion-toggle').emit('click');h.run(24);
+  h.setReduced(true);h.setReduced(false);h.run(120);
+  assert.equal(h.node('#motion-toggle').getAttribute('aria-pressed'),'true');
+  assert.equal(h.pending,0,'system changes cannot override manual pause');
+  assert.equal(h.context.localStorage.getItem('noxevyr-motion'),'paused');
+  h.setReduced(true);h.node('#motion-toggle').emit('click');h.setReduced(false);h.setReduced(true);
+  const resumed=h.frames.length;h.run(120);
+  assert.ok(h.frames.length>resumed,'explicit continue overrides the system default');
+  assert.equal(h.context.localStorage.getItem('noxevyr-motion'),'running');
+});
+
+await test('persisted pause and continue choices remain authoritative across system changes', async () => {
+  for(const motion of ['paused','running'])for(const reducedMotion of [false,true]){
+    const h=await loaded({quality:'eco',motion,reducedMotion});h.run(24);
+    h.setReduced(!reducedMotion);h.setReduced(reducedMotion);h.run(120);
+    assert.equal(h.node('#motion-toggle').getAttribute('aria-pressed'),String(motion==='paused'));
+    assert.equal(h.context.localStorage.getItem('noxevyr-motion'),motion);
+    assert.equal(h.pending,motion==='paused'?0:1);
+  }
+});
+
+await test('never-completing startup images time out, clean resources and ignore late callbacks', async () => {
+  for(const partial of [false,true]){
+    const h=harness({quality:'cinematic',allowFallback:true});
+    if(partial)await h.loadRequest(0);
+    const image=h.images.at(-1),lateLoad=image.onload,lateError=image.onerror;
+    h.advance(14999);await h.settle();
+    assert.equal(h.node('#scene-retry').hidden,true,'deadline must not fire early');
+    h.advance(1);await h.settle();fallbackState(h,'texture');
+    assert.equal(h.pendingTimers,0);
+    assert.ok(h.resources.texture.every(texture=>texture.deleted),'partial pairs cannot leak');
+    assert.ok(h.images.every(image=>image.onload===null&&image.onerror===null&&image.removed.includes('src')));
+    const uploads=h.textureUploads.length,requests=h.textureRequests.length;
+    lateLoad();lateError();await h.settle();h.advance(60000);
+    assert.equal(h.textureUploads.length,uploads,'late completion cannot upload deleted handles');
+    assert.equal(h.textureRequests.length,requests,'late errors cannot retry a settled image');
+    await h.resetQuality();
+    assert.equal(h.context.localStorage.getItem('noxevyr-quality'),'auto');
+    assert.equal(h.node('#quality-reset').disabled,false);
+    h.node('#scene-retry').emit('click');assert.equal(h.reloads,1);
+  }
+});
+
+await test('the image retry shares the original deadline instead of extending it', async () => {
+  const h=harness({allowFallback:true});h.advance(10000);await h.failRequest(0);
+  assert.equal(h.textureRequests.length,2);
+  h.advance(4999);await h.settle();assert.equal(h.node('#scene-retry').hidden,true);
+  h.advance(1);await h.settle();fallbackState(h,'texture');assert.equal(h.pendingTimers,0);
+});
+
+await test('switch timeouts retain the working pair, restore selection and permit a fresh retry', async () => {
+  for(const partial of [false,true]){
+    const h=await loaded({quality:'standard'});h.run(24);
+    const old=h.resources.texture.filter(texture=>!texture.isTarget);
+    await h.selectQuality('high');if(partial)await h.loadRequest(2);
+    const late=h.images.at(-1).onload,uploads=h.textureUploads.length;
+    h.advance(15000);await h.settle();
+    assert.equal(h.node('#render-details').open,true,'active timeouts expose retry guidance');
+    assert.match(h.node('#orbit-hint').textContent,/画质切换未完成/);
+    assert.equal(h.node('#render-quality').value,'standard');
+    assert.equal(h.node('#render-quality').disabled,false);
+    assert.equal(h.node('#render-quality').getAttribute('aria-busy'),'false');
+    assert.equal(h.context.localStorage.getItem('noxevyr-quality'),'standard');
+    assert.ok(old.every(texture=>!texture.deleted));
+    assert.equal(h.resources.texture.filter(texture=>!texture.deleted).length,5);
+    assert.equal(h.pendingTimers,0);late();await h.settle();
+    assert.equal(h.textureUploads.length,uploads);
+    const from=h.frames.length;h.run(120);assert.ok(h.frames.length>from);
+    const next=h.textureRequests.length;await h.selectQuality('high');
+    await h.loadRequest(next);await h.loadRequest(next+1);
+    assert.equal(h.context.localStorage.getItem('noxevyr-quality'),'high');
+    assert.ok(h.peakLiveTextures<=7);
+  }
+});
+
+await test('auto recovery cancels either stage of a pending switch and preserves manual pause', async () => {
+  for(const partial of [false,true]){
+    const h=await loaded({quality:'standard'});h.run(24);await h.selectQuality('high');
+    if(partial)await h.loadRequest(2);
+    assert.equal(h.node('#quality-reset').disabled,false);
+    assert.equal(h.node('#motion-toggle').disabled,false);
+    h.node('#motion-toggle').emit('click');
+    const lateLoad=h.images.at(-1).onload,lateError=h.images.at(-1).onerror;
+    await h.resetQuality();h.run(24);
+    assert.equal(h.context.localStorage.getItem('noxevyr-quality'),'auto');
+    assert.equal(h.node('#render-quality').value,'auto');
+    assert.equal(h.node('#render-quality').disabled,false);
+    assert.equal(h.node('#motion-toggle').getAttribute('aria-pressed'),'true');
+    assert.equal(h.context.localStorage.getItem('noxevyr-motion'),'paused');
+    const uploads=h.textureUploads.length,requests=h.textureRequests.length;
+    lateLoad();lateError();await h.settle();h.advance(60000);await h.settle();
+    assert.equal(h.textureUploads.length,uploads);assert.equal(h.textureRequests.length,requests);
+    assert.equal(h.pendingTimers,0);assert.equal(h.pending,0);
+    assert.equal(h.resources.texture.filter(texture=>!texture.deleted).length,5);
+    assert.equal(h.node('#quality-status').textContent,'已暂停');
+  }
+});
+
+await test('repeated auto recovery invalidates older downshift requests without overwriting the new load', async () => {
+  const h=await loaded({quality:'cinematic',motion:'paused'});h.run(24);
+  const guidance=h.node('#orbit-hint').textContent;
+  await h.selectQuality('standard');await h.loadRequest(2);
+  const stale=h.images.at(-1).onload;
+  await h.resetQuality();const cancelled=h.images.at(-1).onload;
+  await h.resetQuality();const start=h.textureRequests.length-1;
+  assert.equal(h.node('#render-quality').getAttribute('aria-busy'),'true');
+  stale();cancelled();await h.settle();
+  assert.equal(h.node('#render-details').open,false,'cancelled old requests cannot expand the new UI state');
+  assert.equal(h.node('#orbit-hint').textContent,guidance,'cancelled failures cannot replace current guidance');
+  assert.equal(h.node('#render-quality').disabled,true,'old finally must not unlock a newer pending request');
+  await h.loadRequest(start);await h.loadRequest(start+1);h.run(24);
+  assert.equal(h.context.localStorage.getItem('noxevyr-quality'),'auto');
+  assert.equal(h.node('#render-quality').value,'auto');
+  assert.equal(h.node('#motion-toggle').getAttribute('aria-pressed'),'true');
+  assert.equal(h.pendingTimers,0);assert.ok(h.peakLiveTextures<=7);
+});
+
+await test('startup auto recovery cancels saved cinematic materials and starts a clean eco pair', async () => {
+  for(const partial of [false,true]){
+    const h=harness({quality:'cinematic'});if(partial)await h.loadRequest(0);
+    const stale=h.images.at(-1).onload;
+    h.node('#motion-toggle').emit('click');await h.resetQuality();
+    const start=h.textureRequests.length-1;
+    stale();await h.settle();
+    assert.match(h.textureRequests[start].url,/flow-standard/);
+    await h.loadRequest(start);await h.loadRequest(start+1);h.run(24);
+    assert.equal(h.node('#render-quality').value,'auto');
+    assert.equal(h.node('#motion-toggle').getAttribute('aria-pressed'),'true');
+    assert.equal(h.context.localStorage.getItem('noxevyr-quality'),'auto');
+    assert.equal(h.pendingTimers,0);assert.equal(h.resources.texture.filter(texture=>!texture.deleted).length,5);
+  }
+});
+
+await test('auto recovery wins when an old material pair has resolved but not committed yet', async () => {
+  for(const startup of [false,true]){
+    const h=startup?harness({quality:'cinematic'}):await loaded({quality:'standard'});
+    if(!startup){h.run(24);await h.selectQuality('high');}
+    const start=startup?0:2;await h.loadRequest(start);
+    h.textureRequests[start+1].image.onload();
+    // Cancel in the same task, before the await continuation can commit its pair.
+    await h.resetQuality();
+    if(startup){const next=h.textureRequests.length-1;await h.loadRequest(next);await h.loadRequest(next+1);}
+    h.run(24);
+    assert.equal(h.context.localStorage.getItem('noxevyr-quality'),'auto');
+    assert.equal(h.node('#render-quality').value,'auto');
+    assert.equal(h.pendingTimers,0);assert.equal(h.resources.texture.filter(texture=>!texture.deleted).length,5);
+  }
+});
+
+await test('context loss cancels pending images immediately and cannot revive the scene', async () => {
+  const h=await loaded({quality:'standard',allowFallback:true});h.run(24);await h.selectQuality('high');
+  await h.loadRequest(2);const late=h.images.at(-1).onload;
+  h.node('#blackhole-canvas').emit('webglcontextlost');await h.settle();fallbackState(h,'lost');
+  assert.equal(h.pendingTimers,0);assert.ok(h.resources.texture.every(texture=>texture.deleted));
+  const uploads=h.textureUploads.length;late();await h.settle();assert.equal(h.textureUploads.length,uploads);
+});
+
+await test('quality metrics hold debug budgets while user status stays concise and optional nodes stay compatible', async () => {
+  const h=await loaded({quality:null});h.run(24);
+  assert.equal(h.node('#quality-status').textContent,'自动·节能');
+  assert.match(h.node('#quality-metrics').textContent,/1280 × 720 · 闲置上限 20 FPS/);
+  await h.selectQuality('high');assert.equal(h.node('#quality-status').textContent,'正在切换…');
+  await h.resetQuality();assert.equal(h.node('#quality-status').textContent,'自动·节能');
+  const legacy=await loaded({quality:'eco',missingNodes:['#quality-metrics','#quality-reset']});legacy.run(24);
+  await legacy.selectQuality('standard');legacy.run(24);
+  assert.equal(legacy.node('#quality-status').textContent,'标准');
 });
 
 console.log('All render scheduler regressions passed.');

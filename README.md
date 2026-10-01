@@ -35,7 +35,9 @@
 
 精选区的软件名、英文名、简介、主标题、类别、图标和主图从同一份项目资料构建；改名无需分别修改首页与详情。项目的 `aliases` 保留历史名称搜索，仓库 ID 与详情链接保持兼容。`screenshots` 登记图片地址、`label`、`version`、图注和原始尺寸；详情可直接选择预览并打开原图，后续图片延迟加载。`previewVersion` 是仅有主图时的版本回退；截图版本不同于公开程序包时明确显示“历史界面”。真实界面、离屏界面、功能示意与角色素材必须在图注中准确区分；没有可信截图时不伪造。更新截图和介绍仍需人工核对公开版本，定时任务只同步公开包版本和已登记图标。
 
-2026-09-27 已重新核对十个软件仓库与公开下载。映序公开下载为 0.4.20，曜核为 2.13.2，棱光 PrismCanvas 为 0.11.1（main 中 0.11.2 源码预览不作为正式下载）。曜核和棱光已补齐当前版本的 GitHub Release、安装包、源码及校验文件；同版本 Release 优先于 README 下载链接，更新的 README 程序包仍会参与同步。完整来源见 `content/project-sources.json`。
+2026-10-02 已对照线上目录保留现有公开下载：映序 0.4.22、流向 3.9.6、曜核 2.13.2、棱光 PrismCanvas 0.11.1。当前版本以 `content/projects.json` 和公开发行包为准，本地或开发分支的新版本不会直接标成正式发行。截图单独保留其真实版本，例如映序演示图仍为 0.4.20；程序更新不会改写截图版本。名称、展示资料和后续发行核对分别记录在 `content/project-sources.json`。
+
+目录与下载链接在构建时写入 HTML。即使数据或交互脚本加载失败，访客仍可查看基本介绍、更新记录并下载软件；搜索与详情只在数据有效时启用。右键菜单及移动导航独立于目录增强脚本，加载失败时仍能刷新页面。
 
 ## 本地构建与检查
 
@@ -63,6 +65,8 @@ node --check public/blackhole.js
 node design/check-render-scheduler.mjs
 node design/analyze-ray-cost.mjs
 node scripts/check-bloom-kernel.mjs
+node scripts/check-interface-state.mjs
+node scripts/test-catalog-fallback.mjs --built
 python -m unittest discover -s scripts -p "test_*.py"
 ```
 
@@ -96,7 +100,7 @@ python -m unittest discover -s scripts -p "test_*.py"
 
 离开首屏后冻结最后一帧背景，并停止动画调度，回到首屏再恢复；隐藏标签、打开软件详情时同样停止绘制，暂停、BFCache 返回和窗口缩放均保持既有用户动态偏好。滚动压暗背景仍保留。布局尺寸通过事件更新缓存，避免每一帧重新读取布局。
 
-材质串行载入，尺寸匹配时直接上传 GPU，成功或失败均清理临时 Canvas 和 Image 引用。跨标准/高清档切换仅允许一个载入任务，成功后释放旧材质，失败保留原档与原画面。WebGL 不申请未使用的深度缓冲；初始化失败或 context 丢失时释放已分配的 GPU 资源。正常隐藏标签及 BFCache 返回保留资源以便恢复。
+材质串行载入，尺寸匹配时直接上传 GPU，成功或失败均清理临时 Canvas 和 Image 引用。每张图片含重试最多等待 15 秒；两张串行材质完整批次最多约 30 秒。跨标准/高清档切换仅允许一个载入任务，成功后释放旧材质，失败保留原档与原画面，并展开失败说明。加载中可以恢复自动并取消旧请求，迟到回调不能覆盖新档位。WebGL 不申请未使用的深度缓冲；初始化失败或 context 丢失时释放已分配的 GPU 资源。正常隐藏标签及 BFCache 返回保留资源以便恢复。
 
 ## 增加视频和游戏
 
