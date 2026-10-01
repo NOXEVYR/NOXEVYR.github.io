@@ -32,7 +32,9 @@ function fixture() {
 check('shared renderer provides every download and source without JavaScript', () => {
   assert.equal(validCatalog(data), true);
   for (const p of data.projects) {
-    const card = projectCard(p);
+    const card = projectCard(p, {fallback: true});
+    assert.match(card, /<details class="card-footer catalog-fallback">/);
+    assert.ok(!/<details[^>]*\bopen\b/.test(card), 'fallback downloads start collapsed');
     assert.ok(card.includes(`>v${escapeHtml(p.version)}</span>`), `${p.id}: card must preserve the full published version`);
     assert.ok(card.includes(`data-project="${p.id}"`));
     assert.ok(card.includes(`href="${escapeHtml(p.sourceUrl || `https://github.com/NOXEVYR/${p.id}`)}"`));
@@ -62,6 +64,8 @@ check('missing DOM or unsupported dialog leaves links and recovery state usable'
 });
 check('complete data enables filtering and resets empty search results', () => {
   const f = fixture(); assert.equal(initializeCatalog(data,f.document,f.window),true);
+  assert.ok(!f.nodes.get('#project-grid').innerHTML.includes('download-actions'), 'enhanced cards leave platform downloads in details');
+  assert.ok(!f.nodes.get('#project-grid').innerHTML.includes('<details'), 'enhanced cards have one footer action');
   assert.equal(f.nodes.get('#catalog-status').hidden,true); assert.equal(f.nodes.get('#collection-toolbar').hidden,false);
   const search=f.nodes.get('#search'); search.value='AI Hub'; search.emit('input');
   assert.ok(f.nodes.get('#project-grid').innerHTML.includes('data-project="ai-hub"'));
@@ -79,6 +83,15 @@ check('ordinary detail clicks prevent navigation and preserve gallery provenance
   assert.ok(markup.includes('width="1145" height="1374"')); assert.ok(markup.includes('非当前应用运行截图'));
   assert.ok(!markup.includes('preview-version'));
   f.nodes.get('#close-dialog').emit('click'); assert.equal(f.dialog.open,false); assert.equal(f.document.title,'NOXEVYR');
+});
+check('every platform and extension download remains available inside project details', () => {
+  for (const p of data.projects) {
+    const f=fixture(); initializeCatalog(data,f.document,f.window);
+    f.document.emit('click',{target:{closest:()=>({dataset:{project:p.id}})},button:0,preventDefault(){}});
+    assert.equal(f.dialog.open,true);
+    const detail=f.nodes.get('#dialog-content').innerHTML;
+    for(const d of p.downloads)assert.ok(detail.includes(`href="${escapeHtml(d.url)}"`), `${p.id}: missing ${d.label}`);
+  }
 });
 check('modified or middle clicks retain native link behavior', () => {
   for(const modifiers of [{ctrlKey:true},{metaKey:true},{shiftKey:true},{altKey:true},{button:1}]){
@@ -124,6 +137,7 @@ if(process.argv.includes('--built')) {
     check(`${directory}: nonempty static directory, updates, recovery, and resolved templates`,()=>{
       assert.ok(!/\{\{[^}]+\}\}/.test(html));
       assert.equal((html.match(/<article class="project-card /g)||[]).length,data.projects.length);
+      assert.equal((html.match(/<details class="card-footer catalog-fallback">/g)||[]).length,data.projects.length);
       assert.equal((html.match(/class="update-row"/g)||[]).length,4);
       assert.ok(/id="collection-toolbar"[^>]*\bhidden/.test(html));
       assert.ok(/id="catalog-status"(?![^>]*\bhidden)[^>]*>/.test(html));

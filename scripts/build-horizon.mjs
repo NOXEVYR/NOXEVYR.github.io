@@ -37,7 +37,7 @@ for (const p of data.projects) {
   };
   for (const [field, value] of Object.entries(fields)) html = html.replaceAll(`{{${field}:${p.id}}}`, escapeHtml(value));
 }
-html = html.replaceAll('{{projectCards}}', data.projects.map(projectCard).join(''))
+html = html.replaceAll('{{projectCards}}', data.projects.map(p => projectCard(p, {fallback: true})).join(''))
   .replaceAll('{{updateList}}', updateList(data.projects))
   .replaceAll('{{checkedAt}}', escapeHtml(`项目资料核对于 ${data.checkedAt}`));
 html = html.replaceAll('{{count:all}}', String(data.projects.length)).replaceAll('{{count:total}}', String(data.projects.length).padStart(2, '0'));

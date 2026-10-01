@@ -36,7 +36,11 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ github.token }}
       - name: Build static website
-        run: node scripts/build.mjs --production
+        run: |
+          node scripts/build.mjs
+          node scripts/build.mjs --production
+          node scripts/test-catalog-fallback.mjs --built
+          node scripts/check-interface-state.mjs
       - uses: actions/configure-pages@v5
       - uses: actions/upload-pages-artifact@v3
         with:

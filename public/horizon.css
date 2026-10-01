@@ -88,7 +88,14 @@ select:disabled{cursor:default;opacity:.5}
 .catalog-status a{color:var(--gold);text-decoration:underline;text-underline-offset:3px}
 .project-card .card-title,.project-card .detail-button{text-decoration:none}
 .project-card .detail-button{display:grid;place-items:center}
-.catalog-downloads{position:relative;z-index:2;gap:8px;margin-top:16px;padding-top:12px;border-top:1px solid var(--line)}
+.catalog-fallback{display:block;position:relative;z-index:2}
+.catalog-fallback>summary{display:flex;align-items:center;justify-content:space-between;gap:16px;list-style:none;cursor:pointer}
+.catalog-fallback>summary::-webkit-details-marker{display:none}
+.catalog-fallback>summary:focus-visible{outline:2px solid var(--gold);outline-offset:5px;border-radius:5px}
+.catalog-fallback>summary .detail-button{display:grid;place-items:center}
+.catalog-fallback>summary .detail-button:after{content:"+"}
+.catalog-fallback[open]>summary .detail-button:after{content:"−"}
+.catalog-downloads{gap:8px;margin-top:16px;padding-top:12px;border-top:1px solid var(--line)}
 .catalog-downloads .button{max-width:100%;padding:8px 12px;gap:8px;min-height:44px;border-radius:10px;font-size:12px;overflow-wrap:anywhere}
 .catalog-downloads .text-link{padding:8px 4px;font-size:12px;min-height:44px;border-bottom:0}
 
