@@ -27,6 +27,7 @@ jobs:
         run: |
           node scripts/test-readme-packages.mjs
           node scripts/test-sync-videocatch.mjs
+          node scripts/test-sync-envanchor.mjs
           node scripts/test-sync-aihub.mjs
       - name: Refresh public project releases
         # Preserve a reviewed live catalog snapshot for targeted product updates.

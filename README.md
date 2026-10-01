@@ -27,6 +27,7 @@
 - `scripts/sync.mjs`：同步公开版本与下载，再调用图标同步。
 - `scripts/readme-packages.mjs`：识别 README 的公开程序包，包括棱光改名前后的 PrismCanvas / FrameWeave 文件名，并选择最高正式版本。
 - `scripts/sync-aihub.mjs`：校验曜核已登记候选渠道并选择候选 / 稳定下载；修改后运行 `node scripts/test-sync-aihub.mjs`。
+- `scripts/sync-envanchor.mjs`：跟随环境锚点带 Windows 程序附件的公开预览版，并保留稳定版备用入口；修改后运行 `node scripts/test-sync-envanchor.mjs`。
 - `scripts/sync-icons.py`、`scripts/sync-icons.mjs`：读取登记图标，保留最大尺寸与透明度，全部成功后更新引用；Actions 使用临时隔离 Python 环境安装固定版本解码器并运行测试。
 - `scripts/build.mjs`、`scripts/build-horizon.mjs`：生成黑洞版静态网站。
 - `design/check-render-scheduler.mjs`、`design/analyze-ray-cost.mjs`：离线回归脚本。其余本地设计研究文件不上传仓库。
@@ -36,6 +37,8 @@
 精选区的软件名、英文名、简介、主标题、类别、图标和主图从同一份项目资料构建；改名无需分别修改首页与详情。项目的 `aliases` 保留历史名称搜索，仓库 ID 与详情链接保持兼容。`screenshots` 登记图片地址、`label`、`version`、图注和原始尺寸；详情可直接选择预览并打开原图，后续图片延迟加载。`previewVersion` 是仅有主图时的版本回退；截图版本不同于公开程序包时明确显示“历史界面”。真实界面、离屏界面、功能示意与角色素材必须在图注中准确区分；没有可信截图时不伪造。更新截图和介绍仍需人工核对公开版本，定时任务只同步公开包版本和已登记图标。
 
 2026-10-02 已对照线上目录保留现有公开下载：映序 0.4.22、流向 3.9.6、曜核 2.13.2、棱光 PrismCanvas 0.11.1。当前版本以 `content/projects.json` 和公开发行包为准，本地或开发分支的新版本不会直接标成正式发行。截图单独保留其真实版本，例如映序演示图仍为 0.4.20；程序更新不会改写截图版本。名称、展示资料和后续发行核对分别记录在 `content/project-sources.json`。
+
+环境锚点已同步公开的 0.8.0-preview.1，0.6.0 继续作为稳定版备用。新版图标及环境清单、引用诊断、重连与恢复三张图来自固定公开提交；图注明确为源码离屏演示界面、示例数据，不代表真实迁移验收。
 
 目录与下载链接在构建时写入 HTML。即使数据或交互脚本加载失败，访客仍可查看基本介绍、更新记录并下载软件；搜索与详情只在数据有效时启用。右键菜单及移动导航独立于目录增强脚本，加载失败时仍能刷新页面。
 

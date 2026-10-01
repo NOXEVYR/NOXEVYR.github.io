@@ -12,7 +12,7 @@
       "codex-switcher": "2.4.1",
       "video-catch": "0.5.0",
       "classicdesk": "0.11.16-preview",
-      "env-anchor": "0.6.0",
+      "env-anchor": "0.8.0-preview.1",
       "codex-pet": "0.5.9",
       "michelle-pet": "0.3.8"
     },
@@ -25,6 +25,32 @@
       "bytes": 71612120,
       "githubDigest": "sha256:547a58d2e71484873e0588da63a517418d5a7d050deb6a42cf2967c350bfe1e6",
       "verification": "Read public release metadata and match deployed catalog; no package download or local installation."
+    },
+    "envAnchorReleaseCheck": {
+      "checkedAt": "2026-10-02",
+      "releaseId": 401225449,
+      "commit": "0f4ed6a2a1e386394aafb33827943dc171f6d049",
+      "url": "https://github.com/NOXEVYR/env-anchor/releases/tag/v0.8.0-preview.1",
+      "prerelease": true,
+      "latestStable": "0.6.0",
+      "assets": [
+        {
+          "name": "EnvAnchor-0.8.0-preview.1-win10-portable.zip",
+          "bytes": 382915,
+          "digest": "sha256:5a5e5779287c4a0ab839b4053e66d9b11048a361c94424e3847114c1ade68f05"
+        },
+        {
+          "name": "EnvAnchor-0.8.0-preview.1.exe",
+          "bytes": 326144,
+          "digest": "sha256:e01d464d946366cb43b883dc55985efd522208a6470c733837036d08594f7d41"
+        },
+        {
+          "name": "verification-0.8.0-preview.1.json",
+          "bytes": 3315,
+          "digest": "sha256:9246b41f7b4653b44f6008462043d1e6310c884162a628dc9cf20f734f402095"
+        }
+      ],
+      "verification": "Read public release metadata and compare package digests with reviewed local candidates; all 4 website image bytes match the fixed public source tree."
     }
   },
   "projects": [
@@ -98,12 +124,14 @@
     },
     {
       "id": "env-anchor",
-      "reviewedAt": "2026-09-27",
-      "commit": "38fc611dee4d8681ea0bf0b64da1ec7238eccf34",
-      "version": "0.6.0",
-      "sourceVersion": "0.6.0",
-      "readme": "https://github.com/NOXEVYR/env-anchor/blob/38fc611dee4d8681ea0bf0b64da1ec7238eccf34/README.md",
-      "download": "https://github.com/NOXEVYR/env-anchor/releases/tag/v0.6.0"
+      "reviewedAt": "2026-10-02",
+      "commit": "0f4ed6a2a1e386394aafb33827943dc171f6d049",
+      "version": "0.8.0-preview.1",
+      "sourceVersion": "0.8.0-preview.1",
+      "readme": "https://github.com/NOXEVYR/env-anchor/blob/0f4ed6a2a1e386394aafb33827943dc171f6d049/README.md",
+      "download": "https://github.com/NOXEVYR/env-anchor/releases/tag/v0.8.0-preview.1",
+      "stableDownload": "https://github.com/NOXEVYR/env-anchor/releases/tag/v0.6.0",
+      "releaseNote": "公开预览版；0.6.0 保持 latest 稳定版。界面图为源码离屏合成演示，不代表真实迁移验收。"
     },
     {
       "id": "codex-pet",
@@ -135,7 +163,8 @@
       "url": "https://raw.githubusercontent.com/NOXEVYR/env-anchor/38fc611dee4d8681ea0bf0b64da1ec7238eccf34/docs/preview.png",
       "caption": "环境锚点 · 应用界面（路径为示意数据）",
       "websitePath": "assets/previews/env-anchor-1942a69b87b6.png",
-      "websiteSha256": "1942a69b87b6fbe770aebb4f962288e2879781f7058cc8b1f63bb4d02d1070e8"
+      "websiteSha256": "1942a69b87b6fbe770aebb4f962288e2879781f7058cc8b1f63bb4d02d1070e8",
+      "historical": true
     },
     {
       "id": "codex-pet",
@@ -255,7 +284,8 @@
       "url": "https://raw.githubusercontent.com/NOXEVYR/env-anchor/38fc611dee4d8681ea0bf0b64da1ec7238eccf34/assets/app.ico",
       "caption": "环境锚点 · 当前公开应用图标",
       "websitePath": "assets/icons/env-anchor-b0fd80143a42.png",
-      "websiteSha256": "b0fd80143a4234d68ffe6d5338cb96fe7a4c841fed0a5dcce2e7cf47e49dd30e"
+      "websiteSha256": "b0fd80143a4234d68ffe6d5338cb96fe7a4c841fed0a5dcce2e7cf47e49dd30e",
+      "historical": true
     },
     {
       "id": "codex-pet",
@@ -344,6 +374,62 @@
       "sourceNote": "Preserved website character asset from the source snapshot; no application capture or screenshot version claimed.",
       "derivedAt": "2026-10-01",
       "method": "Pillow CPU WebP encoding, quality=85, method=6, original dimensions preserved."
+    },
+    {
+      "id": "env-anchor",
+      "kind": "preview",
+      "path": "docs/preview.png",
+      "commit": "0f4ed6a2a1e386394aafb33827943dc171f6d049",
+      "bytes": 61305,
+      "blob": "4ab235844522db8341609336ec3c164fd75662e3",
+      "url": "https://raw.githubusercontent.com/NOXEVYR/env-anchor/0f4ed6a2a1e386394aafb33827943dc171f6d049/docs/preview.png",
+      "caption": "环境锚点 · 环境清单（0.8.0-preview.1 源码离屏演示，示例数据，未执行真实迁移或恢复）",
+      "websitePath": "assets/previews/env-anchor-0464c716b610.png",
+      "websiteSha256": "0464c716b610562a5df9a4d2cc017bb19e7be66efb9f6e3e285a4bc4502e7f97",
+      "width": 1216,
+      "height": 869
+    },
+    {
+      "id": "env-anchor",
+      "kind": "preview",
+      "path": "docs/preview-references.png",
+      "commit": "0f4ed6a2a1e386394aafb33827943dc171f6d049",
+      "bytes": 51935,
+      "blob": "cd7c0df224283b5e056177643a4c34a0d01d3819",
+      "url": "https://raw.githubusercontent.com/NOXEVYR/env-anchor/0f4ed6a2a1e386394aafb33827943dc171f6d049/docs/preview-references.png",
+      "caption": "环境锚点 · 引用诊断（0.8.0-preview.1 源码离屏演示，示例数据，未执行真实迁移或恢复）",
+      "websitePath": "assets/previews/env-anchor-d46d88a22622.png",
+      "websiteSha256": "d46d88a22622d8859e7a9c6c79483437d08aff47ac2003eef7eab59314894848",
+      "width": 1216,
+      "height": 869
+    },
+    {
+      "id": "env-anchor",
+      "kind": "preview",
+      "path": "docs/preview-recovery.png",
+      "commit": "0f4ed6a2a1e386394aafb33827943dc171f6d049",
+      "bytes": 51167,
+      "blob": "b0605a989e961fec1f67a4cc46a50c433fc67f59",
+      "url": "https://raw.githubusercontent.com/NOXEVYR/env-anchor/0f4ed6a2a1e386394aafb33827943dc171f6d049/docs/preview-recovery.png",
+      "caption": "环境锚点 · 重连与恢复（0.8.0-preview.1 源码离屏演示，示例数据，未执行真实迁移或恢复）",
+      "websitePath": "assets/previews/env-anchor-a5d0abe29646.png",
+      "websiteSha256": "a5d0abe296467c82b0699bf0376ccd4744ec1f1127fbc5f4e4eb634956806a36",
+      "width": 1216,
+      "height": 869
+    },
+    {
+      "id": "env-anchor",
+      "kind": "icon",
+      "path": "assets/app.png",
+      "commit": "0f4ed6a2a1e386394aafb33827943dc171f6d049",
+      "bytes": 18141,
+      "blob": "fffe351862735d780c0629da0264f3fd0efe696a",
+      "url": "https://raw.githubusercontent.com/NOXEVYR/env-anchor/0f4ed6a2a1e386394aafb33827943dc171f6d049/assets/app.png",
+      "caption": "环境锚点 · 公开应用图标",
+      "websitePath": "assets/icons/env-anchor-b0fd80143a42.png",
+      "websiteSha256": "b0fd80143a4234d68ffe6d5338cb96fe7a4c841fed0a5dcce2e7cf47e49dd30e",
+      "width": 256,
+      "height": 256
     }
   ],
   "generatedPreviews": [

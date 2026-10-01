@@ -1,6 +1,7 @@
 import {readFile,writeFile} from 'node:fs/promises';
 import {findReadmePackage, hasReadmePackages, applyReadmePackage} from './readme-packages.mjs';
 import {syncVideoCatch} from './sync-videocatch.mjs';
+import {syncEnvAnchor} from './sync-envanchor.mjs';
 import {syncAIHubCandidate} from './sync-aihub.mjs';
 const path=new URL('../content/projects.json',import.meta.url);
 const data=JSON.parse(await readFile(path,'utf8'));
@@ -47,6 +48,11 @@ await Promise.all(data.projects.map(async p=>{try{
  const all=await releases(p.id);
  if(p.id==='video-catch'){
   syncVideoCatch(p,all,{version,compare,summary});
+  console.log(`${p.id}: ${p.version}`);
+  return;
+ }
+ if(p.id==='env-anchor'){
+  syncEnvAnchor(p,all,{version,compare,windows,preview,summary});
   console.log(`${p.id}: ${p.version}`);
   return;
  }

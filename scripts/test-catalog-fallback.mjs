@@ -33,6 +33,7 @@ check('shared renderer provides every download and source without JavaScript', (
   assert.equal(validCatalog(data), true);
   for (const p of data.projects) {
     const card = projectCard(p);
+    assert.ok(card.includes(`>v${escapeHtml(p.version)}</span>`), `${p.id}: card must preserve the full published version`);
     assert.ok(card.includes(`data-project="${p.id}"`));
     assert.ok(card.includes(`href="${escapeHtml(p.sourceUrl || `https://github.com/NOXEVYR/${p.id}`)}"`));
     for (const d of p.downloads) assert.ok(card.includes(`href="${escapeHtml(d.url)}"`));

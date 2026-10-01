@@ -353,45 +353,69 @@
       "english": "EnvAnchor",
       "category": "tools",
       "label": "系统与效率",
-      "version": "0.6.0",
-      "status": "已发布",
+      "version": "0.8.0-preview.1",
+      "status": "预览版",
       "symbol": "EA",
       "color": "blue",
-      "description": "把个人文件与软件配置安放到保留盘，让环境在系统还原后重新连接。",
-      "details": "面向 Windows 10 的个人文件与软件配置迁移工具。支持批量勾选、统一目标、后台复制与逐文件校验，显示阶段进度和连接状态，并可重新连接、换位置或仅撤销勾选项目。",
+      "description": "整理个人文件与软件配置，迁移到保留盘，并在重装后按清单重新连接。",
+      "details": "面向 Windows 10 的环境迁移与引用恢复工具。新版整合环境清单、引用诊断、重连与恢复和操作记录；同机迁移时复制并逐文件校验，保留原目录副本。重装或换账户后，可导入恢复清单、映射新位置，再建立当前用户的重连方案。",
       "features": [
-        "批量勾选与统一保存位置",
-        "后台复制、SHA-256 校验与进度",
-        "系统还原后重新连接",
-        "换位置与按勾选项目撤销"
+        "环境清单、草稿与批量筛选",
+        "后台复制、SHA-256 校验与目录联接",
+        "恢复清单导入与新位置映射",
+        "JSON 字符串及快捷方式引用修复"
       ],
       "platform": "Windows 10",
-      "requirements": "Windows 10 自带 .NET Framework、Windows PowerShell 5.1 与 Robocopy；目标为不会还原的非系统 NTFS 固定磁盘。不迁移整套用户目录或浏览器凭据，软件本体需另行保留。登录自动重新连接需将启动入口保存进还原基线；真实关机还原、跨物理盘、多屏高 DPI 尚未完成实测。",
+      "requirements": "Windows 10、.NET Framework、PowerShell 5.1 与 Robocopy；保留位置需为 NTFS 固定磁盘。恢复清单不包含数据文件，软件需另行安装；不迁移凭据、许可证或驱动。引用修改前保留备份，其他配置格式仅诊断。当前为未签名预览版，真实重装、跨物理盘及多屏高 DPI 尚未验收，请先备份并用独立副本评估。",
       "downloads": [
         {
-          "label": "Windows 0.6.0",
+          "label": "Windows 0.8.0-preview.1 预览版",
+          "url": "https://github.com/NOXEVYR/env-anchor/releases/tag/v0.8.0-preview.1",
+          "channel": "preview"
+        },
+        {
+          "label": "Windows 0.6.0 稳定版（备用）",
           "url": "https://github.com/NOXEVYR/env-anchor/releases/tag/v0.6.0",
           "channel": "stable"
         }
       ],
-      "sync": "stable",
-      "update": "后台复制与校验显示阶段进度；新增连接状态、按勾选项目撤销及独立登录设置保存。",
-      "date": "2026-09-19",
+      "sync": "preview",
+      "update": "新版环境清单与引用诊断界面；增加恢复清单导入、位置映射，以及 JSON 字符串和快捷方式引用修复。",
+      "date": "2026-10-01",
       "type": "software",
-      "icon": "assets/icons/env-anchor-ef5f5d454c70.png",
-      "imageNote": "环境锚点 · 应用界面（路径为示意数据）",
+      "icon": "assets/icons/env-anchor-b0fd80143a42.png",
+      "imageNote": "环境锚点 · 环境清单（0.8.0-preview.1 源码离屏演示，示例数据，未执行真实迁移或恢复）",
       "screenshots": [
         {
-          "src": "assets/previews/env-anchor-1942a69b87b6.png",
-          "caption": "环境锚点 · 应用界面（路径为示意数据）",
-          "width": 1096,
-          "height": 829
+          "src": "assets/previews/env-anchor-0464c716b610.png",
+          "label": "环境清单",
+          "version": "0.8.0-preview.1",
+          "caption": "环境锚点 · 环境清单（0.8.0-preview.1 源码离屏演示，示例数据，未执行真实迁移或恢复）",
+          "width": 1216,
+          "height": 869
+        },
+        {
+          "src": "assets/previews/env-anchor-d46d88a22622.png",
+          "label": "引用诊断",
+          "version": "0.8.0-preview.1",
+          "caption": "环境锚点 · 引用诊断（0.8.0-preview.1 源码离屏演示，示例数据，未执行真实迁移或恢复）",
+          "width": 1216,
+          "height": 869
+        },
+        {
+          "src": "assets/previews/env-anchor-a5d0abe29646.png",
+          "label": "重连与恢复",
+          "version": "0.8.0-preview.1",
+          "caption": "环境锚点 · 重连与恢复（0.8.0-preview.1 源码离屏演示，示例数据，未执行真实迁移或恢复）",
+          "width": 1216,
+          "height": 869
         }
       ],
-      "image": "assets/previews/env-anchor-1942a69b87b6.png",
-      "previewVersion": "0.6.0",
-      "imageWidth": 1096,
-      "imageHeight": 829
+      "image": "assets/previews/env-anchor-0464c716b610.png",
+      "previewVersion": "0.8.0-preview.1",
+      "imageWidth": 1216,
+      "imageHeight": 869,
+      "downloadNote": "当前为功能预览版；稳定版保留为备用，请按需选择。"
     },
     {
       "id": "codex-pet",
