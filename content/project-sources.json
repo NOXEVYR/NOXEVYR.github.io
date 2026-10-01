@@ -539,5 +539,20 @@
     "date": "2026-09-25",
     "source": "https://noxevyr.github.io/data.js",
     "scope": "Other catalog entries and icons preserved from the deployed website during the VideoCatch-only update."
+  },
+  "additionalPublicPreviewReview": {
+    "checkedAt": "2026-10-02",
+    "id": "michelle-pet",
+    "release": "https://github.com/NOXEVYR/michelle-pet/releases/tag/menu-preview-2026-09-30",
+    "tag": "menu-preview-2026-09-30",
+    "prerelease": true,
+    "publishedAt": "2026-09-30T07:14:05Z",
+    "name": "MichelePet-menu-preview.zip",
+    "bytes": 38811138,
+    "githubDigest": "sha256:6617f158207b345a9df3e1ef65cee095b965daa94cd19f07ff6404d1db832833",
+    "matchesLocalCandidate": true,
+    "sourceCommitVerified": false,
+    "sourceBoundary": "Release does not register the EXE build source_commit; its tag commit is not evidence of the EXE build source. No new visual or runtime acceptance.",
+    "catalogDecision": "Keep stable 0.3.8 and add the separately labeled public menu preview only inside project downloads."
   }
 }

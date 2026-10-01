@@ -1,5 +1,5 @@
 {
-  "checkedAt": "2026-10-01",
+  "checkedAt": "2026-10-02",
   "projects": [
     {
       "id": "yingxu",
@@ -497,6 +497,11 @@
           "label": "Windows 0.3.8",
           "url": "https://github.com/NOXEVYR/michelle-pet/releases/tag/v0.3.8",
           "channel": "stable"
+        },
+        {
+          "label": "Windows 菜单合并预览（2026-09-30）",
+          "url": "https://github.com/NOXEVYR/michelle-pet/releases/tag/menu-preview-2026-09-30",
+          "channel": "menu-preview"
         }
       ],
       "sync": "stable",
@@ -511,7 +516,8 @@
       "imageWidth": 1145,
       "imageHeight": 1374,
       "originalSrc": "assets/michelle.png",
-      "imageKind": "character"
+      "imageKind": "character",
+      "downloadNote": "0.3.8 为稳定版；菜单合并预览把模式与造型选择集中到同一菜单。预览尚未完成全部真实交互、游戏与多屏验收。"
     }
   ],
   "reviewedAt": "2026-09-27"
