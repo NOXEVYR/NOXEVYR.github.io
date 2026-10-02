@@ -849,5 +849,56 @@
     "visualReview": "Viewed all three unmodified public demonstration images; no private paths observed. No new application or browser acceptance.",
     "preserved": "Six other projects unchanged; historical screenshots/assets remain in source; active or paused software windows not advanced",
     "syncPolicy": "Reviewed preview links are explicitly labeled. Existing stable-only release selectors are unchanged; new previews require review rather than automatic promotion."
+  },
+  "sourcePreviewReview20261002": {
+    "checkedAt": "2026-10-02T17:06:15.2008903+08:00",
+    "project": "yingxu",
+    "statusCommit": "c06c741a04bb1cec9e881fc6ed31cb067bd44a1f",
+    "sourceCommit": "b900bfa403de8b7aeff54ba9b98b93f8c2446616",
+    "sourceVersion": "0.4.27/calls.3 Stage J",
+    "programVersion": "0.4.22",
+    "macVersion": "0.4.20-mac.1",
+    "nativeAcceptance": false,
+    "screenshots": [
+      {
+        "path": "docs/assets/stage-j-20261002/skills-focus.png",
+        "bytes": 97194,
+        "sha256": "fb99f2f06e24480bebd10639b6f288a6fdac0eb90fca5da9417a2f0b35066f2f",
+        "version": "0.4.27/calls.3 Stage J",
+        "data_scope": "synthetic project, skills and collaboration tasks; no user library",
+        "kind": "saved actual application renderer screenshot; not native acceptance",
+        "url": "https://raw.githubusercontent.com/NOXEVYR/yingxu/b900bfa403de8b7aeff54ba9b98b93f8c2446616/docs/assets/stage-j-20261002/skills-focus.png",
+        "source_commit": "b900bfa403de8b7aeff54ba9b98b93f8c2446616",
+        "gitBlob": "5c38335e016bb60c82d2c9aa47e8375c95864651",
+        "gitTreeBytes": 97194,
+        "sizeMatches": true,
+        "width": 1440,
+        "height": 960,
+        "dimensionEvidence": "Verified PNG header on identical local public-source bytes, 1440x960",
+        "sha256Evidence": "Locally recomputed and matched fixed public manifest",
+        "websitePath": "public/assets/previews/yingxu-fb99f2f06e24.png"
+      },
+      {
+        "path": "docs/assets/stage-j-20261002/collaboration-focus.png",
+        "bytes": 110927,
+        "sha256": "d757fbb0f9a974b34a90d4e9c653132f2e8dd3a5c79a2a852ab483fe31164245",
+        "version": "0.4.27/calls.3 Stage J",
+        "data_scope": "synthetic project, skills and collaboration tasks; no user library",
+        "kind": "saved actual application renderer screenshot; not native acceptance",
+        "url": "https://raw.githubusercontent.com/NOXEVYR/yingxu/b900bfa403de8b7aeff54ba9b98b93f8c2446616/docs/assets/stage-j-20261002/collaboration-focus.png",
+        "source_commit": "b900bfa403de8b7aeff54ba9b98b93f8c2446616",
+        "gitBlob": "75287e6cd96e9020447612cca180bcf6a4d5c315",
+        "gitTreeBytes": 110927,
+        "sizeMatches": true,
+        "width": 1440,
+        "height": 960,
+        "dimensionEvidence": "Verified PNG header on identical local public-source bytes, 1440x960",
+        "sha256Evidence": "Locally recomputed and matched fixed public manifest",
+        "websitePath": "public/assets/previews/yingxu-d757fbb0f9a9.png"
+      }
+    ],
+    "verification": "Public fixed manifest and Git tree matched local PNG bytes; local cache copied, no image download; 1440x960 header checked independently; parent viewed both images",
+    "softwareDownloadsChanged": false,
+    "oldImagesPreserved": true
   }
 }
