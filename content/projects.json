@@ -7,12 +7,12 @@
       "english": "YingXu",
       "category": "creative",
       "label": "创作与管理",
-      "version": "0.4.22",
+      "version": "0.4.27",
       "status": "已发布",
       "symbol": "YX",
       "color": "mint",
       "description": "围绕创作项目整理素材、文稿与分镜，让每个文件和制作进度都有归处。",
-      "details": "以作品为中心组织图片、视频、音乐和文稿，在多标签工作区编辑 Markdown 与 Word 普通正文，关联角色、场景、分镜和生成版本。支持文件夹导入、独立文档阅览、项目目录同步与迁移。 另已公开 0.4.27 / calls.3 Stage J 源码预览：原工作台与聚焦工作台共用数据和编辑器，改进 SKILL 搜索、协作任务布局与草稿保持；尚无对应新版原生程序包。",
+      "details": "以作品为中心组织图片、视频、音乐和文稿，在多标签工作区编辑 Markdown 与 Word 普通正文，关联角色、场景、分镜和生成版本。支持文件夹导入、独立文档阅览、项目目录同步与迁移。 Windows 0.4.27 / calls.3 已发布：提供 SKILL 搜索优化、协作任务工具区与聚焦工作台布局。",
       "features": [
         "项目分类、文件夹导入与目录同步",
         "Markdown / Word 正文、多标签与画板",
@@ -25,9 +25,14 @@
       "imageNote": "映序 0.4.27 / calls.3 Stage J · 聚焦工作台 · SKILL 库（源码预览，合成项目浏览器渲染；不是 0.4.22 程序截图或原生验收）",
       "downloads": [
         {
-          "label": "Windows 0.4.22",
-          "url": "https://github.com/NOXEVYR/yingxu/releases/tag/yingxu-v0.4.22",
+          "label": "Windows 0.4.27 已发布",
+          "url": "https://github.com/NOXEVYR/yingxu/releases/download/yingxu-v0.4.27/YingXu-v0.4.27-Windows-x64.zip",
           "channel": "stable"
+        },
+        {
+          "label": "Windows 0.4.22 历史稳定版",
+          "url": "https://github.com/NOXEVYR/yingxu/releases/tag/yingxu-v0.4.22",
+          "channel": "previous"
         },
         {
           "label": "macOS 0.4.20-mac.1 试用版",
@@ -36,8 +41,8 @@
         }
       ],
       "sync": "platforms",
-      "update": "映序 0.4.22 · Windows x64 已发布，查看完整更新与平台说明。",
-      "date": "2026-09-30",
+      "update": "映序 0.4.27 / calls.3 已发布，优化 SKILL 搜索与协作工具布局，并改进聚焦工作台和草稿保持。",
+      "date": "2026-10-02",
       "type": "software",
       "icon": "assets/icons/yingxu-2d29d6378951.png",
       "featuredHeadline": "让素材与文稿各就其位。",
@@ -62,9 +67,9 @@
       ],
       "imageWidth": 1440,
       "imageHeight": 960,
-      "sourceUrl": "https://github.com/NOXEVYR/yingxu/tree/b900bfa403de8b7aeff54ba9b98b93f8c2446616",
-      "documentationUrl": "https://github.com/NOXEVYR/yingxu/blob/b900bfa403de8b7aeff54ba9b98b93f8c2446616/docs/source-preview-stage-j-20261002.md",
-      "downloadNote": "Windows 程序仍为 0.4.22，macOS 为 0.4.20-mac.1 历史试用版。0.4.27 / calls.3 Stage J 是源码预览，不能导入为程序更新包；截图使用合成项目的应用浏览器渲染，不代表原生验收或真实 AI 成果。"
+      "sourceUrl": "https://github.com/NOXEVYR/yingxu/tree/d226f639e52113c019ac23615edd1eb63f58fcda",
+      "documentationUrl": "https://github.com/NOXEVYR/yingxu/releases/tag/yingxu-v0.4.27",
+      "downloadNote": "Windows 0.4.27 / calls.3 为当前公开程序包；macOS 0.4.20-mac.1 保留为历史试用入口。现有截图仍是合成项目的源码预览，不代表当前原生界面。"
     },
     {
       "id": "ai-hub",
