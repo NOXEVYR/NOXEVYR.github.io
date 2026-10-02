@@ -69,37 +69,37 @@
       "english": "本地 AI 资产与协作工作台",
       "category": "creative",
       "label": "创作与管理",
-      "version": "2.13.2",
+      "version": "2.13.11",
       "status": "已发布",
       "symbol": "AH",
       "color": "blue",
-      "description": "管理模型、LoRA、工作流与出图库，并按用途和工作端整理 Skill、接口与协作任务。",
-      "details": "曜核（原 AI Hub）集中管理本地模型与创作资源，关联项目、报告和运行记录。能力中心按用途与工作端筛选 Skill、接口和环境状态，支持自定义发现来源、协作任务交接及软件更新；首次引导协助创建自己的工作区。发现能力或登记工作端不代表接口已经接通。",
+      "description": "管理本地模型与创作资源，连接工作端、协作任务、分类报告和经审核的共享记忆。",
+      "details": "曜核（原 AI Hub）管理模型、LoRA、工作流与出图库，并把工作区、工作端、派单、报告和共享记忆串起来。支持任务持久去重与原号恢复、资源租约恢复、记忆审核和临时资源收尾；返回页面可保留派发草稿。各工作端仍需实际接入并主动提交报告，登记能力不代表真实模型或跨电脑业务已经验收。",
       "features": [
-        "模型、LoRA、工作流与出图库管理",
-        "能力中心：Skill、接口与环境状态",
-        "工作端发现、自定义来源与协作任务",
-        "手动 / 自动软件更新与首次工作区引导"
+        "模型、素材、Skill 与接口管理",
+        "工作区、工作端与可恢复协作任务",
+        "分类报告与审核后共享记忆",
+        "临时资源归属、租约与收尾记录"
       ],
       "platform": "Windows",
       "requirements": "Windows x64、.NET Framework 4.8+、Python 3.9+ 与 Microsoft Edge WebView2 Runtime。MCP 适配器需 Python 3.10+，配置助手需 Python 3.11+。包内不含 Python、WebView2 Runtime 或模型权重。",
       "downloads": [
         {
-          "label": "Windows 2.13.2",
-          "url": "https://github.com/NOXEVYR/ai-hub/releases/tag/v2.13.2",
+          "label": "Windows 2.13.11",
+          "url": "https://github.com/NOXEVYR/ai-hub/releases/tag/v2.13.11",
           "channel": "stable"
         }
       ],
       "sync": "stable",
-      "update": "曜核 2.13.2 已提供完整 Release 下载，修正软件更新版本识别，完善能力中心与工作端管理。",
-      "date": "2026-09-27",
+      "update": "修复派单重复与原号恢复、资源租约恢复、返回草稿和冷启动连接；完善新工作区、分类报告、审核记忆与素材管理流程。",
+      "date": "2026-10-02",
       "type": "software",
       "icon": "assets/icons/ai-hub-1f88dcbf474a.png",
       "aliases": [
         "AI Hub",
         "AIHub"
       ],
-      "downloadNote": "曜核是原 AI Hub 优化改名后的当前版本；旧版仅保留历史存档。"
+      "downloadNote": "曜核是原 AI Hub 优化改名后的当前版本；2.13.11 已正式发布，旧版仅作历史存档。各 Harness 的真实接入与模型运行需分别验证。"
     },
     {
       "id": "frameweave",
@@ -168,12 +168,12 @@
       "english": "FlowSwitch",
       "category": "tools",
       "label": "系统与效率",
-      "version": "3.9.6",
-      "status": "已发布",
+      "version": "3.9.7-preview.1",
+      "status": "预览版",
       "symbol": "FS",
       "color": "orange",
       "description": "统一管理已有代理，为程序和网站选择出口，并排查入口与连接问题。",
-      "details": "通过固定本地入口管理 HTTP / SOCKS5 出口、程序分流和网站例外，提供备用接替、真实连接证据、整组规则预览以及干净启动对照。",
+      "details": "通过固定本地入口管理 HTTP / SOCKS5 出口、程序分流和网站例外，提供备用接替与连接证据。3.9.7 预览增加经组件核验的 Qt5 / Qt6 WebEngine 启动适配，让指定程序的入口与外部系统代理共存。仅覆盖进入所配置入口的流量，不代表 VPN/TUN、原生 UDP 或游戏登录已经验收。",
       "features": [
         "固定入口与程序线路切换",
         "网站例外与备用出口接替",
@@ -184,7 +184,12 @@
       "requirements": "Windows 10 1809+ / Windows 11 x64，使用系统自带 Windows PowerShell 5.1、.NET Framework 4.x 与 curl；完整包自带运行组件。macOS 测试版需 macOS 13+，提供 Apple 芯片与 Intel 包，尚未公证。需自己的可用代理；仅管理进入固定入口的流量，Mac 功能范围与 Windows 不完全相同。",
       "downloads": [
         {
-          "label": "Windows 3.9.6",
+          "label": "Windows 3.9.7-preview.1 预览版",
+          "url": "https://github.com/NOXEVYR/proxy-switch/releases/tag/v3.9.7-preview.1",
+          "channel": "preview"
+        },
+        {
+          "label": "Windows 3.9.6 稳定版（备用）",
           "url": "https://github.com/NOXEVYR/proxy-switch/releases/tag/v3.9.6",
           "channel": "stable"
         },
@@ -195,7 +200,7 @@
         }
       ],
       "sync": "stable",
-      "update": "普通程序选线先给出只读预览，确认后接回流向入口并补齐已核验的联网子进程；已有规则使用“应用线路并检查”。保留默认出口、当前备用、其他程序入口和网站例外。",
+      "update": "增加经过组件核验的Qt5/6 WebEngine启动适配，程序固定入口可与外部系统代理共存。",
       "date": "2026-10-01",
       "type": "software",
       "icon": "assets/icons/proxy-switch-cd6b53f84043.png",
@@ -211,7 +216,8 @@
       "imageNote": "FlowSwitch 3.9.0 · 官方源码演示界面（演示数据）",
       "previewVersion": "3.9.0",
       "imageWidth": 1276,
-      "imageHeight": 879
+      "imageHeight": 879,
+      "downloadNote": "公开预览标签为 3.9.7-preview.1，包内程序为 3.9.7；稳定版仍为 3.9.6。macOS 单独维护。下方截图是 3.9.0 历史演示界面。"
     },
     {
       "id": "codex-switcher",
@@ -251,23 +257,28 @@
       "english": "VideoCatch",
       "category": "tools",
       "label": "系统与效率",
-      "version": "0.5.0",
-      "status": "已发布",
+      "version": "0.6.0-rc.8",
+      "status": "预览版",
       "symbol": "VC",
       "color": "rose",
-      "description": "下载网页视频、录制屏幕与摄像头，再按时间裁剪片段；支持本机 AI 控制。",
-      "details": "将网页视频下载、本地精确裁剪、全屏 / 区域 / 窗口 / 摄像头录制和 PNG 截图集中在一个桌面程序中。支持摄像头画中画、暂停继续、画笔及可选全局快捷键；AI 通过默认关闭的本机配对接口控制下载、裁剪和录制。停止后须等任务显示「已保存」，才能取得完整 MP4。",
+      "description": "收集网页视频、整理素材并录屏截图，再裁剪另存片段；支持本机 AI 协作。",
+      "details": "将素材库、网页采集、录屏截图和任务导出集中在一个桌面程序中。Windows 0.6.0-rc.8 预览加入素材四向框选、网页批量保存与命名、统一菜单和紧凑工具条，剪辑另存新文件。AI 使用本机配对接口，停止录制后须等待「已保存」。真实拖拽、跨屏 DPI、设备采集与声音仍需实机体验；macOS 保留独立的 0.5.0 程序。",
       "features": [
-        "网页监听、链接下载与本地精确裁剪",
+        "素材库框选与网页批量命名保存",
         "屏幕 / 窗口 / 摄像头录制与 PNG 截图",
-        "画中画、暂停继续、画笔与全局快捷键",
-        "本机 AI 控制下载、裁剪和录制"
+        "紧凑录屏工具条与剪辑另存新文件",
+        "本机 AI 配对控制与任务导出"
       ],
       "platform": "Windows · macOS · Chrome / Edge",
-      "requirements": "Windows 10 / 11 x64；macOS 14+，Apple Silicon 选 arm64、Intel 选 x86_64，以发布页实际附件为准。Mac 全屏仅录主显示器，区域 / 窗口须在同一显示器；窗口录制是屏幕裁剪，遮挡会入镜，移动或缩放后会停止并保存。Mac 系统声音需已有且配置好的虚拟回环输入；屏幕、摄像头和麦克风需系统授权。Mac 包未作 Developer ID 签名或 Apple 公证，实际硬件采集与权限交互未人工验收。保留完整程序目录，Mac 的 VideoCatchAI 与 .app 放在同一目录。网页监听需固定保留扩展 0.4.2；不绕过 DRM 或付费访问控制。",
+      "requirements": "Windows 10 / 11 x64；macOS 14+，Apple Silicon 选 arm64、Intel 选 x86_64，以发布页实际附件为准。Mac 全屏仅录主显示器，区域 / 窗口须在同一显示器；窗口录制是屏幕裁剪，遮挡会入镜，移动或缩放后会停止并保存。Mac 系统声音需已有且配置好的虚拟回环输入；屏幕、摄像头和麦克风需系统授权。Mac 包未作 Developer ID 签名或 Apple 公证，实际硬件采集与权限交互未人工验收。保留完整程序目录，Mac 的 VideoCatchAI 与 .app 放在同一目录。网页监听需使用配套扩展：Windows 0.6.0-rc.8 包内为 0.4.3 / 协议 3；独立扩展入口仍为旧发行中的 0.4.2；不绕过 DRM 或付费访问控制。",
       "downloads": [
         {
-          "label": "Windows 0.5.0 ZIP",
+          "label": "Windows 0.6.0-rc.8 预览版",
+          "url": "https://github.com/NOXEVYR/video-catch/releases/tag/v0.6.0-rc.8",
+          "channel": "preview"
+        },
+        {
+          "label": "Windows 0.5.0 稳定版（备用）",
           "url": "https://github.com/NOXEVYR/video-catch/releases/download/v0.5.0/VideoCatch-v0.5.0-Windows-x64.zip",
           "channel": "stable"
         },
@@ -288,10 +299,26 @@
         }
       ],
       "sync": "manual",
-      "update": "0.5.0 加入双平台录屏、摄像头画中画、PNG 截图与 AI 录制控制；Mac 的屏幕范围、系统声音和权限要求见详情。",
-      "date": "2026-09-26",
+      "update": "素材库四向框选、网页批量保存与命名、统一菜单；录屏截图使用紧凑工具条，剪辑另存新文件。",
+      "date": "2026-10-01",
       "type": "software",
-      "icon": "assets/icons/video-catch-cf7f8c5e7b23.png"
+      "icon": "assets/icons/video-catch-cf7f8c5e7b23.png",
+      "downloadNote": "Windows 0.6.0-rc.8 为预览版；0.5.0 稳定版、macOS 双架构与独立扩展保留原版本。新版截图为生成媒体夹具的离屏演示。",
+      "screenshots": [
+        {
+          "src": "assets/previews/video-catch-6d03160c263b.png",
+          "label": "任务与导出",
+          "caption": "拾影 0.6.0-rc.8 · 任务与导出（生成媒体夹具的离屏捕获）",
+          "version": "0.6.0-rc.8",
+          "width": 1020,
+          "height": 640
+        }
+      ],
+      "image": "assets/previews/video-catch-6d03160c263b.png",
+      "imageNote": "拾影 0.6.0-rc.8 · 任务与导出（生成媒体夹具的离屏捕获）",
+      "imageWidth": 1020,
+      "imageHeight": 640,
+      "previewVersion": "0.6.0-rc.8"
     },
     {
       "id": "classicdesk",
@@ -299,53 +326,56 @@
       "english": "Windows 桌面布局与外观工具",
       "category": "tools",
       "label": "系统与效率",
-      "version": "0.11.16-preview",
+      "version": "0.11.20-preview",
       "status": "预览版",
       "symbol": "CD",
       "color": "blue",
       "description": "预览任务栏、资源管理器与右键菜单的布局，管理自己的 Windows 桌面方案。",
-      "details": "Windows 11 布局与外观设置前端，支持四种布局、六款独立皮肤、方案库和 JSON 导入导出；已有配套服务的设备可对比并更新下次开机方案。",
+      "details": "Windows 11 布局与外观设置前端。方案大图与缩略卡片会随设置变化，六款皮肤统一菜单和焦点样式，支持方案导入导出、独立开始菜单与前端更新。预览和保存方案不会自动改变 Windows；独立开始菜单不接管 Win 键，尚不能完整替代 StartAllBack。",
       "features": [
-        "任务栏、资源管理器与菜单方案",
-        "四种布局与六款独立皮肤",
-        "方案库及 JSON 导入导出",
-        "配套服务的开机方案管理"
+        "随设置变化的方案大图与缩略卡片",
+        "六款皮肤的统一菜单与控件",
+        "方案库、JSON 导入导出与前端更新",
+        "独立开始菜单与配套服务方案管理"
       ],
       "platform": "Windows 11",
       "requirements": "Windows 11 x64 与 .NET 8 Desktop Runtime x64。公开包未捆绑第三方增强运行组件，新电脑不能直接启用桌面改造；开机方案管理需已有经核对的 ClassicDesk 0.11.14 配套服务。不同方案真实管理员写入与重启后效果仍待实测。",
       "downloads": [
         {
-          "label": "Windows 0.11.16-preview",
-          "url": "https://github.com/NOXEVYR/classicdesk/releases/tag/v0.11.16-preview",
+          "label": "Windows 0.11.20-preview 预览版",
+          "url": "https://github.com/NOXEVYR/classicdesk/releases/tag/v0.11.20-preview",
           "channel": "preview"
         }
       ],
       "sync": "manual",
-      "update": "统一控件、焦点和禁用样式；改善小窗口排版、草稿修改摘要和预览；修复按页重置与选项同步。",
-      "date": "2026-09-25",
+      "update": "方案大图与缩略卡片随设置变化，统一六款皮肤的菜单与焦点，增加独立开始菜单和前端更新。",
+      "date": "2026-10-01",
       "type": "software",
       "icon": "assets/icons/classicdesk-4a2feca24709.png",
-      "imageNote": "ClassicDesk 0.11.15-preview · 任务栏方案（源码离屏界面，未应用 Windows）",
+      "downloadNote": "0.11.20-preview 为前端预览版；真实 Alt / Popup、多屏与管理员组件仍待实机验收。截图使用合成方案离屏输出，未应用 Windows。",
       "screenshots": [
         {
-          "src": "assets/previews/classicdesk-70e668238a33.png",
-          "caption": "ClassicDesk 0.11.15-preview · 任务栏方案（源码离屏界面，未应用 Windows）",
+          "src": "assets/previews/classicdesk-4df31af7817f.png",
+          "label": "当前方案大图",
+          "caption": "ClassicDesk 0.11.20-preview · 当前方案大图（合成方案离屏输出，未应用Windows）",
+          "version": "0.11.20-preview",
           "width": 1080,
-          "height": 820,
-          "label": "任务栏方案"
+          "height": 820
         },
         {
-          "src": "assets/previews/classicdesk-31744201f2e2.png",
-          "caption": "ClassicDesk 0.11.15-preview · 皮肤资料库（源码离屏界面）",
+          "src": "assets/previews/classicdesk-d1f038c41920.png",
+          "label": "保存方案卡片",
+          "caption": "ClassicDesk 0.11.20-preview · 保存方案卡片（合成方案离屏输出，未应用Windows）",
+          "version": "0.11.20-preview",
           "width": 1080,
-          "height": 820,
-          "label": "皮肤资料库"
+          "height": 820
         }
       ],
-      "image": "assets/previews/classicdesk-70e668238a33.png",
-      "previewVersion": "0.11.15-preview",
+      "image": "assets/previews/classicdesk-4df31af7817f.png",
+      "imageNote": "ClassicDesk 0.11.20-preview · 当前方案大图（合成方案离屏输出，未应用Windows）",
       "imageWidth": 1080,
-      "imageHeight": 820
+      "imageHeight": 820,
+      "previewVersion": "0.11.20-preview"
     },
     {
       "id": "env-anchor",

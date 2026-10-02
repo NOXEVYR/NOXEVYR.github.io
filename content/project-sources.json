@@ -554,5 +554,300 @@
     "sourceCommitVerified": false,
     "sourceBoundary": "Release does not register the EXE build source_commit; its tag commit is not evidence of the EXE build source. No new visual or runtime acceptance.",
     "catalogDecision": "Keep stable 0.3.8 and add the separately labeled public menu preview only inside project downloads."
+  },
+  "publicReleaseReview20261002": {
+    "checkedAt": "2026-10-02T08:24:53.938Z",
+    "scope": "Public program releases, channel boundaries and fixed-commit demonstration captures",
+    "dateConvention": "Catalog release dates follow GitHub published_at UTC date; review time is recorded with timezone",
+    "programPackagesDownloaded": false,
+    "browserOrGpuTested": false,
+    "releases": [
+      {
+        "id": "ai-hub",
+        "releaseId": 401628665,
+        "tag": "v2.13.11",
+        "url": "https://github.com/NOXEVYR/ai-hub/releases/tag/v2.13.11",
+        "publishedAt": "2026-10-02T07:53:45Z",
+        "targetCommitish": "ced1489f70429f102b105efa6ef4b20438190039",
+        "draft": false,
+        "prerelease": false,
+        "assets": [
+          {
+            "assetId": 605105695,
+            "name": "AI-Hub-v2.13.11-release.json",
+            "bytes": 490,
+            "state": "uploaded",
+            "digest": "sha256:6516f7256421674960b5403c413243807f63f572495a1df599db0282134a8da2",
+            "url": "https://github.com/NOXEVYR/ai-hub/releases/download/v2.13.11/AI-Hub-v2.13.11-release.json"
+          },
+          {
+            "assetId": 605105675,
+            "name": "AI-Hub-v2.13.11-Source.zip",
+            "bytes": 1446336,
+            "state": "uploaded",
+            "digest": "sha256:cfc72aa1283c2fea9a1f9066b71408ec0a626a6be1b776651d651125b3b191bd",
+            "url": "https://github.com/NOXEVYR/ai-hub/releases/download/v2.13.11/AI-Hub-v2.13.11-Source.zip"
+          },
+          {
+            "assetId": 605105684,
+            "name": "AI-Hub-v2.13.11-Windows-x64.zip",
+            "bytes": 1865892,
+            "state": "uploaded",
+            "digest": "sha256:0885269de4a5b64371133016bfce9ef861d6069c26ee4c0bc3670a0b649efeca",
+            "url": "https://github.com/NOXEVYR/ai-hub/releases/download/v2.13.11/AI-Hub-v2.13.11-Windows-x64.zip"
+          },
+          {
+            "assetId": 605105700,
+            "name": "SHA256SUMS.txt",
+            "bytes": 191,
+            "state": "uploaded",
+            "digest": "sha256:9e8f84669e2fb84d7319fe773e556e38dc005daad083a3e4e7278adfdd0a0d53",
+            "url": "https://github.com/NOXEVYR/ai-hub/releases/download/v2.13.11/SHA256SUMS.txt"
+          }
+        ]
+      },
+      {
+        "id": "video-catch",
+        "releaseId": 401274509,
+        "tag": "v0.6.0-rc.8",
+        "url": "https://github.com/NOXEVYR/video-catch/releases/tag/v0.6.0-rc.8",
+        "publishedAt": "2026-10-01T19:18:33Z",
+        "targetCommitish": "eaad4e89f6371528e538a21c96093f1ce94cbdc7",
+        "draft": false,
+        "prerelease": true,
+        "assets": [
+          {
+            "assetId": 603958458,
+            "name": "build-provenance-v0.6.0-rc.8.json",
+            "bytes": 2521,
+            "state": "uploaded",
+            "digest": "sha256:d9d49ba00bb8f699c2df6b49ea32cc3d723aa7b480c6c8bacfca2dfea99b8312",
+            "url": "https://github.com/NOXEVYR/video-catch/releases/download/v0.6.0-rc.8/build-provenance-v0.6.0-rc.8.json"
+          },
+          {
+            "assetId": 603958311,
+            "name": "build-source-files-v0.6.0-rc.8.json",
+            "bytes": 15387,
+            "state": "uploaded",
+            "digest": "sha256:e2d9874abf950efecec7e8ce0b78833e40272599f96e5dd0ddf1db4751ed2298",
+            "url": "https://github.com/NOXEVYR/video-catch/releases/download/v0.6.0-rc.8/build-source-files-v0.6.0-rc.8.json"
+          },
+          {
+            "assetId": 603958092,
+            "name": "checksums-v0.6.0-rc.8.json",
+            "bytes": 215,
+            "state": "uploaded",
+            "digest": "sha256:1a86017b8ca0127bbc90266df9f906b5cedb12e65b8ef1111cd0308ee55a66d6",
+            "url": "https://github.com/NOXEVYR/video-catch/releases/download/v0.6.0-rc.8/checksums-v0.6.0-rc.8.json"
+          },
+          {
+            "assetId": 603958381,
+            "name": "screenshots-v0.6.0-rc.8.json",
+            "bytes": 1034,
+            "state": "uploaded",
+            "digest": "sha256:8e3f061634ec7a1c0ac459357bf353f768128ce87718790bfbe2259e8779f906",
+            "url": "https://github.com/NOXEVYR/video-catch/releases/download/v0.6.0-rc.8/screenshots-v0.6.0-rc.8.json"
+          },
+          {
+            "assetId": 603958213,
+            "name": "verification-v0.6.0-rc.8-Windows-x64.json",
+            "bytes": 4657,
+            "state": "uploaded",
+            "digest": "sha256:14e6b59a1b16b5e5a0e7c5c17473125956a4562326723bd81075bfaf36c03a55",
+            "url": "https://github.com/NOXEVYR/video-catch/releases/download/v0.6.0-rc.8/verification-v0.6.0-rc.8-Windows-x64.json"
+          },
+          {
+            "assetId": 603957660,
+            "name": "VideoCatch-v0.6.0-rc.8-Source.zip",
+            "bytes": 909480,
+            "state": "uploaded",
+            "digest": "sha256:7f619c22971c2fee468bff1bc5077a714138b5ea1967dcfdacc90c5f2ab50b0f",
+            "url": "https://github.com/NOXEVYR/video-catch/releases/download/v0.6.0-rc.8/VideoCatch-v0.6.0-rc.8-Source.zip"
+          },
+          {
+            "assetId": 603956596,
+            "name": "VideoCatch-v0.6.0-rc.8-Windows-x64.zip",
+            "bytes": 118769148,
+            "state": "uploaded",
+            "digest": "sha256:e6bc1d3c855bf8910361e70d8ebbb3d819dd737f30de127f145e1138f52055a1",
+            "url": "https://github.com/NOXEVYR/video-catch/releases/download/v0.6.0-rc.8/VideoCatch-v0.6.0-rc.8-Windows-x64.zip"
+          }
+        ]
+      },
+      {
+        "id": "classicdesk",
+        "releaseId": 401271590,
+        "tag": "v0.11.20-preview",
+        "url": "https://github.com/NOXEVYR/classicdesk/releases/tag/v0.11.20-preview",
+        "publishedAt": "2026-10-01T19:13:47Z",
+        "targetCommitish": "3c90087ec7d1777c7ff81abc82f9b9a95cb115c6",
+        "draft": false,
+        "prerelease": true,
+        "assets": [
+          {
+            "assetId": 603949497,
+            "name": "build-manifest.json",
+            "bytes": 2668,
+            "state": "uploaded",
+            "digest": "sha256:d57b881e615c1e0d8faadbb3dc0c1bc507a63e2b35e64460ad0eb38c1c339329",
+            "url": "https://github.com/NOXEVYR/classicdesk/releases/download/v0.11.20-preview/build-manifest.json"
+          },
+          {
+            "assetId": 603947144,
+            "name": "ClassicDesk-0.11.20-preview-source-public.zip",
+            "bytes": 10355039,
+            "state": "uploaded",
+            "digest": "sha256:bc229fe4fdc656173e17445e1cd0bfce253ff4c3b26f5c06a9f09f43d26635e4",
+            "url": "https://github.com/NOXEVYR/classicdesk/releases/download/v0.11.20-preview/ClassicDesk-0.11.20-preview-source-public.zip"
+          },
+          {
+            "assetId": 603946845,
+            "name": "ClassicDesk-0.11.20-preview-windows-x64.zip",
+            "bytes": 8734380,
+            "state": "uploaded",
+            "digest": "sha256:eaf474fc4d4f4ea88d330efcda21021afb16898c266bf1163a6e8117e8b310ca",
+            "url": "https://github.com/NOXEVYR/classicdesk/releases/download/v0.11.20-preview/ClassicDesk-0.11.20-preview-windows-x64.zip"
+          },
+          {
+            "assetId": 603949598,
+            "name": "frontend-ClassicDesk.deps.json",
+            "bytes": 445,
+            "state": "uploaded",
+            "digest": "sha256:193f4c792bee536430ddcc38c179ad59e7cf49114422811b43c8da5f130cb3c3",
+            "url": "https://github.com/NOXEVYR/classicdesk/releases/download/v0.11.20-preview/frontend-ClassicDesk.deps.json"
+          },
+          {
+            "assetId": 603949683,
+            "name": "frontend-ClassicDesk.dll",
+            "bytes": 7491072,
+            "state": "uploaded",
+            "digest": "sha256:fe94ee3a95b32103155c9eb60006bc759f9551ed7db08e716abd734c1b08d63e",
+            "url": "https://github.com/NOXEVYR/classicdesk/releases/download/v0.11.20-preview/frontend-ClassicDesk.dll"
+          },
+          {
+            "assetId": 603951398,
+            "name": "frontend-ClassicDesk.exe",
+            "bytes": 172032,
+            "state": "uploaded",
+            "digest": "sha256:4d31a432a821db53f9bd4211b8805e7de9349ebe554680c46da4fe9a33dba246",
+            "url": "https://github.com/NOXEVYR/classicdesk/releases/download/v0.11.20-preview/frontend-ClassicDesk.exe"
+          },
+          {
+            "assetId": 603951513,
+            "name": "frontend-ClassicDesk.runtimeconfig.json",
+            "bytes": 458,
+            "state": "uploaded",
+            "digest": "sha256:c71152bf25e40d647b2440c5b39be157a3d356106be9d5b678ab97bb87b4e782",
+            "url": "https://github.com/NOXEVYR/classicdesk/releases/download/v0.11.20-preview/frontend-ClassicDesk.runtimeconfig.json"
+          },
+          {
+            "assetId": 603951644,
+            "name": "frontend-update.json",
+            "bytes": 1091,
+            "state": "uploaded",
+            "digest": "sha256:5d973e48e554ffcf7ae74b68e8c650effa9365ba5774cf9b836e4523815473f3",
+            "url": "https://github.com/NOXEVYR/classicdesk/releases/download/v0.11.20-preview/frontend-update.json"
+          },
+          {
+            "assetId": 603951777,
+            "name": "SHA256SUMS.txt",
+            "bytes": 780,
+            "state": "uploaded",
+            "digest": "sha256:f537073704499b49a11e10a1479260364ee8eefcb976d2d7955c6f35847f40a3",
+            "url": "https://github.com/NOXEVYR/classicdesk/releases/download/v0.11.20-preview/SHA256SUMS.txt"
+          }
+        ]
+      },
+      {
+        "id": "proxy-switch",
+        "releaseId": 401271953,
+        "tag": "v3.9.7-preview.1",
+        "url": "https://github.com/NOXEVYR/proxy-switch/releases/tag/v3.9.7-preview.1",
+        "publishedAt": "2026-10-01T19:16:43Z",
+        "targetCommitish": "0eb5f20bef6125e5792cc4850f03a00bad93bd00",
+        "draft": false,
+        "prerelease": true,
+        "assets": [
+          {
+            "assetId": 603948095,
+            "name": "BUILD.txt",
+            "bytes": 3978,
+            "state": "uploaded",
+            "digest": "sha256:3d6cd7323cb7617a5ccd6203a9764529accdaf6c1df2ad6e265a8072839922d2",
+            "url": "https://github.com/NOXEVYR/proxy-switch/releases/download/v3.9.7-preview.1/BUILD.txt"
+          },
+          {
+            "assetId": 603948097,
+            "name": "FlowSwitch-v3.9.7-Windows-Source.zip",
+            "bytes": 2297625,
+            "state": "uploaded",
+            "digest": "sha256:5f6b2ac6a39c8ba5557dbe3d11fc0a60483a886cc88a259b0358a0540eeb67a6",
+            "url": "https://github.com/NOXEVYR/proxy-switch/releases/download/v3.9.7-preview.1/FlowSwitch-v3.9.7-Windows-Source.zip"
+          },
+          {
+            "assetId": 603948093,
+            "name": "FlowSwitch-v3.9.7-Windows-x64.zip",
+            "bytes": 71619593,
+            "state": "uploaded",
+            "digest": "sha256:da9f69d4a5b88a36bc702263b0cce9c814495c0f1a29e23d33d2a679eeb9533f",
+            "url": "https://github.com/NOXEVYR/proxy-switch/releases/download/v3.9.7-preview.1/FlowSwitch-v3.9.7-Windows-x64.zip"
+          },
+          {
+            "assetId": 603948099,
+            "name": "SHA256SUMS.txt",
+            "bytes": 367,
+            "state": "uploaded",
+            "digest": "sha256:6681993c703c6eb46eb5e824cde8a0024dc4b9a6cb0b18f37661eb5552649668",
+            "url": "https://github.com/NOXEVYR/proxy-switch/releases/download/v3.9.7-preview.1/SHA256SUMS.txt"
+          },
+          {
+            "assetId": 603948100,
+            "name": "Windows-manifest.json",
+            "bytes": 9356,
+            "state": "uploaded",
+            "digest": "sha256:aad59004b97e8de32151ffe3c9801d9f3ae1548811d2c813e4f58004c4b6f3b2",
+            "url": "https://github.com/NOXEVYR/proxy-switch/releases/download/v3.9.7-preview.1/Windows-manifest.json"
+          }
+        ]
+      }
+    ],
+    "screenshots": [
+      {
+        "id": "video-catch",
+        "originalName": "tasks.png",
+        "source": "https://raw.githubusercontent.com/NOXEVYR/video-catch/eaad4e89f6371528e538a21c96093f1ce94cbdc7/docs/screenshots/0.6.0-rc.8/tasks.png",
+        "commit": "eaad4e89f6371528e538a21c96093f1ce94cbdc7",
+        "bytes": 45756,
+        "sha256": "6d03160c263b358aa5772f052fe132f6b6003c3b3640d0256fce4b26753c5fde",
+        "width": 1020,
+        "height": 640,
+        "target": "public/assets/previews/video-catch-6d03160c263b.png"
+      },
+      {
+        "id": "classicdesk",
+        "originalName": "profile-library.png",
+        "source": "https://raw.githubusercontent.com/NOXEVYR/classicdesk/3c90087ec7d1777c7ff81abc82f9b9a95cb115c6/docs/screenshots/profile-library.png",
+        "commit": "3c90087ec7d1777c7ff81abc82f9b9a95cb115c6",
+        "bytes": 227200,
+        "sha256": "4df31af7817fa23f0e4fb8efc4cd57abf7760c722311b3d173c5baf2b1095a73",
+        "width": 1080,
+        "height": 820,
+        "target": "public/assets/previews/classicdesk-4df31af7817f.png"
+      },
+      {
+        "id": "classicdesk",
+        "originalName": "profile-cards.png",
+        "source": "https://raw.githubusercontent.com/NOXEVYR/classicdesk/3c90087ec7d1777c7ff81abc82f9b9a95cb115c6/docs/screenshots/profile-cards.png",
+        "commit": "3c90087ec7d1777c7ff81abc82f9b9a95cb115c6",
+        "bytes": 176176,
+        "sha256": "d1f038c419209671150f92dbd5e1d5eadc8e23f0cf8e79e2ecbbd8a24e03cc33",
+        "width": 1080,
+        "height": 820,
+        "target": "public/assets/previews/classicdesk-d1f038c41920.png"
+      }
+    ],
+    "visualReview": "Viewed all three unmodified public demonstration images; no private paths observed. No new application or browser acceptance.",
+    "preserved": "Six other projects unchanged; historical screenshots/assets remain in source; active or paused software windows not advanced",
+    "syncPolicy": "Reviewed preview links are explicitly labeled. Existing stable-only release selectors are unchanged; new previews require review rather than automatic promotion."
   }
 }
