@@ -40,6 +40,7 @@ jobs:
           node scripts/build.mjs
           node scripts/build.mjs --production
           node scripts/test-catalog-fallback.mjs --built
+          node scripts/test-pending-projects.mjs --built
           node scripts/check-interface-state.mjs
       - uses: actions/configure-pages@v5
       - uses: actions/upload-pages-artifact@v3

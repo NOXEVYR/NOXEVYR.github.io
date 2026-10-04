@@ -1,5 +1,5 @@
 {
-  "checkedAt": "2026-10-02",
+  "checkedAt": "2026-10-04",
   "projects": [
     {
       "id": "yingxu",
@@ -7,7 +7,7 @@
       "english": "YingXu",
       "category": "creative",
       "label": "创作与管理",
-      "version": "0.4.27",
+      "version": "0.4.28",
       "status": "已发布",
       "symbol": "YX",
       "color": "mint",
@@ -25,8 +25,8 @@
       "imageNote": "映序 0.4.27 / calls.3 Stage J · 聚焦工作台 · SKILL 库（源码预览，合成项目浏览器渲染；不是 0.4.22 程序截图或原生验收）",
       "downloads": [
         {
-          "label": "Windows 0.4.27 已发布",
-          "url": "https://github.com/NOXEVYR/yingxu/releases/download/yingxu-v0.4.27/YingXu-v0.4.27-Windows-x64.zip",
+          "label": "Windows 0.4.28",
+          "url": "https://github.com/NOXEVYR/yingxu/releases/tag/yingxu-v0.4.28",
           "channel": "stable"
         },
         {
@@ -41,7 +41,7 @@
         }
       ],
       "sync": "platforms",
-      "update": "映序 0.4.27 / calls.3 已发布，优化 SKILL 搜索与协作工具布局，并改进聚焦工作台和草稿保持。",
+      "update": "修复核对完成后下载未启动的线程衔接，以及下载失败重试与临时文件清理的竞争。",
       "date": "2026-10-02",
       "type": "software",
       "icon": "assets/icons/yingxu-2d29d6378951.png",
@@ -350,7 +350,7 @@
       "requirements": "Windows 11 x64 与 .NET 8 Desktop Runtime x64。公开包未捆绑第三方增强运行组件，新电脑不能直接启用桌面改造；开机方案管理需已有经核对的 ClassicDesk 0.11.14 配套服务。不同方案真实管理员写入与重启后效果仍待实测。",
       "downloads": [
         {
-          "label": "Windows 0.11.20-preview 预览版",
+          "label": "Windows 0.11.20-preview",
           "url": "https://github.com/NOXEVYR/classicdesk/releases/tag/v0.11.20-preview",
           "channel": "preview"
         }
@@ -421,7 +421,7 @@
       "update": "新版环境清单与引用诊断界面；增加恢复清单导入、位置映射，以及 JSON 字符串和快捷方式引用修复。",
       "date": "2026-10-01",
       "type": "software",
-      "icon": "assets/icons/env-anchor-b0fd80143a42.png",
+      "icon": "assets/icons/env-anchor-ef5f5d454c70.png",
       "imageNote": "环境锚点 · 环境清单（0.8.0-preview.1 源码离屏演示，示例数据，未执行真实迁移或恢复）",
       "screenshots": [
         {
@@ -556,6 +556,102 @@
       "originalSrc": "assets/michelle.png",
       "imageKind": "character",
       "downloadNote": "0.3.8 为稳定版；菜单合并预览把模式与造型选择集中到同一菜单。预览尚未完成全部真实交互、游戏与多屏验收。"
+    },
+    {
+      "id": "casecontrol",
+      "name": "机箱控制台",
+      "english": "CaseControl",
+      "category": "tools",
+      "label": "机箱与硬件",
+      "version": "0.2.0",
+      "status": "已发布",
+      "symbol": "CC",
+      "color": "mint",
+      "icon": "assets/icons/casecontrol-fb4e951e3de6.svg",
+      "description": "面向指定 ASUS Aura 硬件的 Windows 机箱工具，集中查看温度与转速，并提供灯光设置和利民冷头屏幕排查入口。",
+      "details": "机箱控制台把灯光设置、CPU 与显卡温度、可读风扇转速和利民冷头屏幕诊断放在一个 Windows 客户端中。当前灯控面向已识别的指定 ASUS Aura 接口；风扇 PWM 写入保持锁定，屏幕画面通过官方 TRCC 调整。",
+      "features": [
+        "指定 ASUS Aura：关闭、静态颜色与亮度、彩虹灯效",
+        "查看可读 CPU / GPU 温度与风扇转速",
+        "指定利民冷头 USB / TRCC 状态排查与诊断导出"
+      ],
+      "platform": "Windows x64",
+      "requirements": "Windows x64，需安装 .NET 10 桌面运行时；便携 ZIP 未签名、不附运行时。完整主板监测需管理员权限与 PawnIO，包内带官方 PawnIO 小安装器。灯控仅面向指定 ASUS Aura 接口；冷头主题需另备官方 TRCC，发行包不附 TRCC。",
+      "downloads": [
+        {
+          "label": "Windows 0.2.0 ZIP",
+          "url": "https://github.com/NOXEVYR/CaseControl/releases/download/v0.2.0/CaseControl-0.2.0-Windows-x64.zip",
+          "channel": "stable"
+        }
+      ],
+      "downloadNote": "0.2.0 已发布 · ZIP 约 6.01 MiB（6,298,704 字节）。下载后保留完整目录；使用前请阅读运行要求与硬件范围。",
+      "introductionUrl": "projects/casecontrol.html",
+      "date": "2026-10-04",
+      "update": "机箱控制台 0.2.0 已发布：指定 ASUS Aura 灯光设置、可读温度与转速监测、利民冷头状态排查。",
+      "screenshots": [
+        {
+          "src": "assets/previews/casecontrol-8b93642c7eac.png",
+          "label": "装饰灯光",
+          "caption": "机箱控制台 0.2.0 · 装饰灯光（打包后原生 WPF 离屏预览，模拟传感数据；非真实硬件读数或实屏验收）",
+          "version": "0.2.0",
+          "width": 1200,
+          "height": 830,
+          "kind": "offscreen-demo"
+        },
+        {
+          "src": "assets/previews/casecontrol-87b6a6ed616f.png",
+          "label": "风扇与水泵",
+          "caption": "机箱控制台 0.2.0 · 风扇与水泵（打包后原生 WPF 离屏预览，模拟传感数据；非真实硬件读数或实屏验收）",
+          "version": "0.2.0",
+          "width": 1200,
+          "height": 830,
+          "kind": "offscreen-demo"
+        },
+        {
+          "src": "assets/previews/casecontrol-176caeba2844.png",
+          "label": "冷头屏幕",
+          "caption": "机箱控制台 0.2.0 · 冷头屏幕（打包后原生 WPF 离屏预览，模拟传感数据；非真实硬件读数或实屏验收）",
+          "version": "0.2.0",
+          "width": 1200,
+          "height": 830,
+          "kind": "offscreen-demo"
+        },
+        {
+          "src": "assets/previews/casecontrol-8d422745dbdf.png",
+          "label": "传感与诊断",
+          "caption": "机箱控制台 0.2.0 · 传感与诊断（打包后原生 WPF 离屏预览，模拟传感数据；非真实硬件读数或实屏验收）",
+          "version": "0.2.0",
+          "width": 1200,
+          "height": 830,
+          "kind": "offscreen-demo"
+        }
+      ],
+      "introduction": {
+        "eyebrow": "机箱工具 · Windows 客户端",
+        "previewNote": "以下 4 张图片来自 0.2.0 打包后的原生 WPF 离屏预览，使用模拟传感数据。图中的温度、转速与连接状态用于展示界面，不代表真实硬件读数或冷头实屏效果。",
+        "sections": [
+          {
+            "title": "装饰灯光",
+            "body": "为指定 ASUS Aura 控制器提供关闭灯光、静态颜色与亮度、彩虹灯效。当前范围是已识别的固定灯组和 3 路 ARGB；不承诺任意主板兼容、原灯效备份或重启保持。"
+          },
+          {
+            "title": "散热监测",
+            "body": "集中显示可读取的 CPU、显卡温度与风扇转速，缺失数据保留为空。监测能力随硬件、驱动与权限而定；通道编号不代表物理接线，风扇 PWM 调速保持锁定。"
+          },
+          {
+            "title": "冷头屏幕排查",
+            "body": "汇总指定利民冷头的 USB、设备错误与 TRCC 进程状态，支持导出诊断和打开官方 TRCC。屏幕主题、温度面板、方向和亮度由 TRCC 管理；连接状态不证明实屏画面已恢复。"
+          }
+        ],
+        "notes": [
+          "硬件兼容性以已验证的指定接口为准，不承诺任意主板或所有利民冷头型号兼容；当前不提供已验证的风扇调速。",
+          "传感器读取依赖硬件、驱动与权限；通道编号不代表物理接线，管理员只读诊断结果不构成全部主板兼容承诺。",
+          "当前提供状态排查和诊断导出；冷头实屏效果以硬件实际显示为准，屏幕主题由官方 TRCC 管理。"
+        ]
+      },
+      "sourceUrl": "https://github.com/NOXEVYR/CaseControl",
+      "documentationUrl": "https://github.com/NOXEVYR/CaseControl/blob/25a4a7a1ae0cabf2fe6c2c9c384cade6c6ae4b67/README.md",
+      "releaseNotesUrl": "https://github.com/NOXEVYR/CaseControl/releases/tag/v0.2.0"
     }
   ],
   "reviewedAt": "2026-09-27"

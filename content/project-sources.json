@@ -150,6 +150,20 @@
       "sourceVersion": "0.3.8",
       "readme": "https://github.com/NOXEVYR/michelle-pet/blob/80cd7695e28e94ef0eef79c98c29c752113cf0fa/README.md",
       "download": "https://github.com/NOXEVYR/michelle-pet/releases/tag/v0.3.8"
+    },
+    {
+      "id": "casecontrol",
+      "reviewedAt": "2026-10-04",
+      "version": "0.2.0",
+      "status": "published",
+      "source": "https://github.com/NOXEVYR/CaseControl",
+      "publication": "Release API checked by parent: draft=false, prerelease=false, ZIP size and digest matched owner handoff.",
+      "boundaries": "Specified ASUS Aura interface; readable sensors only; PWM write remains locked; official TRCC manages display themes.",
+      "commit": "25a4a7a1ae0cabf2fe6c2c9c384cade6c6ae4b67",
+      "readme": "https://github.com/NOXEVYR/CaseControl/blob/25a4a7a1ae0cabf2fe6c2c9c384cade6c6ae4b67/README.md",
+      "download": "https://github.com/NOXEVYR/CaseControl/releases/download/v0.2.0/CaseControl-0.2.0-Windows-x64.zip",
+      "bytes": 6298704,
+      "sha256": "15869cf6c643184d5177a27eeef9db7825d1690c19052aec919de318f922ddd9"
     }
   ],
   "assets": [
@@ -430,6 +444,80 @@
       "websiteSha256": "b0fd80143a4234d68ffe6d5338cb96fe7a4c841fed0a5dcce2e7cf47e49dd30e",
       "width": 256,
       "height": 256
+    },
+    {
+      "id": "casecontrol",
+      "kind": "icon",
+      "source": "src/Assets/CaseControl.svg",
+      "version": "0.2.0",
+      "bytes": 822,
+      "sha256": "fb4e951e3de6d08eab08e2ea30e1e5b0082344e55f92ecd05467a2a91d610792",
+      "websitePath": "assets/icons/casecontrol-fb4e951e3de6.svg",
+      "verification": "Original local artwork copied unchanged; fixed release source path confirmed by parent.",
+      "commit": "25a4a7a1ae0cabf2fe6c2c9c384cade6c6ae4b67"
+    },
+    {
+      "id": "casecontrol",
+      "kind": "icon",
+      "source": "src/Assets/CaseControl.png",
+      "version": "0.2.0",
+      "bytes": 10391,
+      "sha256": "caf2cb80765098b4130b1a9a25bb26844c64a2f5be8a89b1aac0ea0e7457400b",
+      "websitePath": "assets/icons/casecontrol-caf2cb807650.png",
+      "verification": "Original local artwork copied unchanged; fixed release source path confirmed by parent.",
+      "commit": "25a4a7a1ae0cabf2fe6c2c9c384cade6c6ae4b67"
+    },
+    {
+      "id": "casecontrol",
+      "kind": "offscreen-demo",
+      "source": "CaseControl/40_Runs/2026-10-04/PackageUI/page-0.png",
+      "version": "0.2.0",
+      "bytes": 90318,
+      "sha256": "8b93642c7eac4d7fc4a810357c35150c88c264992f817b2c9e1972fb9f752205",
+      "width": 1200,
+      "height": 830,
+      "websitePath": "assets/previews/casecontrol-8b93642c7eac.png",
+      "caption": "机箱控制台 0.2.0 · 装饰灯光（打包后原生 WPF 离屏预览，模拟传感数据；非真实硬件读数或实屏验收）",
+      "verification": "Final packaged WPF offscreen preview; local original bytes copied unchanged. Simulated sensor data; not live hardware acceptance. Different bytes from repository docs/interface.png."
+    },
+    {
+      "id": "casecontrol",
+      "kind": "offscreen-demo",
+      "source": "CaseControl/40_Runs/2026-10-04/PackageUI/page-1.png",
+      "version": "0.2.0",
+      "bytes": 98593,
+      "sha256": "87b6a6ed616f7f84054ebb44c0a41b94e201914da44caaf961c6c11f1d57ef7a",
+      "width": 1200,
+      "height": 830,
+      "websitePath": "assets/previews/casecontrol-87b6a6ed616f.png",
+      "caption": "机箱控制台 0.2.0 · 风扇与水泵（打包后原生 WPF 离屏预览，模拟传感数据；非真实硬件读数或实屏验收）",
+      "verification": "Final packaged WPF offscreen preview; local original bytes copied unchanged. Simulated sensor data; not live hardware acceptance. Different bytes from repository docs/interface.png."
+    },
+    {
+      "id": "casecontrol",
+      "kind": "offscreen-demo",
+      "source": "CaseControl/40_Runs/2026-10-04/PackageUI/page-2.png",
+      "version": "0.2.0",
+      "bytes": 86854,
+      "sha256": "176caeba28444f1b5ba38ac260bbbf874d111fac387d0c335afe8959777a9ea1",
+      "width": 1200,
+      "height": 830,
+      "websitePath": "assets/previews/casecontrol-176caeba2844.png",
+      "caption": "机箱控制台 0.2.0 · 冷头屏幕（打包后原生 WPF 离屏预览，模拟传感数据；非真实硬件读数或实屏验收）",
+      "verification": "Final packaged WPF offscreen preview; local original bytes copied unchanged. Simulated sensor data; not live hardware acceptance. Different bytes from repository docs/interface.png."
+    },
+    {
+      "id": "casecontrol",
+      "kind": "offscreen-demo",
+      "source": "CaseControl/40_Runs/2026-10-04/PackageUI/page-3.png",
+      "version": "0.2.0",
+      "bytes": 69048,
+      "sha256": "8d422745dbdf57cded2cb04c3383f13cbd7e2da107b78f049ff6a8ba3e2589e1",
+      "width": 1200,
+      "height": 830,
+      "websitePath": "assets/previews/casecontrol-8d422745dbdf.png",
+      "caption": "机箱控制台 0.2.0 · 传感与诊断（打包后原生 WPF 离屏预览，模拟传感数据；非真实硬件读数或实屏验收）",
+      "verification": "Final packaged WPF offscreen preview; local original bytes copied unchanged. Simulated sensor data; not live hardware acceptance. Different bytes from repository docs/interface.png."
     }
   ],
   "generatedPreviews": [

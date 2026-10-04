@@ -88,6 +88,9 @@ select:disabled{cursor:default;opacity:.5}
 .catalog-status a{color:var(--gold);text-decoration:underline;text-underline-offset:3px}
 .project-card .card-title,.project-card .detail-button{text-decoration:none}
 .project-card .detail-button{display:grid;place-items:center}
+.introduction-project .card-version{display:block;position:static;font-size:10px;white-space:nowrap}
+.introduction-project .card-category{max-width:none}
+.introduction-project .detail-button{width:44px;height:44px}
 .catalog-fallback{display:block;position:relative;z-index:2}
 .catalog-fallback>summary{display:flex;align-items:center;justify-content:space-between;gap:16px;list-style:none;cursor:pointer}
 .catalog-fallback>summary::-webkit-details-marker{display:none}

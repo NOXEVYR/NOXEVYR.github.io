@@ -3,6 +3,7 @@ import {createHash} from 'node:crypto';
 import {fileURLToPath} from 'node:url';
 import {resolve, dirname, sep} from 'node:path';
 import {projectCard, updateList, validCatalog} from '../public/catalog-render.js';
+import {projectIntroduction} from './project-introduction.mjs';
 const production = process.argv.includes('--production');
 const projectRoot = resolve(dirname(fileURLToPath(import.meta.url)), '..');
 const source = resolve(projectRoot, 'public');
@@ -22,6 +23,8 @@ for (const p of data.projects) {
 }
 let html = await readFile(resolve(source, 'horizon.html'), 'utf8');
 const files = new Set(['app.js', 'catalog-render.js', 'horizon.css', 'horizon.js', 'blackhole.js', 'assets/noxevyr-social.jpg', 'assets/plasma-flow.png', 'assets/plasma-turbulence.png', 'assets/plasma-flow-standard.png', 'assets/plasma-turbulence-standard.png']);
+const introductions = data.projects.filter(p => p.introductionUrl).map(p => ({path: p.introductionUrl, html: projectIntroduction(p)}));
+if (introductions.length) files.add('project-introduction.css');
 for (const match of html.matchAll(/(?:src|href)="(assets\/[^"?#]+)(?:[?#][^"]*)?"/g)) files.add(match[1]);
 for (const p of data.projects) {
   for (const field of ['icon', 'image', 'originalSrc']) if (p[field]) files.add(p[field]);
@@ -43,6 +46,7 @@ html = html.replaceAll('{{projectCards}}', data.projects.map(p => projectCard(p,
 html = html.replaceAll('{{count:all}}', String(data.projects.length)).replaceAll('{{count:total}}', String(data.projects.length).padStart(2, '0'));
 for (const category of ['creative', 'tools', 'play']) html = html.replaceAll(`{{count:${category}}}`, String(data.projects.filter(p => p.category === category).length));
 const hash = createHash('sha256').update(html);
+for (const page of introductions) hash.update(page.html);
 const sourceFiles = [];
 for (const file of files) {
   const from = resolve(source, file), to = resolve(output, file);
@@ -63,4 +67,10 @@ for (const {from, to} of sourceFiles) {
 }
 await writeFile(resolve(output, 'data.js'), 'window.PORTFOLIO = ' + JSON.stringify(data).replace(/</g, '\\u003c') + ';\n');
 await writeFile(resolve(output, 'index.html'), html);
+for (const page of introductions) {
+  const path = resolve(output, page.path);
+  if (!path.startsWith(output + sep)) throw Error('Introduction path outside website');
+  await mkdir(dirname(path), {recursive: true});
+  await writeFile(path, page.html);
+}
 console.log(`Built ${data.projects.length} projects into ${production ? 'dist-production' : 'dist'}/ — NOXEVYR black-hole design (${buildVersion})`);

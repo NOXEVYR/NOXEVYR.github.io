@@ -3,8 +3,9 @@ import assert from 'node:assert/strict';
 import {readFile, stat} from 'node:fs/promises';
 import {resolve, dirname} from 'node:path';
 import {fileURLToPath} from 'node:url';
-import {validCatalog, projectCard, projectImages, updateList, escapeHtml} from '../public/catalog-render.js';
+import {validCatalog, projectCard, projectImages, updateList, escapeHtml, projectTarget, isPending} from '../public/catalog-render.js';
 import {initializeCatalog} from '../public/app.js';
+import {projectIntroduction} from './project-introduction.mjs';
 const root = resolve(dirname(fileURLToPath(import.meta.url)), '..');
 const data = JSON.parse(await readFile(resolve(root, 'content/projects.json'), 'utf8'));
 let checks = 0;
@@ -33,12 +34,14 @@ check('shared renderer provides every download and source without JavaScript', (
   assert.equal(validCatalog(data), true);
   for (const p of data.projects) {
     const card = projectCard(p, {fallback: true});
-    assert.match(card, /<details class="card-footer catalog-fallback">/);
+    if (p.introductionUrl) assert.match(card, /class="card-footer catalog-pending"/);
+    else assert.match(card, /<details class="card-footer catalog-fallback">/);
     assert.ok(!/<details[^>]*\bopen\b/.test(card), 'fallback downloads start collapsed');
     assert.ok(card.includes(`>v${escapeHtml(p.version)}</span>`), `${p.id}: card must preserve the full published version`);
     assert.ok(card.includes(`data-project="${p.id}"`));
-    assert.ok(card.includes(`href="${escapeHtml(p.sourceUrl || `https://github.com/NOXEVYR/${p.id}`)}"`));
-    for (const d of p.downloads) assert.ok(card.includes(`href="${escapeHtml(d.url)}"`));
+    assert.ok(card.includes(`href="${escapeHtml(projectTarget(p))}"`));
+    const downloadPage = p.introductionUrl ? projectIntroduction(p) : card;
+    for (const d of p.downloads) assert.ok(downloadPage.includes(`href="${escapeHtml(d.url)}"`), `${p.id}: static download must be reachable`);
   }
   assert.equal((updateList(data.projects).match(/class="update-row"/g) || []).length, 4);
 });
@@ -134,14 +137,18 @@ if(process.argv.includes('--built')) {
   for(const directory of ['dist','dist-production']) {
     const output=resolve(root,directory), html=await readFile(resolve(output,'index.html'),'utf8');
     const app=await readFile(resolve(output,'app.js'),'utf8');
+    const introductions = new Map(await Promise.all(data.projects.filter(p=>p.introductionUrl).map(async p=>[p.id,await readFile(resolve(output,p.introductionUrl),'utf8')])));
     check(`${directory}: nonempty static directory, updates, recovery, and resolved templates`,()=>{
       assert.ok(!/\{\{[^}]+\}\}/.test(html));
       assert.equal((html.match(/<article class="project-card /g)||[]).length,data.projects.length);
-      assert.equal((html.match(/<details class="card-footer catalog-fallback">/g)||[]).length,data.projects.length);
+      assert.equal((html.match(/<details class="card-footer catalog-fallback">/g)||[]).length,data.projects.filter(p=>!p.introductionUrl).length);
       assert.equal((html.match(/class="update-row"/g)||[]).length,4);
       assert.ok(/id="collection-toolbar"[^>]*\bhidden/.test(html));
       assert.ok(/id="catalog-status"(?![^>]*\bhidden)[^>]*>/.test(html));
-      for(const p of data.projects)for(const d of p.downloads)assert.ok(html.includes(`href="${escapeHtml(d.url)}"`));
+      for(const p of data.projects){
+        if(p.introductionUrl)assert.ok(html.includes(`href="${escapeHtml(p.introductionUrl)}"`),`${p.id}: static introduction link`);
+        for(const d of p.downloads)assert.ok((introductions.get(p.id)||html).includes(`href="${escapeHtml(d.url)}"`),`${p.id}: static download destination`);
+      }
       const version=html.match(/src="app\.js\?v=([a-f0-9]+)"/)[1];
       assert.ok(app.includes(`'./catalog-render.js?v=${version}'`));
     });

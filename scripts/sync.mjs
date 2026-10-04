@@ -3,6 +3,7 @@ import {findReadmePackage, hasReadmePackages, applyReadmePackage} from './readme
 import {syncVideoCatch} from './sync-videocatch.mjs';
 import {syncEnvAnchor} from './sync-envanchor.mjs';
 import {syncAIHubCandidate} from './sync-aihub.mjs';
+import {syncPublishedProjects} from './sync-policy.mjs';
 const path=new URL('../content/projects.json',import.meta.url);
 const data=JSON.parse(await readFile(path,'utf8'));
 const headers={'User-Agent':'noxevyr-personal-site','Accept':'application/vnd.github+json'};
@@ -44,7 +45,7 @@ async function aiHubCommit(ref){
  return r.json();
 }
 let failed=false;
-await Promise.all(data.projects.map(async p=>{try{
+await syncPublishedProjects(data.projects,async p=>{try{
  const all=await releases(p.id);
  if(p.id==='video-catch'){
   syncVideoCatch(p,all,{version,compare,summary});
@@ -86,6 +87,6 @@ await Promise.all(data.projects.map(async p=>{try{
  }
  if(p.id==='ai-hub')await syncAIHubCandidate(p,{readJson:aiHubJson,readBytes:aiHubBytes,readCommit:aiHubCommit,compare});
  console.log(`${p.id}: ${p.version}`);
-}catch(e){failed=true;console.error(e.message)}}));
+}catch(e){failed=true;console.error(e.message)}});
 if(failed){console.error('Sync incomplete: preserved the previous catalog; deployment must not publish partial data.');process.exitCode=1}else{data.checkedAt=new Date().toISOString().slice(0,10);await writeFile(path,JSON.stringify(data,null,2)+'\n');console.log('Catalog refreshed; no remote repository was modified.')}
 if(!failed)await import('./sync-icons.mjs');

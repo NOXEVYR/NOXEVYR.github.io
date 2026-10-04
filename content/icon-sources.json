@@ -29,5 +29,19 @@
   },
   "env-anchor": {
     "path": "assets/app.png"
+  },
+  "casecontrol": {
+    "path": "src/Assets/CaseControl.png",
+    "source": "https://github.com/NOXEVYR/CaseControl",
+    "version": "0.2.0",
+    "reviewedAt": "2026-10-04",
+    "websitePath": "assets/icons/casecontrol-fb4e951e3de6.svg",
+    "sha256": "caf2cb80765098b4130b1a9a25bb26844c64a2f5be8a89b1aac0ea0e7457400b",
+    "rasterFallback": "assets/icons/casecontrol-caf2cb807650.png",
+    "note": "Original SVG used on website; PNG source registered for scheduled icon sync. Fixed release source path confirmed by parent.",
+    "repo": "CaseControl",
+    "commit": "25a4a7a1ae0cabf2fe6c2c9c384cade6c6ae4b67",
+    "websiteSha256": "fb4e951e3de6d08eab08e2ea30e1e5b0082344e55f92ecd05467a2a91d610792",
+    "svgPath": "src/Assets/CaseControl.svg"
   }
 }
