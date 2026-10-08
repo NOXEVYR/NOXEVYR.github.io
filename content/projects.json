@@ -1,5 +1,5 @@
 {
-  "checkedAt": "2026-10-04",
+  "checkedAt": "2026-10-08",
   "projects": [
     {
       "id": "yingxu",
@@ -12,7 +12,7 @@
       "symbol": "YX",
       "color": "mint",
       "description": "围绕创作项目整理素材、文稿与分镜，让每个文件和制作进度都有归处。",
-      "details": "以作品为中心组织图片、视频、音乐和文稿，在多标签工作区编辑 Markdown 与 Word 普通正文，关联角色、场景、分镜和生成版本。支持文件夹导入、独立文档阅览、项目目录同步与迁移。 Windows 0.4.27 / calls.3 已发布：提供 SKILL 搜索优化、协作任务工具区与聚焦工作台布局。",
+      "details": "以作品为中心组织图片、视频、音乐和文稿，在多标签工作区编辑 Markdown 与 Word 普通正文，关联角色、场景、分镜和生成版本。支持文件夹导入、独立文档阅览、项目目录同步与迁移。 Windows 0.4.28 / updater.1 已发布：修复自动更新下载衔接、失败退避和中断恢复，改善网络等待，并补全后台进度与旧补丁缓存预览整理。",
       "features": [
         "项目分类、文件夹导入与目录同步",
         "Markdown / Word 正文、多标签与画板",
@@ -67,9 +67,9 @@
       ],
       "imageWidth": 1440,
       "imageHeight": 960,
-      "sourceUrl": "https://github.com/NOXEVYR/yingxu/tree/d226f639e52113c019ac23615edd1eb63f58fcda",
-      "documentationUrl": "https://github.com/NOXEVYR/yingxu/releases/tag/yingxu-v0.4.27",
-      "downloadNote": "Windows 0.4.27 / calls.3 为当前公开程序包；macOS 0.4.20-mac.1 保留为历史试用入口。现有截图仍是合成项目的源码预览，不代表当前原生界面。"
+      "sourceUrl": "https://github.com/NOXEVYR/yingxu/tree/6f2b447f4585bd7b83ef683eb17c59fc962040da",
+      "documentationUrl": "https://github.com/NOXEVYR/yingxu/releases/tag/yingxu-v0.4.28",
+      "downloadNote": "Windows 0.4.28 / updater.1 为当前公开程序包；macOS 0.4.20-mac.1 保留为历史试用入口。现有截图仍是合成项目的 0.4.27 源码预览，不代表当前原生界面。"
     },
     {
       "id": "ai-hub",

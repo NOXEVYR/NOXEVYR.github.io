@@ -988,5 +988,156 @@
     "verification": "Public fixed manifest and Git tree matched local PNG bytes; local cache copied, no image download; 1440x960 header checked independently; parent viewed both images",
     "softwareDownloadsChanged": false,
     "oldImagesPreserved": true
+  },
+  "publicSoftwareReview20261008": {
+    "checkedAt": "2026-10-08",
+    "scope": "Public Windows program downloads and metadata; installed-software records remain private. Historical screenshot and release records retain their original dates.",
+    "releases": [
+      {
+        "id": "yingxu",
+        "version": "0.4.28",
+        "channel": "published; no new stable qualification",
+        "releaseUrl": "https://github.com/NOXEVYR/yingxu/releases/tag/yingxu-v0.4.28",
+        "sourceCommit": "6f2b447f4585bd7b83ef683eb17c59fc962040da",
+        "package": "YingXu-v0.4.28-Windows-x64.zip",
+        "url": "https://github.com/NOXEVYR/yingxu/releases/download/yingxu-v0.4.28/YingXu-v0.4.28-Windows-x64.zip",
+        "bytes": 448658832,
+        "sha256": "f7a762d623e02604d837331f59665e92b1489e98e00a1481e381f297be8f1e90"
+      },
+      {
+        "id": "ai-hub",
+        "version": "2.13.11",
+        "channel": "public release; updater candidate",
+        "releaseUrl": "https://github.com/NOXEVYR/ai-hub/releases/tag/v2.13.11",
+        "sourceCommit": "ced1489f70429f102b105efa6ef4b20438190039",
+        "package": "AI-Hub-v2.13.11-Windows-x64.zip",
+        "url": "https://github.com/NOXEVYR/ai-hub/releases/download/v2.13.11/AI-Hub-v2.13.11-Windows-x64.zip",
+        "bytes": 1865892,
+        "sha256": "0885269de4a5b64371133016bfce9ef861d6069c26ee4c0bc3670a0b649efeca"
+      },
+      {
+        "id": "frameweave",
+        "version": "0.11.1",
+        "channel": "stable",
+        "releaseUrl": "https://github.com/NOXEVYR/frameweave/releases/tag/v0.11.1",
+        "sourceCommit": "5119449dc5cf16fc975d1b41c92ad184c4d57539",
+        "package": "PrismCanvas-v0.11.1-Windows-x64.zip",
+        "url": "https://github.com/NOXEVYR/frameweave/releases/download/v0.11.1/PrismCanvas-v0.11.1-Windows-x64.zip",
+        "bytes": 11339671,
+        "sha256": "0873307053b2e15fc541cc31ddb5407dbd1728f6ef41ef552cb711f4fb8aa265"
+      },
+      {
+        "id": "proxy-switch",
+        "version": "3.9.7-preview.1",
+        "channel": "preview",
+        "releaseUrl": "https://github.com/NOXEVYR/proxy-switch/releases/tag/v3.9.7-preview.1",
+        "sourceCommit": "0eb5f20bef6125e5792cc4850f03a00bad93bd00",
+        "package": "FlowSwitch-v3.9.7-Windows-x64.zip",
+        "url": "https://github.com/NOXEVYR/proxy-switch/releases/download/v3.9.7-preview.1/FlowSwitch-v3.9.7-Windows-x64.zip",
+        "bytes": 71619593,
+        "sha256": "da9f69d4a5b88a36bc702263b0cce9c814495c0f1a29e23d33d2a679eeb9533f"
+      },
+      {
+        "id": "codex-switcher",
+        "version": "2.4.1",
+        "channel": "historical public Windows package",
+        "releaseUrl": "https://github.com/NOXEVYR/codex-switcher/releases/tag/downloads-2026-09-12",
+        "sourceCommit": null,
+        "package": "Codex-Switcher-v2.4.1-Windows-x64.zip",
+        "url": "https://raw.githubusercontent.com/NOXEVYR/portfolio/d3b47d7fc4320f627e6b5fc8f653fcbd35007670/codex-switcher/releases/Codex-Switcher-v2.4.1-Windows-x64.zip",
+        "bytes": 334554,
+        "sha256": "8d85aa43b3bc0293457c0ccd0397b536a1d3f565fed862641afe22fe58f806b4"
+      },
+      {
+        "id": "video-catch",
+        "version": "0.6.0-rc.8",
+        "channel": "release candidate",
+        "releaseUrl": "https://github.com/NOXEVYR/video-catch/releases/tag/v0.6.0-rc.8",
+        "sourceCommit": "eaad4e89f6371528e538a21c96093f1ce94cbdc7",
+        "package": "VideoCatch-v0.6.0-rc.8-Windows-x64.zip",
+        "url": "https://github.com/NOXEVYR/video-catch/releases/download/v0.6.0-rc.8/VideoCatch-v0.6.0-rc.8-Windows-x64.zip",
+        "bytes": 118769148,
+        "sha256": "e6bc1d3c855bf8910361e70d8ebbb3d819dd737f30de127f145e1138f52055a1"
+      },
+      {
+        "id": "classicdesk",
+        "version": "0.11.20-preview",
+        "channel": "preview",
+        "releaseUrl": "https://github.com/NOXEVYR/classicdesk/releases/tag/v0.11.20-preview",
+        "sourceCommit": "3c90087ec7d1777c7ff81abc82f9b9a95cb115c6",
+        "package": "ClassicDesk-0.11.20-preview-windows-x64.zip",
+        "url": "https://github.com/NOXEVYR/classicdesk/releases/download/v0.11.20-preview/ClassicDesk-0.11.20-preview-windows-x64.zip",
+        "bytes": 8734380,
+        "sha256": "eaf474fc4d4f4ea88d330efcda21021afb16898c266bf1163a6e8117e8b310ca"
+      },
+      {
+        "id": "env-anchor",
+        "version": "0.8.0-preview.1",
+        "channel": "preview",
+        "releaseUrl": "https://github.com/NOXEVYR/env-anchor/releases/tag/v0.8.0-preview.1",
+        "sourceCommit": "0f4ed6a2a1e386394aafb33827943dc171f6d049",
+        "package": "EnvAnchor-0.8.0-preview.1-win10-portable.zip",
+        "url": "https://github.com/NOXEVYR/env-anchor/releases/download/v0.8.0-preview.1/EnvAnchor-0.8.0-preview.1-win10-portable.zip",
+        "bytes": 382915,
+        "sha256": "5a5e5779287c4a0ab839b4053e66d9b11048a361c94424e3847114c1ade68f05"
+      },
+      {
+        "id": "codex-pet",
+        "version": "0.5.9",
+        "channel": "stable",
+        "releaseUrl": "https://github.com/NOXEVYR/codex-pet/releases/tag/v0.5.9",
+        "sourceCommit": "4d992a3478d636043828e5874b79cf5af5c98aca",
+        "package": "NatsumePet-v0.5.9-Windows.zip",
+        "url": "https://github.com/NOXEVYR/codex-pet/releases/download/v0.5.9/NatsumePet-v0.5.9-Windows.zip",
+        "bytes": 84819860,
+        "sha256": "6f282a7eaf987e30107503817fbac048ff2ce73a3f83b42de9c0c1af39345d4b"
+      },
+      {
+        "id": "michelle-pet",
+        "version": "0.3.8",
+        "channel": "stable",
+        "releaseUrl": "https://github.com/NOXEVYR/michelle-pet/releases/tag/v0.3.8",
+        "sourceCommit": "fcbe8ebe2b62091732334972bf4a9b7535966fb0",
+        "package": "MichelePet-v0.3.8-win.zip",
+        "url": "https://github.com/NOXEVYR/michelle-pet/releases/download/v0.3.8/MichelePet-v0.3.8-win.zip",
+        "bytes": 38808089,
+        "sha256": "9f2469f626935ccfe5c7b47defe6c3ee148f88e68f1556296dc92fa80857321b"
+      },
+      {
+        "id": "casecontrol",
+        "version": "0.2.0",
+        "channel": "public release",
+        "releaseUrl": "https://github.com/NOXEVYR/CaseControl/releases/tag/v0.2.0",
+        "sourceCommit": "25a4a7a1ae0cabf2fe6c2c9c384cade6c6ae4b67",
+        "package": "CaseControl-0.2.0-Windows-x64.zip",
+        "url": "https://github.com/NOXEVYR/CaseControl/releases/download/v0.2.0/CaseControl-0.2.0-Windows-x64.zip",
+        "bytes": 6298704,
+        "sha256": "15869cf6c643184d5177a27eeef9db7825d1690c19052aec919de318f922ddd9"
+      }
+    ],
+    "windowsArchiveVerification": {
+      "verifiedArchiveCount": 15,
+      "verification": "Actual program bytes read this run: size, SHA-256, complete ZIP CRC, safe Windows paths, duplicate/symlink exclusions and single-application root. Identical previously downloaded public archives were reused only after current public metadata and byte-level rechecks.",
+      "pending": [],
+      "macArchives": "Unchanged historical macOS downloads were not revalidated in this Windows update."
+    },
+    "yingxu": {
+      "version": "0.4.28",
+      "buildRevision": "updater.1",
+      "sourceCommit": "6f2b447f4585bd7b83ef683eb17c59fc962040da",
+      "bytes": 448658832,
+      "sha256": "f7a762d623e02604d837331f59665e92b1489e98e00a1481e381f297be8f1e90",
+      "releaseManifestSha256": "08afb9706bb6dcb87265aa640dac55063cccb1b24bc0b81dc2f0d7887bc099c7",
+      "zipEntries": 1777,
+      "manifestFiles": 1776,
+      "runtimeFilesVerified": 747,
+      "sourceVerification": "Exact public source commit; text-only CRLF conversions were compared with canonical source bytes. Generated resources retained exact bytes.",
+      "isolatedPackageChecks": 37,
+      "verifierExitCode": 0,
+      "nativeDesktopUiTestedThisRun": false,
+      "publicVerificationUrl": "https://github.com/NOXEVYR/yingxu/releases/download/yingxu-v0.4.28/YingXu-v0.4.28-verification.json"
+    },
+    "preserved": "All existing primary download versions, historical alternatives, independently versioned screenshots, and public project descriptions except the corrected YingXu 0.4.28 details/source/documentation note.",
+    "unpublished": "FlowSwitch 3.9.8 and 3.9.9 are drafts. PrismCanvas 0.11.4 is a source preview. None was promoted to a public program download."
   }
 }
