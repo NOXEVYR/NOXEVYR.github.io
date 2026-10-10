@@ -1187,5 +1187,117 @@
       "iconBytes": 9983,
       "iconSha256": "6fe079e34e29e1e8b30c73bdfe9776ab4ced6ef956a3d9f578af88a6d46cba0a"
     }
+  },
+  "publicSoftwareReview20261010": {
+    "checkedAt": "2026-10-10",
+    "scope": "FlowSwitch Windows preview only, based on the concurrent catalog commit 70f0b34639b30a410cf7a90a8eb861067508c951. YingXu 0.4.31 / XMind, other project entries, existing icons, historical screenshots and all earlier review records are preserved from that commit.",
+    "publicationStatus": "public optional Windows prerelease; stable and automatic update channel unchanged",
+    "publishedAt": "2026-10-10T09:00:50Z",
+    "prerelease": true,
+    "id": "proxy-switch",
+    "version": "3.9.9-preview.1",
+    "programVersion": "3.9.9",
+    "channel": "optional preview; stable and automatic update channel remain 3.9.6",
+    "releaseId": 402948762,
+    "releaseTag": "v3.9.9-preview.1",
+    "releaseUrl": "https://github.com/NOXEVYR/proxy-switch/releases/tag/v3.9.9-preview.1",
+    "releaseTargetCommit": "981faf1ea211aa8bdf4b565eb2cb9d22c8d593d4",
+    "frozenSourceCommit": "eeb4bca5f6995f970c780f36d406683a1128f280",
+    "frozenSourceTree": "694c88788d249e8fa8e8a5734bed7ab15625d0ef",
+    "sourceUrl": "https://github.com/NOXEVYR/proxy-switch/tree/eeb4bca5f6995f970c780f36d406683a1128f280",
+    "assets": [
+      {
+        "kind": "Windows program",
+        "package": "FlowSwitch-v3.9.9-Windows-x64.zip",
+        "url": "https://github.com/NOXEVYR/proxy-switch/releases/download/v3.9.9-preview.1/FlowSwitch-v3.9.9-Windows-x64.zip",
+        "bytes": 71635270,
+        "sha256": "0db96f58c4363461343686efb0944600a7521ec9e04145a36765d52efa19d086"
+      },
+      {
+        "kind": "frozen Windows source",
+        "package": "FlowSwitch-v3.9.9-Windows-Source.zip",
+        "url": "https://github.com/NOXEVYR/proxy-switch/releases/download/v3.9.9-preview.1/FlowSwitch-v3.9.9-Windows-Source.zip",
+        "bytes": 2343630,
+        "sha256": "c535b37ff3b0e945db97913628293cdf225c2840dd7ed5267f4d02b11383e088"
+      }
+    ],
+    "verification": "All five published assets were fully downloaded anonymously from their final public URLs; actual sizes and SHA-256 digests matched the release metadata and previously verified frozen bytes. Both ZIPs passed complete CRC, safe member path, duplicate/symlink exclusion and single-application root checks, and every member matched the verified candidate/source bytes. All 57 Windows payload files and runtime-lock hashes matched; all 179 frozen source files matched their exact public Git blobs.",
+    "publicDownloadVerification": {
+      "verifiedAt": "2026-10-10T09:08:44.908817+00:00",
+      "anonymous": true,
+      "assetCount": 5,
+      "finalPublicUrlsVerified": true,
+      "sameAssetIdsSizesAndDigestsAsPublication": true,
+      "publicTagCommit": "981faf1ea211aa8bdf4b565eb2cb9d22c8d593d4"
+    },
+    "packageVerification": {
+      "verifiedAt": "2026-10-10T08:59:41.502936+00:00",
+      "windowsZipEntries": 59,
+      "windowsManifestFiles": 57,
+      "windowsManifestSha256": "192f7463404e00959cc5737b1673e3e4ddbc435c91f34efb29cb9d24d564cce0",
+      "windowsApplicationRoot": "FlowSwitch/",
+      "sourceZipEntries": 180,
+      "frozenSourceFiles": 179,
+      "sourceApplicationRoot": "proxy-switch/",
+      "isolatedSmartPatrolAssertions": 40,
+      "isolatedSmartPatrolExitCode": 0,
+      "nativeVerificationChecks": 4,
+      "nativeVerificationScope": "Packaged PE version and --verify behavior with normal, held and released update-lock states; hosted PowerShell was not started.",
+      "nativeUiTestedThisRun": false,
+      "realNetworkGatewayOAuthOrGameTrafficTestedThisRun": false
+    },
+    "preserved": "Windows 3.9.6 stable backup, macOS 0.1.0-preview.3, the existing icon and the independently labeled 3.9.0 historical demonstration screenshot.",
+    "sourcePackageNote": "Frozen source ZIP retains its original local-candidate record. Later release-target changes update public README and verification records without rewriting the frozen ZIP.",
+    "retainedDownloadVerification": {
+      "checkedAt": "2026-10-10",
+      "verification": "Actual retained program bytes matched fresh public release metadata: size, SHA-256, complete ZIP CRC, normalized safe member paths, duplicate checks and a single application root. Windows stable bytes were reread from the exact previously downloaded public cache and matched the October 8 verification; both macOS archives were downloaded today. No application was launched.",
+      "packages": [
+        {
+          "package": "FlowSwitch-v3.9.6-Windows-x64.zip",
+          "bytes": 71612120,
+          "sha256": "547a58d2e71484873e0588da63a517418d5a7d050deb6a42cf2967c350bfe1e6",
+          "zipEntries": 55,
+          "applicationRoot": "FlowSwitch/"
+        },
+        {
+          "package": "FlowSwitch-macOS-0.1.0-preview.3-arm64.zip",
+          "bytes": 19136394,
+          "sha256": "a8010be642f598f1c0bb5f3a278380bb0ffbf59161cbb7ab2dd21b60360e1294",
+          "zipEntries": 15,
+          "applicationRoot": "FlowSwitch.app/"
+        },
+        {
+          "package": "FlowSwitch-macOS-0.1.0-preview.3-x86_64.zip",
+          "bytes": 20927497,
+          "sha256": "00fdc072a308d6d08838ad5eaf851e9f4acb9d701cb0cb7b3aefcb79b1f34ef1",
+          "zipEntries": 15,
+          "applicationRoot": "FlowSwitch.app/"
+        }
+      ],
+      "nativeMacRuntimeTested": false
+    },
+    "preservedLiveSnapshot": {
+      "checkedAt": "2026-10-10T08:56:39.398Z",
+      "dataUrl": "https://noxevyr.github.io/data.js?v=dbbc3dcdc69e",
+      "sourceCatalogCommit": "2fd40226adb2f8bf7180623261aa1c0834508b39",
+      "reason": "Scheduled deployment refreshed CaseControl's download label/URL and reencoded icon without committing them to source. A catalog-only push skips release/icon sync, so these exact live fields and asset are preserved to avoid a visible regression.",
+      "id": "casecontrol",
+      "version": "0.2.0",
+      "fields": [
+        "downloads",
+        "icon"
+      ],
+      "downloadUrl": "https://github.com/NOXEVYR/CaseControl/releases/tag/v0.2.0",
+      "icon": "assets/icons/casecontrol-6fe079e34e29.png",
+      "iconBytes": 9983,
+      "iconSha256": "6fe079e34e29e1e8b30c73bdfe9776ab4ced6ef956a3d9f578af88a6d46cba0a",
+      "iconWidth": 256,
+      "iconHeight": 256,
+      "sourceUrl": "https://raw.githubusercontent.com/NOXEVYR/CaseControl/25a4a7a1ae0cabf2fe6c2c9c384cade6c6ae4b67/src/Assets/CaseControl.png",
+      "sourceGitBlob": "e887775d58c5e3bcef7e314d8d35900bfeadea48",
+      "sourceSha256": "caf2cb80765098b4130b1a9a25bb26844c64a2f5be8a89b1aac0ea0e7457400b",
+      "verification": "Copied exact currently deployed icon bytes, confirmed identical RGBA pixels and dimensions against the fixed public source PNG, and matched the source Git blob. No CaseControl version, description or screenshots changed."
+    },
+    "catalogBaseCommit": "70f0b34639b30a410cf7a90a8eb861067508c951"
   }
 }

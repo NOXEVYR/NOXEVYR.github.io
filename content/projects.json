@@ -181,12 +181,12 @@
       "english": "FlowSwitch",
       "category": "tools",
       "label": "系统与效率",
-      "version": "3.9.7-preview.1",
+      "version": "3.9.9-preview.1",
       "status": "预览版",
       "symbol": "FS",
       "color": "orange",
       "description": "统一管理已有代理，为程序和网站选择出口，并排查入口与连接问题。",
-      "details": "通过固定本地入口管理 HTTP / SOCKS5 出口、程序分流和网站例外，提供备用接替与连接证据。3.9.7 预览增加经组件核验的 Qt5 / Qt6 WebEngine 启动适配，让指定程序的入口与外部系统代理共存。仅覆盖进入所配置入口的流量，不代表 VPN/TUN、原生 UDP 或游戏登录已经验收。",
+      "details": "通过固定本地入口管理 HTTP / SOCKS5 出口、程序分流和网站例外，提供备用接替与连接证据。3.9.9 可选 Windows 预览增加只读体检，检查代理变量、系统入口、绕过设置、hosts 记录、已配置入口和双栈路由证据；修复沿用显式确认、计划复核与备份机制。仅覆盖进入所配置入口的流量，不代表 VPN/TUN、原生 UDP 或游戏登录已经验收。",
       "features": [
         "固定入口与程序线路切换",
         "网站例外与备用出口接替",
@@ -197,8 +197,8 @@
       "requirements": "Windows 10 1809+ / Windows 11 x64，使用系统自带 Windows PowerShell 5.1、.NET Framework 4.x 与 curl；完整包自带运行组件。macOS 测试版需 macOS 13+，提供 Apple 芯片与 Intel 包，尚未公证。需自己的可用代理；仅管理进入固定入口的流量，Mac 功能范围与 Windows 不完全相同。",
       "downloads": [
         {
-          "label": "Windows 3.9.7-preview.1 预览版",
-          "url": "https://github.com/NOXEVYR/proxy-switch/releases/tag/v3.9.7-preview.1",
+          "label": "Windows 3.9.9-preview.1 预览版",
+          "url": "https://github.com/NOXEVYR/proxy-switch/releases/download/v3.9.9-preview.1/FlowSwitch-v3.9.9-Windows-x64.zip",
           "channel": "preview"
         },
         {
@@ -213,8 +213,8 @@
         }
       ],
       "sync": "stable",
-      "update": "增加经过组件核验的Qt5/6 WebEngine启动适配，程序固定入口可与外部系统代理共存。",
-      "date": "2026-10-01",
+      "update": "增加默认不修改网络的只读体检，检查入口与双栈路由证据；修复需确认并复核计划，保留备份与外部修改。",
+      "date": "2026-10-10",
       "type": "software",
       "icon": "assets/icons/proxy-switch-cd6b53f84043.png",
       "screenshots": [
@@ -230,7 +230,10 @@
       "previewVersion": "3.9.0",
       "imageWidth": 1276,
       "imageHeight": 879,
-      "downloadNote": "公开预览标签为 3.9.7-preview.1，包内程序为 3.9.7；稳定版仍为 3.9.6。macOS 单独维护。下方截图是 3.9.0 历史演示界面。"
+      "downloadNote": "可选预览标签为 3.9.9-preview.1，包内程序为 3.9.9；稳定版和自动更新通道仍为 3.9.6。完整解压并保留 app 目录，替换已有安装前从托盘停止代理服务并退出。macOS 单独维护；下方截图是 3.9.0 历史演示界面。",
+      "sourceUrl": "https://github.com/NOXEVYR/proxy-switch/tree/eeb4bca5f6995f970c780f36d406683a1128f280",
+      "documentationUrl": "https://github.com/NOXEVYR/proxy-switch/releases/tag/v3.9.9-preview.1",
+      "releaseNotesUrl": "https://github.com/NOXEVYR/proxy-switch/releases/tag/v3.9.9-preview.1"
     },
     {
       "id": "codex-switcher",
