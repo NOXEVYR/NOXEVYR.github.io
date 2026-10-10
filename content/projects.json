@@ -21,8 +21,8 @@
       ],
       "platform": "Windows · macOS 新版准备中",
       "requirements": "Windows x64 完整包自带 Python、图片处理组件、FFmpeg 和 WebView2。macOS 新版正在准备，暂不提供下载；截图、原生拖出等能力限 Windows。",
-      "image": "assets/previews/yingxu-fb99f2f06e24.png",
-      "imageNote": "映序 0.4.27 / calls.3 Stage J · 聚焦工作台 · SKILL 库（源码演示界面）",
+      "image": "assets/previews/yingxu-c2e3992454ed.png",
+      "imageNote": "映序 0.4.31 · XMind 思维导图（虚构演示项目，浏览器渲染）",
       "downloads": [
         {
           "label": "Windows 0.4.31 ZIP",
@@ -36,30 +36,22 @@
       "type": "software",
       "icon": "assets/icons/yingxu-2d29d6378951.png",
       "featuredHeadline": "让素材与文稿各就其位。",
-      "previewVersion": "0.4.27 / calls.3 Stage J 源码预览",
+      "previewVersion": "0.4.31",
       "screenshots": [
         {
-          "src": "assets/previews/yingxu-fb99f2f06e24.png",
-          "label": "聚焦工作台 · SKILL 库",
-          "caption": "映序 0.4.27 / calls.3 Stage J · 聚焦工作台 · SKILL 库（源码演示界面）",
-          "version": "0.4.27 / calls.3 Stage J",
-          "width": 1440,
-          "height": 960
-        },
-        {
-          "src": "assets/previews/yingxu-d757fbb0f9a9.png",
-          "label": "聚焦工作台 · AI 协作",
-          "caption": "映序 0.4.27 / calls.3 Stage J · 聚焦工作台 · AI 协作（源码演示界面）",
-          "version": "0.4.27 / calls.3 Stage J",
-          "width": 1440,
-          "height": 960
+          "src": "assets/previews/yingxu-c2e3992454ed.png",
+          "label": "思维导图 · 标注与文件链接",
+          "caption": "映序 0.4.31 · XMind 思维导图（虚构演示项目，浏览器渲染）",
+          "version": "0.4.31",
+          "width": 1360,
+          "height": 1000
         }
       ],
-      "imageWidth": 1440,
-      "imageHeight": 960,
+      "imageWidth": 1360,
+      "imageHeight": 1000,
       "sourceUrl": "https://github.com/NOXEVYR/yingxu/tree/8d758c325136bb447f6fb63701fed80b7ea5986a",
       "releaseNotesUrl": "https://github.com/NOXEVYR/yingxu/releases/tag/yingxu-v0.4.31",
-      "downloadNote": "Windows 完整版已发布。新版 macOS 正在准备，暂不提供下载。界面为 0.4.27 源码演示。"
+      "downloadNote": "Windows 完整版已发布。新版 macOS 正在准备，暂不提供下载。界面为 0.4.31 虚构项目演示。"
     },
     {
       "id": "ai-hub",

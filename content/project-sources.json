@@ -1306,5 +1306,23 @@
       "verification": "Copied exact currently deployed icon bytes, confirmed identical RGBA pixels and dimensions against the fixed public source PNG, and matched the source Git blob. No CaseControl version, description or screenshots changed."
     },
     "catalogBaseCommit": "70f0b34639b30a410cf7a90a8eb861067508c951"
+  },
+  "yingxu0431CurrentPreview": {
+    "checkedAt": "2026-10-10",
+    "project": "yingxu",
+    "version": "0.4.31",
+    "buildRevision": "xmind.3",
+    "sourceCommit": "73d0f5efc38dccfa768d0c00b692cabc5b2fa26f",
+    "sourceUrl": "https://github.com/NOXEVYR/yingxu/tree/73d0f5efc38dccfa768d0c00b692cabc5b2fa26f",
+    "method": "Actual unmodified application renderer in Chrome, isolated synthetic data and projects; empty synthetic home for initial skill discovery, automatic update checks disabled. Browser capture, not a native macOS acceptance screenshot.",
+    "image": {
+      "path": "public/assets/previews/yingxu-c2e3992454ed.png",
+      "bytes": 128351,
+      "sha256": "c2e3992454ed0ee12604c3d7ecbb9f3a6de977dbf228c422c3778a8e4419cf3b",
+      "width": 1360,
+      "height": 1000
+    },
+    "dataScope": "Fictional city-film plan, XMind topics and one linked Markdown checklist; no user library, grants, credentials or personal paths shown.",
+    "supersedesCatalogPreviews": "The site now displays the current 0.4.31 XMind workspace; historical 0.4.27 image files and provenance remain archival only."
   }
 }
