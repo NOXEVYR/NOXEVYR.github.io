@@ -1324,5 +1324,29 @@
     },
     "dataScope": "Fictional city-film plan, XMind topics and one linked Markdown checklist; no user library, grants, credentials or personal paths shown.",
     "supersedesCatalogPreviews": "The site now displays the current 0.4.31 XMind workspace; historical 0.4.27 image files and provenance remain archival only."
+  },
+  "yingxu0431MacRelease": {
+    "checkedAt": "2026-10-10",
+    "project": "yingxu",
+    "version": "0.4.31-mac.1",
+    "sourceCommit": "a2261448545b094dbe6af83debfbfdc9d097447b",
+    "releaseUrl": "https://github.com/NOXEVYR/yingxu/releases/tag/yingxu-v0.4.31-mac.1",
+    "url": "https://github.com/NOXEVYR/yingxu/releases/download/yingxu-v0.4.31-mac.1/YingXu-v0.4.31-mac.1-macOS-arm64.zip",
+    "bytes": 76906033,
+    "sha256": "0c05cbaa906d2d03db2eb7c0846d71c33ce9dbb331af26802c2fa8d1711d9854",
+    "candidateRun": "https://github.com/NOXEVYR/yingxu/actions/runs/38045468881",
+    "uploadedAssetReadbackRun": "https://github.com/NOXEVYR/yingxu/actions/runs/38046809347",
+    "publicVerificationUrl": "https://github.com/NOXEVYR/yingxu/releases/download/yingxu-v0.4.31-mac.1/YingXu-v0.4.31-mac.1-readback-verification.json",
+    "verification": {
+      "backendTests": 1126,
+      "backendSkipped": 30,
+      "frontendScripts": 81,
+      "finalZipChecks": 24,
+      "uploadedBytesExecutedOnMacOS": true,
+      "realUserDataUsed": false
+    },
+    "scope": "macOS 14+, Apple Silicon arm64; ad-hoc signed, not Developer ID signed or notarized; manual IME, permissions, display environments and long-term use remain unverified.",
+    "catalog": "Only current Windows 0.4.31 and macOS 0.4.31-mac.1 ZIPs are shown. The current 0.4.31 synthetic browser preview remains independent of native package acceptance.",
+    "supersedes": "Earlier pending/failed Mac status in yingxu0431ReleaseSync; those entries remain historical evidence."
   }
 }

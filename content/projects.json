@@ -12,15 +12,15 @@
       "symbol": "YX",
       "color": "mint",
       "description": "围绕创作项目整理素材、文稿与分镜，让每个文件和制作进度都有归处。",
-      "details": "以作品为中心组织图片、视频、音乐和文稿，在多标签工作区编辑 Markdown、Word 普通正文与 XMind 思维导图，关联角色、场景、分镜和生成版本。支持文件夹导入、独立文档阅览、项目目录同步与迁移。Windows 0.4.31 / xmind.3 新增思维导图框选、批量标注与跨项目文件链接。",
+      "details": "以作品为中心组织图片、视频、音乐和文稿，在多标签工作区编辑 Markdown、Word 普通正文与 XMind 思维导图，关联角色、场景、分镜和生成版本。支持文件夹导入、独立文档阅览、项目目录同步与迁移。0.4.31 双端同步思维导图框选、批量标注与跨项目文件链接。",
       "features": [
         "项目分类、文件夹导入与目录同步",
         "Markdown / Word 正文、多标签与画板",
         "XMind 导入、新建、编辑与批量标注",
         "思维导图分支链接到网页、文件与主题"
       ],
-      "platform": "Windows · macOS 新版准备中",
-      "requirements": "Windows x64 完整包自带 Python、图片处理组件、FFmpeg 和 WebView2。macOS 新版正在准备，暂不提供下载；截图、原生拖出等能力限 Windows。",
+      "platform": "Windows · macOS（Apple Silicon）",
+      "requirements": "Windows x64 完整包自带 Python、图片处理组件、FFmpeg 和 WebView2。macOS 试用包需 macOS 14+、Apple Silicon，未公证；截图、原生拖出等能力限 Windows。",
       "image": "assets/previews/yingxu-c2e3992454ed.png",
       "imageNote": "映序 0.4.31 · XMind 思维导图（虚构演示项目，浏览器渲染）",
       "downloads": [
@@ -28,6 +28,11 @@
           "label": "Windows 0.4.31 ZIP",
           "url": "https://github.com/NOXEVYR/yingxu/releases/download/yingxu-v0.4.31/YingXu-v0.4.31-Windows-x64.zip",
           "channel": "stable"
+        },
+        {
+          "label": "macOS 0.4.31-mac.1 试用版",
+          "url": "https://github.com/NOXEVYR/yingxu/releases/download/yingxu-v0.4.31-mac.1/YingXu-v0.4.31-mac.1-macOS-arm64.zip",
+          "channel": "mac"
         }
       ],
       "sync": "platforms",
@@ -51,7 +56,7 @@
       "imageHeight": 1000,
       "sourceUrl": "https://github.com/NOXEVYR/yingxu/tree/8d758c325136bb447f6fb63701fed80b7ea5986a",
       "releaseNotesUrl": "https://github.com/NOXEVYR/yingxu/releases/tag/yingxu-v0.4.31",
-      "downloadNote": "Windows 完整版已发布。新版 macOS 正在准备，暂不提供下载。界面为 0.4.31 虚构项目演示。"
+      "downloadNote": "Windows 完整版与 macOS 试用版均可下载。苹果端未公证。界面为 0.4.31 虚构项目演示。"
     },
     {
       "id": "ai-hub",
