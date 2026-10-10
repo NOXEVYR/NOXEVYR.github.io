@@ -1139,5 +1139,53 @@
     },
     "preserved": "All existing primary download versions, historical alternatives, independently versioned screenshots, and public project descriptions except the corrected YingXu 0.4.28 details/source/documentation note.",
     "unpublished": "FlowSwitch 3.9.8 and 3.9.9 are drafts. PrismCanvas 0.11.4 is a source preview. None was promoted to a public program download."
+  },
+  "yingxu0431ReleaseSync": {
+    "checkedAt": "2026-10-10",
+    "project": "yingxu",
+    "version": "0.4.31",
+    "buildRevision": "xmind.3",
+    "sourceCommit": "8d758c325136bb447f6fb63701fed80b7ea5986a",
+    "releaseUrl": "https://github.com/NOXEVYR/yingxu/releases/tag/yingxu-v0.4.31",
+    "package": "YingXu-v0.4.31-Windows-x64.zip",
+    "url": "https://github.com/NOXEVYR/yingxu/releases/download/yingxu-v0.4.31/YingXu-v0.4.31-Windows-x64.zip",
+    "bytes": 448724178,
+    "sha256": "9505c932c336c96a8a61793bff5bd0f2ec69114a8c05a61537fa2e91548b9dde",
+    "releaseManifestSha256": "e1ec578a9894467e80220f02555426ba7e5b36a5ed76bb8c6968b733064f4cbe",
+    "applicationRoot": "YingXu/",
+    "zipEntries": 1789,
+    "publicVerificationUrl": "https://github.com/NOXEVYR/yingxu/releases/download/yingxu-v0.4.31/YingXu-v0.4.31-verification.json",
+    "verification": "The complete GitHub-downloaded archive passed 38 isolated release checks before publication. Rechecked its byte size, SHA-256, ZIP CRC, paths and single application root during website synchronization; the exact bytes match fresh public release metadata.",
+    "macos": {
+      "publishedVersion": "0.4.20-mac.1",
+      "candidateVersion": "0.4.31-mac.1",
+      "candidateState": "cloud_regression_failed_not_published"
+    },
+    "screenshots": "Preserved the independently versioned 0.4.27 / calls.3 Stage J synthetic browser previews; no claim of a 0.4.31 native screenshot.",
+    "preservedLiveSnapshot": {
+      "dataUrl": "https://noxevyr.github.io/data.js?v=dbbc3dcdc69e",
+      "reason": "Preserve already deployed catalog fields from the scheduled sync while publishing a targeted YingXu update.",
+      "projects": [
+        {
+          "id": "casecontrol",
+          "version": "0.2.0",
+          "fields": [
+            "icon",
+            "downloads"
+          ],
+          "icon": "assets/icons/casecontrol-6fe079e34e29.png",
+          "downloads": [
+            {
+              "label": "Windows 0.2.0",
+              "url": "https://github.com/NOXEVYR/CaseControl/releases/tag/v0.2.0",
+              "channel": "stable"
+            }
+          ]
+        }
+      ],
+      "iconUrl": "https://noxevyr.github.io/assets/icons/casecontrol-6fe079e34e29.png",
+      "iconBytes": 9983,
+      "iconSha256": "6fe079e34e29e1e8b30c73bdfe9776ab4ced6ef956a3d9f578af88a6d46cba0a"
+    }
   }
 }

@@ -1,5 +1,5 @@
 {
-  "checkedAt": "2026-10-08",
+  "checkedAt": "2026-10-10",
   "projects": [
     {
       "id": "yingxu",
@@ -7,17 +7,17 @@
       "english": "YingXu",
       "category": "creative",
       "label": "创作与管理",
-      "version": "0.4.28",
+      "version": "0.4.31",
       "status": "已发布",
       "symbol": "YX",
       "color": "mint",
       "description": "围绕创作项目整理素材、文稿与分镜，让每个文件和制作进度都有归处。",
-      "details": "以作品为中心组织图片、视频、音乐和文稿，在多标签工作区编辑 Markdown 与 Word 普通正文，关联角色、场景、分镜和生成版本。支持文件夹导入、独立文档阅览、项目目录同步与迁移。 Windows 0.4.28 / updater.1 已发布：修复自动更新下载衔接、失败退避和中断恢复，改善网络等待，并补全后台进度与旧补丁缓存预览整理。",
+      "details": "以作品为中心组织图片、视频、音乐和文稿，在多标签工作区编辑 Markdown、Word 普通正文与 XMind 思维导图，关联角色、场景、分镜和生成版本。支持文件夹导入、独立文档阅览、项目目录同步与迁移。Windows 0.4.31 / xmind.3 新增思维导图框选、批量标注与跨项目文件链接。",
       "features": [
         "项目分类、文件夹导入与目录同步",
         "Markdown / Word 正文、多标签与画板",
-        "角色、分镜、素材关系与制作状态",
-        "音乐播放、截图与按需增量更新"
+        "XMind 导入、新建、编辑与批量标注",
+        "思维导图分支链接到网页、文件与主题"
       ],
       "platform": "Windows · macOS 试用",
       "requirements": "Windows x64 完整包自带 Python、图片处理组件、FFmpeg 和 WebView2。macOS 试用包需 macOS 14+、Apple Silicon，未签名公证；截图、原生拖出等能力限 Windows。",
@@ -25,9 +25,14 @@
       "imageNote": "映序 0.4.27 / calls.3 Stage J · 聚焦工作台 · SKILL 库（源码预览，合成项目浏览器渲染；不是 0.4.22 程序截图或原生验收）",
       "downloads": [
         {
-          "label": "Windows 0.4.28",
-          "url": "https://github.com/NOXEVYR/yingxu/releases/tag/yingxu-v0.4.28",
+          "label": "Windows 0.4.31",
+          "url": "https://github.com/NOXEVYR/yingxu/releases/tag/yingxu-v0.4.31",
           "channel": "stable"
+        },
+        {
+          "label": "Windows 0.4.28 历史版本",
+          "url": "https://github.com/NOXEVYR/yingxu/releases/tag/yingxu-v0.4.28",
+          "channel": "previous"
         },
         {
           "label": "Windows 0.4.22 历史稳定版",
@@ -41,8 +46,8 @@
         }
       ],
       "sync": "platforms",
-      "update": "修复核对完成后下载未启动的线程衔接，以及下载失败重试与临时文件清理的竞争。",
-      "date": "2026-10-02",
+      "update": "重建 XMind 思维导图工作区：双击编辑、左键框选、Delete 删除、中键平移与独立缩放；支持多选批量标注和跨项目文件链接。",
+      "date": "2026-10-10",
       "type": "software",
       "icon": "assets/icons/yingxu-2d29d6378951.png",
       "featuredHeadline": "让素材与文稿各就其位。",
@@ -67,9 +72,9 @@
       ],
       "imageWidth": 1440,
       "imageHeight": 960,
-      "sourceUrl": "https://github.com/NOXEVYR/yingxu/tree/6f2b447f4585bd7b83ef683eb17c59fc962040da",
-      "documentationUrl": "https://github.com/NOXEVYR/yingxu/releases/tag/yingxu-v0.4.28",
-      "downloadNote": "Windows 0.4.28 / updater.1 为当前公开程序包；macOS 0.4.20-mac.1 保留为历史试用入口。现有截图仍是合成项目的 0.4.27 源码预览，不代表当前原生界面。"
+      "sourceUrl": "https://github.com/NOXEVYR/yingxu/tree/8d758c325136bb447f6fb63701fed80b7ea5986a",
+      "documentationUrl": "https://github.com/NOXEVYR/yingxu/releases/tag/yingxu-v0.4.31",
+      "downloadNote": "Windows 0.4.31 / xmind.3 已发布；macOS 0.4.31 尚未通过回归测试，继续保留 0.4.20-mac.1 历史试用入口。界面预览仍为合成项目的 0.4.27 源码截图。"
     },
     {
       "id": "ai-hub",
@@ -567,7 +572,7 @@
       "status": "已发布",
       "symbol": "CC",
       "color": "mint",
-      "icon": "assets/icons/casecontrol-fb4e951e3de6.svg",
+      "icon": "assets/icons/casecontrol-6fe079e34e29.png",
       "description": "面向指定 ASUS Aura 硬件的 Windows 机箱工具，集中查看温度与转速，并提供灯光设置和利民冷头屏幕排查入口。",
       "details": "机箱控制台把灯光设置、CPU 与显卡温度、可读风扇转速和利民冷头屏幕诊断放在一个 Windows 客户端中。当前灯控面向已识别的指定 ASUS Aura 接口；风扇 PWM 写入保持锁定，屏幕画面通过官方 TRCC 调整。",
       "features": [
@@ -579,8 +584,8 @@
       "requirements": "Windows x64，需安装 .NET 10 桌面运行时；便携 ZIP 未签名、不附运行时。完整主板监测需管理员权限与 PawnIO，包内带官方 PawnIO 小安装器。灯控仅面向指定 ASUS Aura 接口；冷头主题需另备官方 TRCC，发行包不附 TRCC。",
       "downloads": [
         {
-          "label": "Windows 0.2.0 ZIP",
-          "url": "https://github.com/NOXEVYR/CaseControl/releases/download/v0.2.0/CaseControl-0.2.0-Windows-x64.zip",
+          "label": "Windows 0.2.0",
+          "url": "https://github.com/NOXEVYR/CaseControl/releases/tag/v0.2.0",
           "channel": "stable"
         }
       ],
