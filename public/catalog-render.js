@@ -48,6 +48,9 @@ export function projectIcon(p, loading = 'lazy') {
 export function sourceLink(p) { return p.sourceUrl || (isPending(p) ? '' : `https://github.com/NOXEVYR/${p.id}`); }
 export function projectTarget(p) { return p.introductionUrl || sourceLink(p); }
 export function projectLinks(p) {
+  if (p.id === 'yingxu') return p.releaseNotesUrl
+    ? `<a href="${escapeHtml(p.releaseNotesUrl)}" ${linkAttributes(p.releaseNotesUrl)}>发布说明 ↗</a>`
+    : '';
   const links = isPending(p)
     ? [[p.introductionUrl, '独立介绍页'], [p.documentationUrl, '使用说明'], [p.sourceUrl, '源码']]
     : [[p.documentationUrl || `https://github.com/NOXEVYR/${p.id}#readme`, '使用说明'], [p.sourceUrl || `https://github.com/NOXEVYR/${p.id}`, '源码'], [`https://github.com/NOXEVYR/${p.id}/issues`, '反馈问题']];
@@ -59,7 +62,7 @@ export function projectCard(p, {gallery = false, fallback = false} = {}) {
   const footer = fallback
     ? p.introductionUrl
       ? `<div class="card-footer catalog-pending">${platform}<a class="detail-button" href="${esc(url)}" data-project="${esc(p.id)}" aria-label="查看${esc(p.name)}介绍">查看介绍 ↗</a></div>`
-      : `<details class="card-footer catalog-fallback"><summary aria-label="${esc(p.name)}下载与源码">${platform}<span class="detail-button" aria-hidden="true"></span></summary><div class="download-actions catalog-downloads">${p.downloads.map(d => `<a class="button" href="${esc(d.url)}" ${external}>${esc(d.label)} ↗</a>`).join('')}<a class="text-link" href="${esc(url)}" ${external}>源码 ↗</a></div></details>`
+      : `<details class="card-footer catalog-fallback"><summary aria-label="${esc(p.name)}${p.id === 'yingxu' ? '下载入口' : '下载与源码'}">${platform}<span class="detail-button" aria-hidden="true"></span></summary><div class="download-actions catalog-downloads">${p.downloads.map(d => `<a class="button" href="${esc(d.url)}" ${external}>${esc(d.label)} ↗</a>`).join('')}${p.id === 'yingxu' ? '' : `<a class="text-link" href="${esc(url)}" ${external}>源码 ↗</a>`}</div></details>`
     : `<div class="card-footer">${platform}<a class="detail-button" href="${esc(url)}" data-project="${esc(p.id)}" aria-label="查看${esc(p.name)}项目">查看项目 ↗</a></div>`;
   const cover = gallery ? `<button class="gallery-cover ${p.image ? '' : 'icon-cover'}" data-project="${esc(p.id)}" data-cover="${esc(p.id)}" aria-label="查看${esc(p.name)}作品封面与详情"><img src="${esc(p.image || p.icon)}" alt="${esc(p.image ? p.name + ' · ' + p.imageNote : p.name + '应用图标')}" ${p.image ? imageDimensions(p.imageWidth, p.imageHeight) : 'width="44" height="44"'} loading="lazy" decoding="async"></button>` : '';
   return `<article class="project-card ${p.category === 'play' ? 'pet-card' : ''}${p.introductionUrl ? ' introduction-project' : ''}">${cover}<div class="card-top">${projectIcon(p)}<span class="card-category">${esc(p.label)}</span><span class="card-version ${hasStatus(p) ? 'preview-status' : ''}">v${esc(p.version)}</span></div><h3 style="margin:0"><a class="card-title" href="${esc(url)}" data-project="${esc(p.id)}">${esc(p.name)}</a>${hasStatus(p) ? `<span class="status-label">${esc(p.status)}</span>` : ''}</h3><div class="card-english">${esc(p.english)}</div><p class="card-description">${esc(p.description)}</p>${p.category === 'play' && p.image ? `<img class="pet-image" loading="lazy" decoding="async" src="${esc(p.image)}" alt="${esc(p.name)} · ${esc(p.imageNote)}" ${imageDimensions(p.imageWidth, p.imageHeight)}>` : ''}${footer}</article>`;

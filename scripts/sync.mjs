@@ -3,6 +3,7 @@ import {findReadmePackage, hasReadmePackages, applyReadmePackage} from './readme
 import {syncVideoCatch} from './sync-videocatch.mjs';
 import {syncEnvAnchor} from './sync-envanchor.mjs';
 import {syncAIHubCandidate} from './sync-aihub.mjs';
+import {syncYingXu} from './sync-yingxu.mjs';
 import {syncPublishedProjects} from './sync-policy.mjs';
 const path=new URL('../content/projects.json',import.meta.url);
 const data=JSON.parse(await readFile(path,'utf8'));
@@ -47,6 +48,11 @@ async function aiHubCommit(ref){
 let failed=false;
 await syncPublishedProjects(data.projects,async p=>{try{
  const all=await releases(p.id);
+ if(p.id==='yingxu'){
+  syncYingXu(p,all,{version,compare,preview,summary});
+  console.log(`${p.id}: ${p.version}`);
+  return;
+ }
  if(p.id==='video-catch'){
   syncVideoCatch(p,all,{version,compare,summary});
   console.log(`${p.id}: ${p.version}`);

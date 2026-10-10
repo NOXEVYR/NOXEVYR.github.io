@@ -1161,6 +1161,13 @@
       "candidateVersion": "0.4.31-mac.1",
       "candidateState": "cloud_regression_failed_not_published"
     },
+    "websiteCatalog": {
+      "windowsDownload": "https://github.com/NOXEVYR/yingxu/releases/download/yingxu-v0.4.31/YingXu-v0.4.31-Windows-x64.zip",
+      "releaseNotesUrl": "https://github.com/NOXEVYR/yingxu/releases/tag/yingxu-v0.4.31",
+      "macosMessage": "新版 macOS 正在准备，暂不提供下载。",
+      "alternatives": "Only the current Windows ZIP is shown. Historical Windows and macOS downloads remain on GitHub and are not duplicated in the site catalog.",
+      "screenshotNote": "Synthetic browser previews retain their 0.4.27 / calls.3 Stage J provenance."
+    },
     "screenshots": "Preserved the independently versioned 0.4.27 / calls.3 Stage J synthetic browser previews; no claim of a 0.4.31 native screenshot.",
     "preservedLiveSnapshot": {
       "dataUrl": "https://noxevyr.github.io/data.js?v=dbbc3dcdc69e",
