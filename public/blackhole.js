@@ -76,12 +76,13 @@
     const elevation=Math.asin(clamp(qRotate(camera.rotation,[0,0,1])[1],-1,1))*180/Math.PI;
     readout.textContent = `${Math.round(elevation)}° / ${(defaults.distance / camera.distance).toFixed(1)}×`;
     const label=(qualityMode==='auto'?'自动·':'')+qualityNames[quality];
-    qualitySelect.value=qualityMode;
+    const requestedMode=currentQualityLoad?.mode;
+    qualitySelect.value=requestedMode||qualityMode;
     qualitySelect.setAttribute('aria-label','画面清晰度');
     qualitySelect.setAttribute('aria-busy',String(qualityLoading));
     qualitySelect.dataset.quality=quality;
     qualitySelect.dataset.mode=qualityMode;
-    const status=qualityLoading?'正在切换…':!ready?'正在加载…':paused?'已暂停':label;
+    const status=qualityLoading?`${qualityNames[requestedMode]}加载中 · 当前${label}`:!ready?'正在加载…':paused?'已暂停':label;
     if(qualityStatus&&qualityStatus.textContent!==status)qualityStatus.textContent=status;
     if(qualityMetrics){
       const dimensions=ready&&sceneTarget?.width?`${sceneTarget.width} × ${sceneTarget.height} · `:'';
@@ -111,7 +112,8 @@
     if(renderDetails)renderDetails.open=true;
     readout.hidden=true;
     const messages={context:'浏览器未能启动 3D，暂时显示封面',shader:'3D 场景启动失败，请重试',texture:'黑洞素材加载失败，请重试',render:'3D 画面初始化失败，请重试',lost:'3D 画面已中断，请重新加载'};
-    hint.textContent = messages[reason] || messages.render;
+    hint.textContent = reason==='texture'&&error?.name==='TimeoutError'
+      ? '黑洞素材加载超时，已显示封面，可重试' : messages[reason] || messages.render;
     toggle.querySelector('.motion-label').textContent = '静态画面';
     retry.hidden=false;retry.disabled=false;
     if(qualityReset){qualityReset.hidden=false;qualityReset.disabled=false;}
@@ -121,7 +123,7 @@
   qualityReset?.addEventListener('click',()=>{
     // Invalidate before cancelling: rejected old awaits must never restore a tier.
     qualityRevision++;
-    currentQualityLoad?.cancel();startupLoad?.cancel();
+    currentQualityLoad?.cancel();currentQualityLoad=null;startupLoad?.cancel();
     qualityLoading=false;
     if(failed){
       qualityMode='auto';quality='eco';qualitySelect.value='auto';
@@ -585,36 +587,50 @@
   document.querySelector('#orbit-reset').addEventListener('click',()=>{camera={rotation:[...defaults.rotation],distance:defaults.distance};change();});
   document.querySelector('#orbit-top').addEventListener('click',()=>{camera.rotation=qView(.45,1.40);change();});
   document.querySelector('#orbit-side').addEventListener('click',()=>{camera.rotation=qView(.45,.001);change();});
+  function commitQuality(nextMode,nextQuality){
+    qualityMode=nextMode;quality=nextQuality;autoScale=1;autoFps=20;resetPerformance();
+    applyMaterialFiltering(filamentsTexture,gl.TEXTURE3,quality);applyMaterialFiltering(plasmaTexture,gl.TEXTURE2,quality);
+    try{localStorage.setItem('noxevyr-quality',qualityMode);}catch{}
+    hint.textContent=expanded?'自由旋转 · 边缘拖动倾斜 · ESC 返回':'拖动环绕 · 边缘拖动倾斜';
+  }
   async function switchQuality(nextMode,reset=false){
-    if((qualityLoading&&!reset)||!ready||failed||!qualityModes.includes(nextMode)||(nextMode===qualityMode&&!reset)){state();return;}
+    if(!ready||failed||!qualityModes.includes(nextMode)||(nextMode===(currentQualityLoad?.mode||qualityMode)&&!reset)){state();return;}
     const revision=++qualityRevision;
     const nextQuality=nextMode==='auto'?'eco':nextMode;
-    qualityLoading=true;qualitySelect.disabled=true;state();
-    let load;
+    const sameMaterials=!!qualityProfiles[nextQuality].smallMaterials===!!qualityProfiles[quality].smallMaterials;
+    if(sameMaterials){
+      // Returning to the live material family is immediate, even during either
+      // download stage. Invalidate before cancelling its rejected continuation.
+      const pending=currentQualityLoad;currentQualityLoad=null;qualityLoading=false;
+      pending?.cancel();commitQuality(nextMode,nextQuality);state();requestDraw();return;
+    }
+    if(currentQualityLoad&&!reset){
+      // All tiers in the other family share the same pair. Keep its downloads
+      // and deadline, but commit only the latest explicit selection.
+      Object.assign(currentQualityLoad,{mode:nextMode,tier:nextQuality,revision});
+      state();return;
+    }
+    currentQualityLoad?.cancel();
+    const load=createMaterialLoad();
+    Object.assign(load,{mode:nextMode,tier:nextQuality,revision});
+    currentQualityLoad=load;qualityLoading=true;state();
     try{
-      if(!!qualityProfiles[nextQuality].smallMaterials!==!!qualityProfiles[quality].smallMaterials){
-        // Keep the current scene usable if a new material download fails. Only
-        // one small+large pair can coexist, and the old pair is deleted at commit.
-        load=createMaterialLoad();currentQualityLoad=load;
-        const next=await loadMaterials(nextQuality,load);
-        if(failed||revision!==qualityRevision||load.cancelled){load.cancel();return;}
-        load.textures.clear();
-        releaseTexture(filamentsTexture);releaseTexture(plasmaTexture);
-        filamentsTexture=next.flow;plasmaTexture=next.plasma;
-      }
-      qualityMode=nextMode;quality=nextQuality;autoScale=1;autoFps=20;resetPerformance();
-      applyMaterialFiltering(filamentsTexture,gl.TEXTURE3,quality);applyMaterialFiltering(plasmaTexture,gl.TEXTURE2,quality);
-      try{localStorage.setItem('noxevyr-quality',qualityMode);}catch{}
-      hint.textContent=expanded?'自由旋转 · 边缘拖动倾斜 · ESC 返回':'拖动环绕 · 边缘拖动倾斜';
+      // Keep the live scene until the entire replacement pair is ready.
+      const next=await loadMaterials(nextQuality,load);
+      if(failed||currentQualityLoad!==load||load.revision!==qualityRevision||load.cancelled){load.cancel();return;}
+      load.textures.clear();
+      releaseTexture(filamentsTexture);releaseTexture(plasmaTexture);
+      filamentsTexture=next.flow;plasmaTexture=next.plasma;
+      commitQuality(load.mode,load.tier);
     }catch(error){
-      if(revision!==qualityRevision)return;
+      if(currentQualityLoad!==load||load.revision!==qualityRevision)return;
       if(!failed){
         hint.textContent='画质切换未完成，已保留原档位，可重试';
         if(renderDetails)renderDetails.open=true;
       }
       console.warn('Quality switch kept the previous material:',error?.message);
     }finally{
-      if(revision===qualityRevision){
+      if(currentQualityLoad===load&&load.revision===qualityRevision){
         currentQualityLoad=null;qualityLoading=false;
         if(!failed){qualitySelect.disabled=false;state();requestDraw();}
       }
@@ -684,9 +700,17 @@
   }
   function loadTexture(path,texture,unit,requestedWidth,tier,load){return new Promise((resolve,reject)=>{
     const flowImage=new Image();
-    let retried=false,settled=false;
-    // One total deadline includes the retry, rather than restarting indefinitely.
-    const timeout=setTimeout(()=>finish(Error(`Timed out loading ${path}`)),15000);
+    let retried=false,settled=false,timeout;
+    // Slow Pages connections can exceed 15 seconds even for standard materials.
+    // Give each attempt 45 seconds, with at most one retry on a network error.
+    // A timeout stops the load instead of automatically downloading it again.
+    function startAttempt(){
+      clearTimeout(timeout);
+      timeout=setTimeout(()=>{
+        const error=Error(`Timed out loading ${path}`);error.name='TimeoutError';finish(error);
+      },45000);
+      flowImage.src=path+buildQuery+(retried?(buildQuery?'&':'?')+'retry=1':'');
+    }
     const cancel=()=>finish(Error('Material load cancelled'));
     load.cancellers.add(cancel);
     function cleanImage(){clearTimeout(timeout);load.cancellers.delete(cancel);flowImage.onload=null;flowImage.onerror=null;flowImage.removeAttribute('src');}
@@ -718,11 +742,11 @@
     };
     flowImage.onerror=()=>{
       if(settled)return;
-      if(!retried&&!failed&&!load.cancelled){retried=true;flowImage.src=path+buildQuery+(buildQuery?'&':'?')+'retry=1';}
+      if(!retried&&!failed&&!load.cancelled){retried=true;startAttempt();}
       else finish(Error(`Could not load ${path}`));
     };
     if(load.cancelled){cancel();return;}
-    flowImage.src=path+buildQuery;
+    startAttempt();
   });}
   async function loadMaterials(tier,load){
     const standard=qualityProfiles[tier].smallMaterials,suffix=standard?'-standard':'';

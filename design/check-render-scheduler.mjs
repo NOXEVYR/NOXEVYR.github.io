@@ -880,7 +880,9 @@ await test('direct quality selection commits only completed material switches an
 
   await h.selectQuality('high');
   await h.settle();
-  assert.equal(h.node('#render-quality').disabled, true);
+  assert.equal(h.node('#render-quality').disabled, false, 'the selector stays usable during downloads');
+  assert.equal(h.node('#render-quality').value, 'high');
+  assert.equal(h.node('#quality-status').textContent, '高清加载中 · 当前标准');
   assert.equal(h.context.localStorage.getItem('noxevyr-quality'), 'standard', 'pending mode is not persisted');
   assert.equal(h.textureRequests.length, 3, 'only replacement flow starts first');
   const during = h.frames.length;
@@ -895,12 +897,12 @@ await test('direct quality selection commits only completed material switches an
   assert.equal(h.textureRequests.length, 4);
   assert.equal(h.context.localStorage.getItem('noxevyr-quality'), 'standard');
   await h.loadRequest(3);
-  assert.equal(h.context.localStorage.getItem('noxevyr-quality'), 'high');
+  assert.equal(h.context.localStorage.getItem('noxevyr-quality'), 'cinematic', 'the latest shared-family selection wins');
   assert.equal(h.node('#render-quality').disabled, false);
   assert.ok(firstMaterials.every(texture => texture.deleted), 'successful switch deletes both previous material handles');
   const highFrom = h.frames.length;
   h.run(24);
-  resolution(h.frames.slice(highFrom), 1920, 1080);
+  resolution(h.frames.slice(highFrom), 3840, 2160);
 
   await h.selectQuality('ultra');
   await h.settle();
@@ -916,6 +918,137 @@ await test('direct quality selection commits only completed material switches an
   assert.equal(h.node('#render-quality').value, 'auto');
   assert.equal(h.resources.texture.filter(texture => !texture.deleted).length, 5, 'only three RT and two material textures remain live');
   assert.ok(h.peakLiveTextures <= 7, 'at most one previous and one replacement material pair coexist');
+});
+
+await test('returning to the live material family cancels either download stage without extra requests', async () => {
+  for(const [initial,pending,returns] of [
+    ['standard','high',['standard','eco','auto']],
+    ['cinematic','standard',['cinematic','high','ultra']],
+  ])for(const target of returns)for(const partial of [false,true]){
+    const h=await loaded({quality:initial,motion:'paused'});h.run(24);
+    const old=h.resources.texture.filter(texture=>!texture.isTarget);
+    await h.selectQuality(pending);if(partial)await h.loadRequest(2);
+    const image=h.images.at(-1),lateLoad=image.onload,lateError=image.onerror;
+    const requests=h.textureRequests.length,uploads=h.textureUploads.length;
+    await h.selectQuality(target);h.run(24);
+    assert.equal(h.node('#render-quality').value,target);
+    assert.equal(h.context.localStorage.getItem('noxevyr-quality'),target,'return selection commits immediately');
+    assert.equal(h.node('#render-quality').getAttribute('aria-busy'),'false');
+    assert.equal(h.node('#render-quality').disabled,false);
+    assert.equal(h.textureRequests.length,requests,'returning cannot download the already-live family');
+    assert.equal(h.pendingTimers,0);
+    assert.equal(image.onload,null);assert.equal(image.onerror,null);
+    assert.ok(image.removed.includes('src'));
+    assert.ok(old.every(texture=>!texture.deleted),'the live material pair survives cancellation');
+    lateLoad();lateError();await h.settle();h.advance(60000);await h.settle();
+    assert.equal(h.textureRequests.length,requests);assert.equal(h.textureUploads.length,uploads);
+    assert.equal(h.context.localStorage.getItem('noxevyr-quality'),target);
+    assert.equal(h.resources.texture.filter(texture=>!texture.deleted).length,5);
+    assert.equal(h.node('#motion-toggle').getAttribute('aria-pressed'),'true');
+    assert.equal(h.node('#quality-status').textContent,'已暂停');
+    assert.equal(h.pending,0);assert.equal(h.warnings.length,0,'cancelled loads cannot show a failure');
+  }
+});
+
+await test('rapid high ultra cinematic choices reuse either pending stage and commit the final tier', async () => {
+  for(const partial of [false,true])for(const final of ['high','ultra','cinematic']){
+    const h=await loaded({quality:'standard',dpr:1.5});h.run(24);
+    await h.selectQuality('high');if(partial)await h.loadRequest(2);
+    const image=h.images.at(-1),requests=h.textureRequests.length,handles=h.resources.texture.length;
+    const callback=image.onload;
+    for(const next of ['ultra','cinematic','high',final]){
+      await h.selectQuality(next);
+      assert.equal(h.textureRequests.length,requests,'retargeting cannot restart or reorder downloads');
+      assert.equal(h.resources.texture.length,handles,'retargeting cannot allocate another batch');
+      assert.equal(image.onload,callback,'the current image request remains attached');
+      assert.equal(h.node('#render-quality').value,next);
+      assert.equal(h.node('#render-quality').disabled,false);
+      assert.equal(h.node('#render-quality').getAttribute('aria-busy'),'true');
+      assert.equal(h.context.localStorage.getItem('noxevyr-quality'),'standard');
+    }
+    if(!partial)await h.loadRequest(2);
+    await h.loadRequest(3);const from=h.frames.length;h.run(24);
+    assert.equal(h.context.localStorage.getItem('noxevyr-quality'),final);
+    assert.equal(h.node('#render-quality').value,final);
+    const [width,height]={high:[1920,1080],ultra:[2880,1620],cinematic:[3840,2160]}[final];
+    resolution(h.frames.slice(from),width,height);
+    assert.equal(h.textureRequests.length,4);assert.equal(h.pendingTimers,0);
+    assert.ok(h.peakLiveTextures<=7);
+  }
+});
+
+await test('retargeting a pending pair preserves its original timeout and failure restores the committed tier', async () => {
+  for(const partial of [false,true]){
+    const h=await loaded({quality:'standard'});h.run(24);
+    await h.selectQuality('high');if(partial)await h.loadRequest(2);
+    h.advance(40000);await h.selectQuality('cinematic');
+    const requests=h.textureRequests.length;
+    h.advance(4999);await h.settle();
+    assert.equal(h.node('#render-quality').value,'cinematic');
+    assert.equal(h.node('#render-quality').getAttribute('aria-busy'),'true');
+    h.advance(1);await h.settle();
+    assert.equal(h.node('#render-quality').value,'standard');
+    assert.equal(h.context.localStorage.getItem('noxevyr-quality'),'standard');
+    assert.equal(h.node('#render-quality').getAttribute('aria-busy'),'false');
+    assert.equal(h.textureRequests.length,requests,'retargeting does not reset the deadline or trigger a retry');
+    assert.equal(h.pendingTimers,0);
+    assert.equal(h.resources.texture.filter(texture=>!texture.deleted).length,5);
+  }
+});
+
+await test('the latest same-task selection wins after a pair resolves but before it commits', async () => {
+  for(const final of ['standard','eco','auto','high','ultra','cinematic']){
+    const h=await loaded({quality:'standard'});h.run(24);
+    await h.selectQuality('high');await h.loadRequest(2);
+    h.textureRequests[3].image.onload();
+    await h.selectQuality(final);
+    assert.equal(h.context.localStorage.getItem('noxevyr-quality'),final);
+    assert.equal(h.node('#render-quality').value,final);
+    assert.equal(h.textureRequests.length,4,'resolved pairs never cause another download');
+    assert.equal(h.pendingTimers,0);
+    assert.equal(h.resources.texture.filter(texture=>!texture.deleted).length,5);
+    assert.equal(h.warnings.length,0);
+  }
+});
+
+await test('cancelled completion cannot clear or overwrite a fresh pending batch', async () => {
+  const h=await loaded({quality:'standard'});h.run(24);
+  const guidance=h.node('#orbit-hint').textContent;
+  await h.selectQuality('high');await h.loadRequest(2);
+  h.textureRequests[3].image.onload();
+  for(const next of ['eco','cinematic']){
+    h.node('#render-quality').value=next;h.node('#render-quality').emit('change');
+  }
+  await h.settle();
+  assert.equal(h.node('#render-quality').value,'cinematic');
+  assert.equal(h.node('#quality-status').textContent,'极致加载中 · 当前节能');
+  assert.equal(h.node('#render-quality').getAttribute('aria-busy'),'true');
+  assert.equal(h.context.localStorage.getItem('noxevyr-quality'),'eco');
+  assert.equal(h.node('#orbit-hint').textContent,guidance);assert.equal(h.node('#render-details').open,false);
+  assert.equal(h.textureRequests.length,5);
+  await h.loadRequest(4);await h.loadRequest(5);h.run(24);
+  assert.equal(h.node('#render-quality').value,'cinematic');
+  assert.equal(h.context.localStorage.getItem('noxevyr-quality'),'cinematic');
+  assert.equal(h.pendingTimers,0);assert.ok(h.peakLiveTextures<=7);
+});
+
+await test('manual cinematic survives hardware hints lifecycle and overload and reuses committed high materials', async () => {
+  const h=await loaded({quality:'high',deviceMemory:2,hardwareConcurrency:2,coarse:true,saveData:true,
+    renderer:'Intel(R) UHD Graphics',gpuDuration:200,dpr:1.5});h.run(24);
+  const requests=h.textureRequests.length,handles=h.resources.texture.length;
+  for(const target of ['ultra','cinematic']){
+    await h.selectQuality(target);
+    assert.equal(h.context.localStorage.getItem('noxevyr-quality'),target);
+    assert.equal(h.node('#render-quality').value,target);
+    assert.equal(h.textureRequests.length,requests);assert.equal(h.resources.texture.length,handles);
+  }
+  h.setHidden(true);h.context.emit('pagehide');h.advance(60000);
+  h.context.emit('pageshow');h.setHidden(false);h.run(120*20);
+  assert.equal(h.context.localStorage.getItem('noxevyr-quality'),'cinematic');
+  assert.equal(h.node('#render-quality').value,'cinematic');
+  assert.equal(h.node('#quality-status').textContent,'极致');
+  assert.equal(h.textureRequests.length,requests);
+  resolution(h.frames.slice(-20),3840,2160);
 });
 
 for (const paused of [true, false]) {
@@ -976,6 +1109,7 @@ await test('failed quality download deletes staged textures and retains the prev
   await h.selectQuality('high');
   await h.settle();
   await h.loadRequest(2);
+  await h.selectQuality('cinematic');
   const stagedMaterials = h.resources.texture.filter(texture => !texture.isTarget && !oldMaterials.includes(texture));
   assert.equal(stagedMaterials.length, 2);
   await h.failRequest(3);
@@ -983,6 +1117,8 @@ await test('failed quality download deletes staged textures and retains the prev
   assert.equal(h.node('#render-details').open,true,'active failures expose guidance in collapsed details');
   assert.match(h.node('#orbit-hint').textContent,/画质切换未完成，已保留原档位，可重试/);
   assert.equal(h.context.localStorage.getItem('noxevyr-quality'), originalPreference);
+  assert.equal(h.node('#render-quality').value, 'standard', 'failed latest selection restores the committed tier');
+  assert.equal(h.node('#quality-status').textContent, '标准');
   assert.equal(h.node('#render-quality').disabled, false);
   assert.equal(h.node('#blackhole-canvas').hidden, false, 'a replacement network failure must not discard working rendering');
   assert.equal(h.node('.hero-scene').dataset.failure, undefined);
@@ -1175,14 +1311,32 @@ await test('persisted pause and continue choices remain authoritative across sys
   }
 });
 
+await test('slow materials can complete after the former 15 second deadline without an extra download', async () => {
+  for(const quality of ['eco','standard','high']){
+    const h=harness({quality});
+    h.advance(20000);await h.settle();
+    assert.equal(h.textureRequests.length,1,'slow downloads must not be restarted');
+    assert.equal(h.frames.length,0,'loading must not start a rendering loop');
+    assert.equal(h.node('#scene-retry').hidden,true);
+    await h.loadRequest(0);
+    h.advance(30000);await h.settle();
+    assert.equal(h.node('#scene-retry').hidden,true,'each material has its own deadline');
+    await h.loadRequest(1);h.run(24);
+    assert.ok(h.frames.length>0,'slow but complete materials start the scene');
+    assert.equal(h.textureRequests.length,2);
+    assert.equal(h.pendingTimers,0);
+  }
+});
+
 await test('never-completing startup images time out, clean resources and ignore late callbacks', async () => {
   for(const partial of [false,true]){
     const h=harness({quality:'cinematic',allowFallback:true});
     if(partial)await h.loadRequest(0);
     const image=h.images.at(-1),lateLoad=image.onload,lateError=image.onerror;
-    h.advance(14999);await h.settle();
+    h.advance(44999);await h.settle();
     assert.equal(h.node('#scene-retry').hidden,true,'deadline must not fire early');
     h.advance(1);await h.settle();fallbackState(h,'texture');
+    assert.match(h.node('#orbit-hint').textContent,/素材加载超时/);
     assert.equal(h.pendingTimers,0);
     assert.ok(h.resources.texture.every(texture=>texture.deleted),'partial pairs cannot leak');
     assert.ok(h.images.every(image=>image.onload===null&&image.onerror===null&&image.removed.includes('src')));
@@ -1197,11 +1351,21 @@ await test('never-completing startup images time out, clean resources and ignore
   }
 });
 
-await test('the image retry shares the original deadline instead of extending it', async () => {
-  const h=harness({allowFallback:true});h.advance(10000);await h.failRequest(0);
+await test('a late network error gives its single retry a fresh bounded deadline', async () => {
+  const h=harness({allowFallback:true});h.advance(40000);await h.failRequest(0);
   assert.equal(h.textureRequests.length,2);
-  h.advance(4999);await h.settle();assert.equal(h.node('#scene-retry').hidden,true);
+  assert.equal(h.pendingTimers,1,'the first deadline must be cleared');
+  h.advance(44999);await h.settle();assert.equal(h.node('#scene-retry').hidden,true);
   h.advance(1);await h.settle();fallbackState(h,'texture');assert.equal(h.pendingTimers,0);
+  assert.equal(h.textureRequests.length,2,'timing out cannot start another download');
+});
+
+await test('a retry can finish after the first attempt deadline has passed', async () => {
+  const h=harness();h.advance(40000);await h.failRequest(0);
+  h.advance(20000);await h.loadRequest(1);await h.loadRequest(2);h.run(24);
+  assert.ok(h.frames.length>0);
+  assert.equal(h.textureRequests.length,3);
+  assert.equal(h.pendingTimers,0);
 });
 
 await test('switch timeouts retain the working pair, restore selection and permit a fresh retry', async () => {
@@ -1210,7 +1374,7 @@ await test('switch timeouts retain the working pair, restore selection and permi
     const old=h.resources.texture.filter(texture=>!texture.isTarget);
     await h.selectQuality('high');if(partial)await h.loadRequest(2);
     const late=h.images.at(-1).onload,uploads=h.textureUploads.length;
-    h.advance(15000);await h.settle();
+    h.advance(45000);await h.settle();
     assert.equal(h.node('#render-details').open,true,'active timeouts expose retry guidance');
     assert.match(h.node('#orbit-hint').textContent,/画质切换未完成/);
     assert.equal(h.node('#render-quality').value,'standard');
@@ -1263,7 +1427,9 @@ await test('repeated auto recovery invalidates older downshift requests without 
   stale();cancelled();await h.settle();
   assert.equal(h.node('#render-details').open,false,'cancelled old requests cannot expand the new UI state');
   assert.equal(h.node('#orbit-hint').textContent,guidance,'cancelled failures cannot replace current guidance');
-  assert.equal(h.node('#render-quality').disabled,true,'old finally must not unlock a newer pending request');
+  assert.equal(h.node('#render-quality').disabled,false,'a newer pending request remains selectable');
+  assert.equal(h.node('#render-quality').value,'auto','old finally cannot restore a stale selection');
+  assert.equal(h.node('#quality-status').textContent,'自动推荐加载中 · 当前极致');
   await h.loadRequest(start);await h.loadRequest(start+1);h.run(24);
   assert.equal(h.context.localStorage.getItem('noxevyr-quality'),'auto');
   assert.equal(h.node('#render-quality').value,'auto');
@@ -1315,7 +1481,7 @@ await test('quality metrics hold debug budgets while user status stays concise a
   const h=await loaded({quality:null});h.run(24);
   assert.equal(h.node('#quality-status').textContent,'自动·节能');
   assert.match(h.node('#quality-metrics').textContent,/1280 × 720 · 闲置上限 20 FPS/);
-  await h.selectQuality('high');assert.equal(h.node('#quality-status').textContent,'正在切换…');
+  await h.selectQuality('high');assert.equal(h.node('#quality-status').textContent,'高清加载中 · 当前自动·节能');
   await h.resetQuality();assert.equal(h.node('#quality-status').textContent,'自动·节能');
   const legacy=await loaded({quality:'eco',missingNodes:['#quality-metrics','#quality-reset']});legacy.run(24);
   await legacy.selectQuality('standard');legacy.run(24);
