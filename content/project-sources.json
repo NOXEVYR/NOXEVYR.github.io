@@ -1485,5 +1485,100 @@
       "verification": "Both Windows program and frozen source ZIPs were fully downloaded. Size and SHA-256 matched GitHub release metadata; ZIP CRC and single application root checks passed. The packaged 62-file Windows manifest and the BUILD.txt, Windows-manifest.json and SHA256SUMS.txt assets were also verified."
     },
     "preserved": "Windows 3.9.6 stable backup, macOS 0.1.0-preview.3 and the independently versioned 3.9.0 historical demonstration screenshot remain unchanged."
+  },
+  "yingxu0437MacRelease": {
+    "checkedAt": "2026-10-20",
+    "project": "yingxu",
+    "version": "0.4.37-mac.1",
+    "sourceVersion": "0.4.37",
+    "sourceCommit": "125dcc8a4d36306c7bbbc813bc12410859e14cdb",
+    "releaseTag": "yingxu-v0.4.37-mac.1",
+    "releaseUrl": "https://github.com/NOXEVYR/yingxu/releases/tag/yingxu-v0.4.37-mac.1",
+    "package": "YingXu-v0.4.37-mac.1-macOS-arm64.zip",
+    "url": "https://github.com/NOXEVYR/yingxu/releases/download/yingxu-v0.4.37-mac.1/YingXu-v0.4.37-mac.1-macOS-arm64.zip",
+    "bytes": 76997966,
+    "sha256": "be8c86987ea5bfbb426bdd5a5ded14dd514113a3555b3f0b5d245eb0e17c6087",
+    "candidateRun": "https://github.com/NOXEVYR/yingxu/actions/runs/39387534634",
+    "regression": {
+      "baselineSourceCommit": "6f27a0739fb3e3dbec3fc28756e34c45934982e3",
+      "finalSourceCommit": "125dcc8a4d36306c7bbbc813bc12410859e14cdb",
+      "runUrl": "https://github.com/NOXEVYR/yingxu/actions/runs/39384526059",
+      "backendTests": 1157,
+      "backendSkipped": 49,
+      "frontendScripts": 83,
+      "backendStep": "success",
+      "frontendStep": "success",
+      "changesAfterRegression": [
+        ".github/workflows/yingxu-release-candidate.yml",
+        "macos_ui_smoke.py"
+      ],
+      "productCodeChangedAfterRegression": false,
+      "scope": "Full backend and frontend regressions passed on the baseline source. The final candidate source only changed the native acceptance probe and explicit package-only CI option; product code is unchanged."
+    },
+    "localVerification": {
+      "status": "passed",
+      "runUrl": "https://github.com/NOXEVYR/yingxu/actions/runs/39387534634",
+      "packageChecks": 33,
+      "zipEntries": 1051,
+      "applicationRoot": "YingXu/",
+      "zipCrc": true,
+      "extractedZipExecuted": true,
+      "realUserDataUsed": false
+    },
+    "scope": "macOS 14+, Apple Silicon arm64; ad-hoc signed, not notarized.",
+    "videoCapabilities": "Windows and macOS 0.4.37 share the video workspace, right-side clip/marker/file tools, single-range timeline, selected preview, browse/focus layout, and time-positioned single-clip export. Windows 0.4.37 additionally supports controlled frame-by-frame inspection, strict FFV1 source-frame export, and the standalone quick player. macOS does not support controlled frame-by-frame inspection or strict FFV1 source-frame export.",
+    "limitations": [
+      "WebKit synthetic DOM events are not native mouse or keyboard input evidence.",
+      "Manual IME, permission prompts, display scaling and long-term use were not tested.",
+      "The Windows-only quick player, screenshot, and native drag-out behavior are not included in this Mac package."
+    ],
+    "catalog": "The existing Windows 0.4.37 preview remains Windows package evidence; no Mac screenshot is claimed.",
+    "uploadedAssetReadback": {
+      "status": "passed",
+      "verifiedAt": "2026-10-20",
+      "anonymous": false,
+      "bytes": 76997966,
+      "sha256": "be8c86987ea5bfbb426bdd5a5ded14dd514113a3555b3f0b5d245eb0e17c6087",
+      "zipEntries": 1051,
+      "applicationRoot": "YingXu/",
+      "zipCrc": true,
+      "uploadedBytesExecutedOnMacOS": true,
+      "packageChecks": 33,
+      "readbackRun": "https://github.com/NOXEVYR/yingxu/actions/runs/39388205144",
+      "matchesCandidateIdentity": true,
+      "method": "GitHub-authenticated full readback of the uploaded ZIP followed by the same 33 package, native and WKWebView checks; this is not an anonymous full download."
+    },
+    "publicAvailability": {
+      "anonymous": true,
+      "status": 206,
+      "requestedRange": "bytes=0-0",
+      "contentRange": "bytes 0-0/76997966",
+      "returnedBytes": 1,
+      "verifiedAt": "2026-10-20"
+    },
+    "publicVerificationAttachment": {
+      "anonymous": true,
+      "asset": "YingXu-v0.4.37-mac.1-readback-verification.json",
+      "url": "https://github.com/NOXEVYR/yingxu/releases/download/yingxu-v0.4.37-mac.1/YingXu-v0.4.37-mac.1-readback-verification.json",
+      "status": 200,
+      "bytes": 3304,
+      "attachmentSha256": "dc52c4c44cd9c0922beeaf5529f3bd2f71f3c89979551f521ec5b4ed10eedd4f",
+      "version": "0.4.37-mac.1",
+      "sourceCommit": "125dcc8a4d36306c7bbbc813bc12410859e14cdb",
+      "package": "YingXu-v0.4.37-mac.1-macOS-arm64.zip",
+      "packageBytes": 76997966,
+      "packageSha256": "be8c86987ea5bfbb426bdd5a5ded14dd514113a3555b3f0b5d245eb0e17c6087",
+      "packageChecks": 33,
+      "identityMatchesMacReadback": true
+    },
+    "publication": {
+      "draft": false,
+      "prerelease": true,
+      "latestWindowsReleasePreserved": true,
+      "verifiedAt": "2026-10-20"
+    },
+    "publishedAt": "2026-10-20T07:46:31Z",
+    "status": "Published prerelease; authenticated uploaded-asset readback and anonymous public asset/verification JSON checks match the Mac package identity.",
+    "supersedes": "Replaces the catalog 0.4.31-mac.1 asset. The prior yingxu0431MacRelease record remains historical."
   }
 }

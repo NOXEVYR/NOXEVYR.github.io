@@ -12,15 +12,15 @@
       "symbol": "YX",
       "color": "mint",
       "description": "围绕创作项目整理素材、文稿与分镜，让每个文件和制作进度都有归处。",
-      "details": "以作品为中心组织图片、视频、音乐和文稿，在多标签工作区编辑 Markdown、Word 普通正文与 XMind 思维导图，关联角色、场景、分镜和生成版本。支持文件夹导入、独立文档阅览、项目目录同步与迁移。0.4.37 Windows 将剪辑、标记、逐帧与文件工具停靠在视频右侧，支持单段入出点粗剪、选段预览，以及浏览/聚焦布局；快速播放器增加底部控制条。严格源帧范围导出为 FFV1 MKV/NUT，仅视频、不含音频；MP4 重编码保留原有第一条音轨，快速复制仍受关键帧约束。macOS 下载仍为 0.4.31-mac.1，本次 Windows 验收不覆盖 Mac 新功能。",
+      "details": "以作品为中心组织图片、视频、音乐和文稿，在多标签工作区编辑 Markdown、Word 普通正文与 XMind 思维导图，关联角色、场景、分镜和生成版本。支持文件夹导入、独立文档阅览、项目目录同步与迁移。0.4.37 双端同步视频右侧剪辑、标记与文件工具、单段范围时间轴、选段预览和浏览/聚焦布局，并支持按时间定位导出单个片段。macOS 0.4.37-mac.1 面向 Apple Silicon、macOS 14+，为未公证试用版；不支持受控逐帧检查或严格 FFV1 源帧导出。Windows 0.4.37 另有受控逐帧检查、严格源帧范围 FFV1 MKV/NUT 导出（仅视频、不含音频）和独立快速播放器底部控制条；MP4 重编码保留第一条音轨，快速复制受关键帧约束。",
       "features": [
         "项目分类、文件夹导入与目录同步",
         "Markdown / Word 正文、多标签与 XMind 思维导图",
-        "视频右侧剪辑、标记、逐帧与文件工具",
-        "单段粗剪、选段预览与快速播放器底部控制"
+        "0.4.37 双端：视频右侧工具、单段范围时间轴、选段预览与浏览/聚焦布局",
+        "Windows 0.4.37：受控逐帧、严格 FFV1 源帧导出与独立快速播放器底部控制条"
       ],
       "platform": "Windows · macOS（Apple Silicon）",
-      "requirements": "Windows x64 完整包自带 Python、图片处理组件、FFmpeg 和 WebView2。0.4.37 的逐帧检查与严格 FFV1 源帧导出仅在 Windows 开放，输出不含音频。macOS 仍为 0.4.31-mac.1（macOS 14+、Apple Silicon、未公证）；未由本次 Windows 验收覆盖。",
+      "requirements": "Windows x64 完整包自带 Python、图片处理组件、FFmpeg 和 WebView2。macOS 0.4.37-mac.1 为面向 Apple Silicon、macOS 14+ 的未公证试用包。",
       "image": "assets/previews/yingxu-3c86e218105b.png",
       "imageNote": "映序 0.4.37 · Windows 原生 WebView 包内验收（隔离合成视频）",
       "downloads": [
@@ -30,13 +30,13 @@
           "channel": "stable"
         },
         {
-          "label": "macOS 0.4.31-mac.1 试用版",
-          "url": "https://github.com/NOXEVYR/yingxu/releases/download/yingxu-v0.4.31-mac.1/YingXu-v0.4.31-mac.1-macOS-arm64.zip",
+          "label": "macOS 0.4.37-mac.1 试用版",
+          "url": "https://github.com/NOXEVYR/yingxu/releases/download/yingxu-v0.4.37-mac.1/YingXu-v0.4.37-mac.1-macOS-arm64.zip",
           "channel": "mac"
         }
       ],
       "sync": "platforms",
-      "update": "视频工作台右侧集中剪辑、标记、逐帧和文件工具；新增单段粗剪范围时间轴与选段预览，浏览/聚焦布局共用播放、草稿和帧索引；快速播放器增加随鼠标唤出的底部控制条。",
+      "update": "0.4.37 双端同步视频右侧剪辑、标记与文件工具、单段范围时间轴、选段预览和浏览/聚焦布局，并支持按时间定位导出单个片段；Windows 另有受控逐帧、严格 FFV1 源帧导出及独立快速播放器底部控制条。",
       "date": "2026-10-20",
       "type": "software",
       "icon": "assets/icons/yingxu-2d29d6378951.png",
@@ -64,7 +64,7 @@
       "imageHeight": 878,
       "sourceUrl": "https://github.com/NOXEVYR/yingxu/tree/8be81f60bd294b74083778e5b95b4184af09a33f",
       "releaseNotesUrl": "https://github.com/NOXEVYR/yingxu/releases/tag/yingxu-v0.4.37",
-      "downloadNote": "Windows 0.4.37：严格源帧范围导出为 FFV1 MKV/NUT，仅视频、不含音频；MP4 重编码保留第一条音轨，快速复制仍受关键帧约束。macOS 仍为 0.4.31-mac.1，逐帧能力关闭，未由本次 Windows 新版验收覆盖。当前预览来自最终 Windows 包内的隔离合成视频验收，不含个人项目数据。"
+      "downloadNote": "Windows 0.4.37 独有受控逐帧检查、严格源帧范围 FFV1 MKV/NUT 导出（仅视频、不含音频）和独立快速播放器底部控制条；MP4 重编码保留第一条音轨，快速复制受关键帧约束。macOS 0.4.37-mac.1 是 Apple Silicon、macOS 14+ 未公证试用包，支持双端同步的视频工作区与单片段导出，但不支持受控逐帧检查或严格 FFV1 源帧导出。当前预览为 Windows 0.4.37 原生 WebView 包内的隔离合成视频验收图。"
     },
     {
       "id": "ai-hub",
