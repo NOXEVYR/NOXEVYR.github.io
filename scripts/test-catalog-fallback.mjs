@@ -82,8 +82,8 @@ check('ordinary detail clicks prevent navigation and preserve gallery provenance
   f.document.emit('click',{target:{closest:()=>link},button:0,preventDefault(){prevented=true}});
   assert.equal(prevented,true); assert.equal(f.dialog.open,true); assert.equal(f.window.location.hash,'#project/michelle-pet');
   const markup=f.nodes.get('#dialog-content').innerHTML;
-  assert.ok(markup.includes('src="assets/michelle-display.webp"')); assert.ok(markup.includes('href="assets/michelle.png"'));
-  assert.ok(markup.includes('width="1145" height="1374"')); assert.ok(markup.includes('非当前应用运行截图'));
+  assert.ok(markup.includes('src="assets/previews/michelle-pet-dorm-e8b4a581bb6f.webp"')); assert.ok(markup.includes('href="assets/previews/michelle-pet-dorm-cafd0eec0673.png"'));
+  assert.ok(markup.includes('width="1600" height="1200"')); assert.ok(markup.includes('基于现有程序渲染的展示图（原版长发，非桌面截图）'));
   assert.ok(!markup.includes('preview-version'));
   f.nodes.get('#close-dialog').emit('click'); assert.equal(f.dialog.open,false); assert.equal(f.document.title,'NOXEVYR');
 });
@@ -111,7 +111,7 @@ check('failed detail opening retains anchor navigation', () => {
 check('markup escapes public text and fallback images carry recorded dimensions', () => {
   const p=structuredClone(data.projects[0]);p.name='<script>"&';assert.ok(!projectCard(p).includes('<script>'));
   const pet=data.projects.find(p=>p.id==='michelle-pet');const image=projectImages(pet)[0];
-  assert.equal(image.originalSrc,'assets/michelle.png');assert.equal(image.width,1145);assert.equal(image.height,1374);
+  assert.equal(image.originalSrc,'assets/previews/michelle-pet-dorm-cafd0eec0673.png');assert.equal(image.width,1600);assert.equal(image.height,1200);assert.equal(image.kind,'offscreen');
 });
 for(const state of ['interactive','complete','missing-data']) {
   const f=fixture(); f.document.readyState=state==='complete'?'complete':'interactive';

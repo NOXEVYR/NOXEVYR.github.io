@@ -526,8 +526,8 @@
       ],
       "platform": "Windows",
       "requirements": "Windows 自带 .NET Framework 4.x。采用分层 2D 动画，非 Live2D；键鼠搭子支持经典制服及宿舍造型，宿舍可选原版或轻盈长发。具体游戏、独占全屏、反作弊及混合 DPI 多屏环境尚未全面实测。角色版权归原权利人所有。",
-      "image": "assets/michelle-display.webp",
-      "imageNote": "经典制服 · 现有公开角色素材，非当前应用运行截图",
+      "image": "assets/previews/michelle-pet-dorm-e8b4a581bb6f.webp",
+      "imageNote": "宿舍搭子 · 基于现有程序渲染的展示图（原版长发，非桌面截图）",
       "downloads": [
         {
           "label": "Windows 0.3.8",
@@ -549,10 +549,10 @@
         "MichelePet"
       ],
       "featuredHeadline": "桌面上，多一个小伙伴。",
-      "imageWidth": 1145,
-      "imageHeight": 1374,
-      "originalSrc": "assets/michelle.png",
-      "imageKind": "character",
+      "imageWidth": 1600,
+      "imageHeight": 1200,
+      "originalSrc": "assets/previews/michelle-pet-dorm-cafd0eec0673.png",
+      "imageKind": "offscreen",
       "downloadNote": "0.3.8 为稳定版；菜单合并预览把模式与造型选择集中到同一菜单。预览尚未完成全部真实交互、游戏与多屏验收。"
     },
     {

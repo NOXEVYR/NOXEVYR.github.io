@@ -1580,5 +1580,56 @@
     "publishedAt": "2026-10-20T07:46:31Z",
     "status": "Published prerelease; authenticated uploaded-asset readback and anonymous public asset/verification JSON checks match the Mac package identity.",
     "supersedes": "Replaces the catalog 0.4.31-mac.1 asset. The prior yingxu0431MacRelease record remains historical."
+  },
+  "micheleDormPreviewReview": {
+    "id": "michelle-pet",
+    "kind": "offscreen",
+    "reviewedAt": "2026-10-20",
+    "caption": "宿舍搭子 · 基于现有程序渲染的展示图（原版长发，非桌面截图）",
+    "repository": "https://github.com/NOXEVYR/michelle-pet",
+    "commit": "841b61f01f56345a089d3f94d76ea097489612a1",
+    "path": "src/CompanionRenderer.cs",
+    "url": "https://github.com/NOXEVYR/michelle-pet/blob/841b61f01f56345a089d3f94d76ea097489612a1/src/CompanionRenderer.cs",
+    "websitePath": "assets/previews/michelle-pet-dorm-e8b4a581bb6f.webp",
+    "websiteSha256": "e8b4a581bb6ffa8a6bb19e6e8171c7f015f23f50781a56fa1757778e000cb46e",
+    "bytes": 210026,
+    "width": 1600,
+    "height": 1200,
+    "originalSrc": "assets/previews/michelle-pet-dorm-cafd0eec0673.png",
+    "originalSha256": "cafd0eec0673c3c9bb72323f980e6dee94f8d333d545e8ed4e4ad4282e7138fc",
+    "originalBytes": 1148377,
+    "selection": "Existing dorm default: SetCompanionOutfit(true) -> SetCompanionStyle(1) -> CompanionRenderer(true, false). build.ps1 embeds dorm-body-longhair.png as Companion.DormBody. Refined hair is a separate explicit style.",
+    "sourceNote": "Offscreen neutral idle composition from existing public source and runtime assets only. No desktop capture, private data, newly generated artwork, or Windows/game compatibility claim. Character rights remain with their original owners.",
+    "method": "Unchanged drawing geometry/assets in CompanionRenderer, CompanionExpressions and idle CompanionInput; Mono 6.12.0.199 + libgdiplus 6.1. For high-resolution portability, DrawTransformed explicitly composes the existing Graphics world matrix into its three destination points and resets/restores that matrix around DrawImage; this corrects libgdiplus ignoring the parent transform for the three-point overload. Transparent 1600x1200 PNG retained; WebP display encoding quality=90, method=6. No input device registration.",
+    "sourceFiles": [
+      {
+        "path": "src/CompanionRenderer.cs",
+        "sha256": "78509ae9dd5dd65e206b62f28ab786f35f4105b1f99fc453604e062d24375169"
+      },
+      {
+        "path": "src/CompanionExpressions.cs",
+        "sha256": "d02f308ba7d600822f1960c15102f3bc20bc46095868ea12ce98d1af24500cc5"
+      },
+      {
+        "path": "src/CompanionInput.cs",
+        "sha256": "1dc67843b00d9c44c5d6e2d23c9c2fe37b48e1877b531a949fbc818925dcc769"
+      },
+      {
+        "path": "src/MichellePet.cs",
+        "sha256": "0f4349fa963af33d356847e3f240311ab9ce067fd18f6ff34ffa5e66f092d0d9"
+      },
+      {
+        "path": "build.ps1",
+        "sha256": "2d62de0f3843d37a843721df071ec45799544693236460c77b3e1b38ce9abdc2"
+      },
+      {
+        "path": "assets/companion/dorm-body-longhair.png",
+        "sha256": "6431b4c94bf4e26478020b9abe43ed8ea3b951704596672475a3bff011071db3"
+      },
+      {
+        "path": "assets/companion/dorm-hands.png",
+        "sha256": "403c89b26f826881265ee8f5c6355be671c57f406dd8079802e4c204f068d2df"
+      }
+    ]
   }
 }
