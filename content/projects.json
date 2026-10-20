@@ -7,26 +7,26 @@
       "english": "YingXu",
       "category": "creative",
       "label": "创作与管理",
-      "version": "0.4.31",
+      "version": "0.4.37",
       "status": "已发布",
       "symbol": "YX",
       "color": "mint",
       "description": "围绕创作项目整理素材、文稿与分镜，让每个文件和制作进度都有归处。",
-      "details": "以作品为中心组织图片、视频、音乐和文稿，在多标签工作区编辑 Markdown、Word 普通正文与 XMind 思维导图，关联角色、场景、分镜和生成版本。支持文件夹导入、独立文档阅览、项目目录同步与迁移。0.4.31 双端同步思维导图框选、批量标注与跨项目文件链接。",
+      "details": "以作品为中心组织图片、视频、音乐和文稿，在多标签工作区编辑 Markdown、Word 普通正文与 XMind 思维导图，关联角色、场景、分镜和生成版本。支持文件夹导入、独立文档阅览、项目目录同步与迁移。0.4.37 Windows 将剪辑、标记、逐帧与文件工具停靠在视频右侧，支持单段入出点粗剪、选段预览，以及浏览/聚焦布局；快速播放器增加底部控制条。严格源帧范围导出为 FFV1 MKV/NUT，仅视频、不含音频；MP4 重编码保留原有第一条音轨，快速复制仍受关键帧约束。macOS 下载仍为 0.4.31-mac.1，本次 Windows 验收不覆盖 Mac 新功能。",
       "features": [
         "项目分类、文件夹导入与目录同步",
-        "Markdown / Word 正文、多标签与画板",
-        "XMind 导入、新建、编辑与批量标注",
-        "思维导图分支链接到网页、文件与主题"
+        "Markdown / Word 正文、多标签与 XMind 思维导图",
+        "视频右侧剪辑、标记、逐帧与文件工具",
+        "单段粗剪、选段预览与快速播放器底部控制"
       ],
       "platform": "Windows · macOS（Apple Silicon）",
-      "requirements": "Windows x64 完整包自带 Python、图片处理组件、FFmpeg 和 WebView2。macOS 试用包需 macOS 14+、Apple Silicon，未公证；截图、原生拖出等能力限 Windows。",
-      "image": "assets/previews/yingxu-c2e3992454ed.png",
-      "imageNote": "映序 0.4.31 · XMind 思维导图（虚构演示项目，浏览器渲染）",
+      "requirements": "Windows x64 完整包自带 Python、图片处理组件、FFmpeg 和 WebView2。0.4.37 的逐帧检查与严格 FFV1 源帧导出仅在 Windows 开放，输出不含音频。macOS 仍为 0.4.31-mac.1（macOS 14+、Apple Silicon、未公证）；未由本次 Windows 验收覆盖。",
+      "image": "assets/previews/yingxu-3c86e218105b.png",
+      "imageNote": "映序 0.4.37 · Windows 原生 WebView 包内验收（隔离合成视频）",
       "downloads": [
         {
-          "label": "Windows 0.4.31 ZIP",
-          "url": "https://github.com/NOXEVYR/yingxu/releases/download/yingxu-v0.4.31/YingXu-v0.4.31-Windows-x64.zip",
+          "label": "Windows 0.4.37 ZIP",
+          "url": "https://github.com/NOXEVYR/yingxu/releases/download/yingxu-v0.4.37/YingXu-v0.4.37-Windows-x64.zip",
           "channel": "stable"
         },
         {
@@ -36,27 +36,35 @@
         }
       ],
       "sync": "platforms",
-      "update": "重建 XMind 思维导图工作区：双击编辑、左键框选、Delete 删除、中键平移与独立缩放；支持多选批量标注和跨项目文件链接。",
-      "date": "2026-10-10",
+      "update": "视频工作台右侧集中剪辑、标记、逐帧和文件工具；新增单段粗剪范围时间轴与选段预览，浏览/聚焦布局共用播放、草稿和帧索引；快速播放器增加随鼠标唤出的底部控制条。",
+      "date": "2026-10-20",
       "type": "software",
       "icon": "assets/icons/yingxu-2d29d6378951.png",
       "featuredHeadline": "让素材与文稿各就其位。",
-      "previewVersion": "0.4.31",
+      "previewVersion": "0.4.37",
       "screenshots": [
         {
+          "src": "assets/previews/yingxu-3c86e218105b.png",
+          "label": "视频剪辑 · 右侧工具与范围预览",
+          "caption": "映序 0.4.37 · Windows 原生 WebView 包内验收 · 隔离合成视频",
+          "version": "0.4.37",
+          "width": 1440,
+          "height": 878
+        },
+        {
           "src": "assets/previews/yingxu-c2e3992454ed.png",
-          "label": "思维导图 · 标注与文件链接",
+          "label": "历史界面 · XMind 标注与文件链接",
           "caption": "映序 0.4.31 · XMind 思维导图（虚构演示项目，浏览器渲染）",
           "version": "0.4.31",
           "width": 1360,
           "height": 1000
         }
       ],
-      "imageWidth": 1360,
-      "imageHeight": 1000,
-      "sourceUrl": "https://github.com/NOXEVYR/yingxu/tree/8d758c325136bb447f6fb63701fed80b7ea5986a",
-      "releaseNotesUrl": "https://github.com/NOXEVYR/yingxu/releases/tag/yingxu-v0.4.31",
-      "downloadNote": "Windows 完整版与 macOS 试用版均可下载。苹果端未公证。界面为 0.4.31 虚构项目演示。"
+      "imageWidth": 1440,
+      "imageHeight": 878,
+      "sourceUrl": "https://github.com/NOXEVYR/yingxu/tree/8be81f60bd294b74083778e5b95b4184af09a33f",
+      "releaseNotesUrl": "https://github.com/NOXEVYR/yingxu/releases/tag/yingxu-v0.4.37",
+      "downloadNote": "Windows 0.4.37：严格源帧范围导出为 FFV1 MKV/NUT，仅视频、不含音频；MP4 重编码保留第一条音轨，快速复制仍受关键帧约束。macOS 仍为 0.4.31-mac.1，逐帧能力关闭，未由本次 Windows 新版验收覆盖。当前预览来自最终 Windows 包内的隔离合成视频验收，不含个人项目数据。"
     },
     {
       "id": "ai-hub",
@@ -163,24 +171,24 @@
       "english": "FlowSwitch",
       "category": "tools",
       "label": "系统与效率",
-      "version": "3.9.9-preview.1",
+      "version": "3.10.1-preview.1",
       "status": "预览版",
       "symbol": "FS",
       "color": "orange",
       "description": "统一管理已有代理，为程序和网站选择出口，并排查入口与连接问题。",
-      "details": "通过固定本地入口管理 HTTP / SOCKS5 出口、程序分流和网站例外，提供备用接替与连接证据。3.9.9 可选 Windows 预览增加只读体检，检查代理变量、系统入口、绕过设置、hosts 记录、已配置入口和双栈路由证据；修复沿用显式确认、计划复核与备份机制。仅覆盖进入所配置入口的流量，不代表 VPN/TUN、原生 UDP 或游戏登录已经验收。",
+      "details": "通过固定本地入口管理 HTTP / SOCKS5 出口、程序分流和网站例外，提供备用接替与连接证据。3.10.1 Windows 可选预览整合日常代理管理与按需旧代理残留诊断：读取当前系统代理管理方及 Windows 三个代理视图，Clash 正常接管时不再提示重复应用；365VPN 需在原客户端连接并检测到本地 HTTP 入口后再预览切换。可按需检查已核验程序及后台进程的本机代理端口、监听和 TCP 连接证据，未知状态不当作失效。确需修复时先保存工作并正常退出整组程序，再预览按当前系统代理启动；仍运行或身份不明时拒绝。只设置新进程环境，不改系统设置、持久变量或快捷方式，也不结束其他应用。环境与 TCP 证据不代表真实请求、账号或隧道验收。",
       "features": [
-        "固定入口与程序线路切换",
-        "网站例外与备用出口接替",
-        "连接证据与整组规则预览",
-        "干净启动与限时直连对照"
+        "读取系统代理管理方与 Windows 代理视图",
+        "为可用的本机 HTTP 入口预览切换",
+        "按需检查已核验程序的代理端口、监听与 TCP 证据",
+        "保存并退出后预览按系统代理启动；未知身份时拒绝"
       ],
       "platform": "Windows · macOS 测试版",
       "requirements": "Windows 10 1809+ / Windows 11 x64，使用系统自带 Windows PowerShell 5.1、.NET Framework 4.x 与 curl；完整包自带运行组件。macOS 测试版需 macOS 13+，提供 Apple 芯片与 Intel 包，尚未公证。需自己的可用代理；仅管理进入固定入口的流量，Mac 功能范围与 Windows 不完全相同。",
       "downloads": [
         {
-          "label": "Windows 3.9.9-preview.1 预览版",
-          "url": "https://github.com/NOXEVYR/proxy-switch/releases/download/v3.9.9-preview.1/FlowSwitch-v3.9.9-Windows-x64.zip",
+          "label": "Windows 3.10.1-preview.1 可选预览版",
+          "url": "https://github.com/NOXEVYR/proxy-switch/releases/download/v3.10.1-preview.1/FlowSwitch-v3.10.1-Windows-x64.zip",
           "channel": "preview"
         },
         {
@@ -195,8 +203,8 @@
         }
       ],
       "sync": "stable",
-      "update": "增加默认不修改网络的只读体检，检查入口与双栈路由证据；修复需确认并复核计划，保留备份与外部修改。",
-      "date": "2026-10-10",
+      "update": "将日常代理管理与按需旧代理残留诊断合并：首页读取系统管理方及代理视图；预览本机 HTTP 入口切换；按已核验程序查看本机端口、监听与 TCP 证据；启动前要求保存工作、退出整组程序并再次预览。",
+      "date": "2026-10-19",
       "type": "software",
       "icon": "assets/icons/proxy-switch-cd6b53f84043.png",
       "screenshots": [
@@ -212,10 +220,10 @@
       "previewVersion": "3.9.0",
       "imageWidth": 1276,
       "imageHeight": 879,
-      "downloadNote": "可选预览标签为 3.9.9-preview.1，包内程序为 3.9.9；稳定版和自动更新通道仍为 3.9.6。完整解压并保留 app 目录，替换已有安装前从托盘停止代理服务并退出。macOS 单独维护；下方截图是 3.9.0 历史演示界面。",
-      "sourceUrl": "https://github.com/NOXEVYR/proxy-switch/tree/eeb4bca5f6995f970c780f36d406683a1128f280",
-      "documentationUrl": "https://github.com/NOXEVYR/proxy-switch/releases/tag/v3.9.9-preview.1",
-      "releaseNotesUrl": "https://github.com/NOXEVYR/proxy-switch/releases/tag/v3.9.9-preview.1"
+      "downloadNote": "可选 Windows 预览为 3.10.1-preview.1（程序版本 3.10.1）；稳定版和自动更新通道仍为 3.9.6。完整解压并保留 app 目录；替换已有安装前，从流向托盘正常退出。macOS 0.1.0-preview.3 与 3.9.0 历史演示截图保持独立。网络环境和 TCP 证据不代表真实 365VPN 隧道、账号请求或长期在线已验收。",
+      "sourceUrl": "https://github.com/NOXEVYR/proxy-switch/tree/22ce6efcba7c72fa2337e3b09181bbf024debcaf",
+      "documentationUrl": "https://github.com/NOXEVYR/proxy-switch/releases/tag/v3.10.1-preview.1",
+      "releaseNotesUrl": "https://github.com/NOXEVYR/proxy-switch/releases/tag/v3.10.1-preview.1"
     },
     {
       "id": "codex-switcher",

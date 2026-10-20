@@ -1348,5 +1348,142 @@
     "scope": "macOS 14+, Apple Silicon arm64; ad-hoc signed, not Developer ID signed or notarized; manual IME, permissions, display environments and long-term use remain unverified.",
     "catalog": "Only current Windows 0.4.31 and macOS 0.4.31-mac.1 ZIPs are shown. The current 0.4.31 synthetic browser preview remains independent of native package acceptance.",
     "supersedes": "Earlier pending/failed Mac status in yingxu0431ReleaseSync; those entries remain historical evidence."
+  },
+  "yingxu0437Release": {
+    "checkedAt": "2026-10-20",
+    "project": "yingxu",
+    "version": "0.4.37",
+    "buildRevision": "review.1",
+    "sourceCommit": "8be81f60bd294b74083778e5b95b4184af09a33f",
+    "sourceUrl": "https://github.com/NOXEVYR/yingxu/tree/8be81f60bd294b74083778e5b95b4184af09a33f",
+    "releaseTag": "yingxu-v0.4.37",
+    "releaseUrl": "https://github.com/NOXEVYR/yingxu/releases/tag/yingxu-v0.4.37",
+    "windowsAsset": {
+      "package": "YingXu-v0.4.37-Windows-x64.zip",
+      "url": "https://github.com/NOXEVYR/yingxu/releases/download/yingxu-v0.4.37/YingXu-v0.4.37-Windows-x64.zip",
+      "bytes": 486313148,
+      "sha256": "872097483860f72e131cf8ed71d1ba2e5471a0ecf3b45877f6efa8173b39d5fd",
+      "localVerification": "Local final package verification passed; 1819 entries, one YingXu/ application root, isolated packaged-native WebView acceptance passed with a generated 30-second H.264 fixture and isolated data/project roots.",
+      "publicReadback": "Verified: the complete draft archive and manifest/checksum/verification assets were downloaded; size, SHA-256, ZIP CRC, 1819 entries and one YingXu/ root matched the accepted local package. The public release tag binds source 8be81f60bd294b74083778e5b95b4184af09a33f; anonymous download returned HTTP 206 with the exact 486313148-byte total after publication.",
+      "readbackVerificationUrl": "https://github.com/NOXEVYR/yingxu/releases/download/yingxu-v0.4.37/YingXu-v0.4.37-readback-verification.json",
+      "publishedAt": "2026-10-20T06:40:10Z"
+    },
+    "macOS": {
+      "version": "0.4.31-mac.1",
+      "url": "https://github.com/NOXEVYR/yingxu/releases/download/yingxu-v0.4.31-mac.1/YingXu-v0.4.31-mac.1-macOS-arm64.zip",
+      "status": "Preserved existing Mac package; no 0.4.37 Mac build or acceptance is included.",
+      "publicReadback": {
+        "verifiedAt": "2026-10-20",
+        "anonymous": true,
+        "bytes": 76906033,
+        "sha256": "0c05cbaa906d2d03db2eb7c0846d71c33ce9dbb331af26802c2fa8d1711d9854",
+        "zipEntries": 1043,
+        "applicationRoot": "YingXu/",
+        "zipCrc": true,
+        "manifest": {
+          "package": "YingXu-v0.4.31-mac.1-macOS-arm64-manifest.json",
+          "bytes": 541,
+          "sha256": "91ad913e46cd7f2e4eeab2069dbdf5af95e43205ea82b0b7e932beef27b703ee"
+        }
+      }
+    }
+  },
+  "yingxu0437CurrentPreview": {
+    "checkedAt": "2026-10-20",
+    "project": "yingxu",
+    "version": "0.4.37",
+    "buildRevision": "review.1",
+    "sourceCommit": "8be81f60bd294b74083778e5b95b4184af09a33f",
+    "sourceUrl": "https://github.com/NOXEVYR/yingxu/tree/8be81f60bd294b74083778e5b95b4184af09a33f",
+    "method": "Unmodified Windows release-package native WebView screenshot from final packaged acceptance. The harness used isolated generated media and isolated data/project roots; this is Windows package evidence, not a macOS screenshot or browser-only mock.",
+    "image": {
+      "path": "public/assets/previews/yingxu-3c86e218105b.png",
+      "bytes": 221274,
+      "sha256": "3c86e218105b57bc6aa719c39dae1883fc9677d7c57ffd9efee34a8148d3687e",
+      "width": 1440,
+      "height": 878
+    },
+    "dataScope": "Generated 30-second H.264 CFR 25fps clip in isolated data and project roots; no user profile or private project data was used. The visible clip name is synthetic-cfr-25fps.",
+    "checks": [
+      "Packaged native WebView verified video playback, trim-range controls, selection preview and real rough-cut export.",
+      "Classic/focus state retention, wide and 900px layouts, right-side tools and keyboard/mouse behavior were covered by the isolated harness."
+    ],
+    "supersedesCatalogPreviews": "The 0.4.37 Windows native-package screenshot is the active catalog preview. The 0.4.31 XMind browser-rendered image remains in the gallery with its historical version and provenance."
+  },
+  "flowSwitch3101Preview": {
+    "checkedAt": "2026-10-20",
+    "project": "proxy-switch",
+    "version": "3.10.1-preview.1",
+    "programVersion": "3.10.1",
+    "channel": "Optional Windows prerelease; stable and automatic update channel remain 3.9.6.",
+    "publishedAt": "2026-10-19T19:20:26Z",
+    "prerelease": true,
+    "releaseTag": "v3.10.1-preview.1",
+    "releaseUrl": "https://github.com/NOXEVYR/proxy-switch/releases/tag/v3.10.1-preview.1",
+    "releaseTargetCommit": "22ce6efcba7c72fa2337e3b09181bbf024debcaf",
+    "sourceUrl": "https://github.com/NOXEVYR/proxy-switch/tree/22ce6efcba7c72fa2337e3b09181bbf024debcaf",
+    "assets": [
+      {
+        "kind": "Windows program",
+        "package": "FlowSwitch-v3.10.1-Windows-x64.zip",
+        "url": "https://github.com/NOXEVYR/proxy-switch/releases/download/v3.10.1-preview.1/FlowSwitch-v3.10.1-Windows-x64.zip",
+        "bytes": 71698837,
+        "githubReleaseDigest": "sha256:1db5e7e8ce9b7c6529794d1e2eda32a511319f17d3947604b89cdd59c175bdac",
+        "publicReadback": {
+          "zipEntries": 64,
+          "applicationRoot": "FlowSwitch/",
+          "zipCrc": true
+        }
+      },
+      {
+        "kind": "frozen Windows source",
+        "package": "FlowSwitch-v3.10.1-Windows-Source.zip",
+        "url": "https://github.com/NOXEVYR/proxy-switch/releases/download/v3.10.1-preview.1/FlowSwitch-v3.10.1-Windows-Source.zip",
+        "bytes": 2479670,
+        "githubReleaseDigest": "sha256:53be01f69429198c21130cf40162fb6a064b3866da3062adefc901731c4cf2c9",
+        "publicReadback": {
+          "zipEntries": 201,
+          "applicationRoot": "proxy-switch/",
+          "zipCrc": true
+        }
+      },
+      {
+        "kind": "build record",
+        "package": "BUILD.txt",
+        "url": "https://github.com/NOXEVYR/proxy-switch/releases/download/v3.10.1-preview.1/BUILD.txt",
+        "bytes": 1436,
+        "githubReleaseDigest": "sha256:6a2beb83151e1a43d334dcd3f5eb7b64a61ceab96ef91c04d817862e8a05c622",
+        "publicReadback": true
+      },
+      {
+        "kind": "Windows file manifest",
+        "package": "Windows-manifest.json",
+        "url": "https://github.com/NOXEVYR/proxy-switch/releases/download/v3.10.1-preview.1/Windows-manifest.json",
+        "bytes": 10744,
+        "githubReleaseDigest": "sha256:8f6e7b76340ae030dc2b1e307b892b9a356368cae4146069b98633c59ead829f",
+        "publicReadback": true
+      },
+      {
+        "kind": "checksum file",
+        "package": "SHA256SUMS.txt",
+        "url": "https://github.com/NOXEVYR/proxy-switch/releases/download/v3.10.1-preview.1/SHA256SUMS.txt",
+        "bytes": 373,
+        "githubReleaseDigest": "sha256:7f2fb896ec94f83e3780161985750db793645012cf935572f262be7ed0d47232",
+        "publicReadback": true
+      }
+    ],
+    "releaseNotesScope": "Daily proxy management plus on-demand read-only diagnostics for verified programs and background processes. Preview only; evidence about local environment and TCP connections does not prove successful VPN tunnels, account requests or long-term operation.",
+    "publicDownloadVerification": {
+      "verifiedAt": "2026-10-20",
+      "anonymous": true,
+      "ok": true,
+      "finalPublicUrlsVerified": true,
+      "assetCount": 5,
+      "sizesAndDigestsMatchGitHubReleaseMetadata": true,
+      "windowsPackageManifestFiles": 62,
+      "buildManifestAndChecksumAssetsVerified": true,
+      "verification": "Both Windows program and frozen source ZIPs were fully downloaded. Size and SHA-256 matched GitHub release metadata; ZIP CRC and single application root checks passed. The packaged 62-file Windows manifest and the BUILD.txt, Windows-manifest.json and SHA256SUMS.txt assets were also verified."
+    },
+    "preserved": "Windows 3.9.6 stable backup, macOS 0.1.0-preview.3 and the independently versioned 3.9.0 historical demonstration screenshot remain unchanged."
   }
 }
