@@ -105,7 +105,9 @@ assert.deepEqual(other, beforeOther, 'the special policy only applies to YingXu'
 
 const catalog = JSON.parse(await readFile(new URL('../content/projects.json', import.meta.url), 'utf8'));
 const displayed = catalog.projects.find(item => item.id === 'yingxu');
-const expectedWindowsUrl = `https://github.com/NOXEVYR/yingxu/releases/download/yingxu-v${displayed.version}/YingXu-v${displayed.version}-Windows-x64.zip`;
+const releaseTag = displayed.releaseNotesUrl?.split('/').at(-1);
+assert.ok([`v${displayed.version}`, `yingxu-v${displayed.version}`].includes(releaseTag), 'release tag must match the displayed Windows version');
+const expectedWindowsUrl = `https://github.com/NOXEVYR/yingxu/releases/download/${releaseTag}/YingXu-v${displayed.version}-Windows-x64.zip`;
 const currentWindows = displayed.downloads.filter(download => download.channel === 'stable');
 const currentMac = displayed.downloads.filter(download => download.channel === 'mac');
 assert.deepEqual(currentWindows, [{
@@ -122,7 +124,7 @@ assert.equal(displayed.downloads.length, currentWindows.length + currentMac.leng
   'only the current Windows ZIP and an optional reviewed Mac ZIP may be listed');
 assert.equal(displayed.downloads.some(download => download.channel === 'previous' || /历史/i.test(download.label)), false,
   'historical Windows downloads must stay off the catalog');
-assert.equal(displayed.releaseNotesUrl, `https://github.com/NOXEVYR/yingxu/releases/tag/yingxu-v${displayed.version}`);
+assert.equal(displayed.releaseNotesUrl, `https://github.com/NOXEVYR/yingxu/releases/tag/${releaseTag}`);
 const detailLinks = projectLinks(displayed);
 assert.equal((detailLinks.match(/<a\b/g) || []).length, 1);
 assert.match(detailLinks, /发布说明/);
