@@ -1,5 +1,5 @@
 {
-  "checkedAt": "2026-10-17",
+  "checkedAt": "2026-11-04",
   "projects": [
     {
       "id": "yingxu",
@@ -37,7 +37,7 @@
       ],
       "sync": "platforms",
       "update": "Windows 已更新至 0.4.44，改进长文阅读位置保持；macOS 保持 0.4.37-mac.1。0.4.37 双端同步视频右侧剪辑、标记与文件工具、单段范围时间轴、选段预览和浏览/聚焦布局，并支持按时间定位导出单个片段；Windows 另有受控逐帧、严格 FFV1 源帧导出及独立快速播放器底部控制条。",
-      "date": "2026-10-20",
+      "date": "2026-11-04",
       "type": "software",
       "icon": "assets/icons/yingxu-2d29d6378951.png",
       "featuredHeadline": "让素材与文稿各就其位。",
@@ -171,24 +171,24 @@
       "english": "FlowSwitch",
       "category": "tools",
       "label": "系统与效率",
-      "version": "3.10.1-preview.1",
+      "version": "3.11.0-preview.1",
       "status": "预览版",
       "symbol": "FS",
       "color": "orange",
       "description": "统一管理已有代理，为程序和网站选择出口，并排查入口与连接问题。",
-      "details": "通过固定本地入口管理 HTTP / SOCKS5 出口、程序分流和网站例外，提供备用接替与连接证据。3.10.1 Windows 可选预览整合日常代理管理与按需旧代理残留诊断：读取当前系统代理管理方及 Windows 三个代理视图，Clash 正常接管时不再提示重复应用；365VPN 需在原客户端连接并检测到本地 HTTP 入口后再预览切换。可按需检查已核验程序及后台进程的本机代理端口、监听和 TCP 连接证据，未知状态不当作失效。确需修复时先保存工作并正常退出整组程序，再预览按当前系统代理启动；仍运行或身份不明时拒绝。只设置新进程环境，不改系统设置、持久变量或快捷方式，也不结束其他应用。环境与 TCP 证据不代表真实请求、账号或隧道验收。",
+      "details": "通过固定本地入口管理 HTTP / SOCKS5 出口、程序分流和网站例外，提供备用接替与连接证据。3.11.0 Windows 可选预览增加分阶段网络诊断与恢复：先查看代理管理方、入口监听和通路检测，再预览“恢复普通上网”方案。用户级恢复可清除残留手动代理、PAC、自动检测和三项用户代理变量，保留程序规则、NO_PROXY 与第三方配置；每次操作都有计划复核、写前备份、结果复检和操作记录。机器级恢复另行预览并请求 UAC，仅处理三项机器代理变量与 WinHTTP 默认代理。恢复系统设置、网络通路和账号功能分别验证。",
       "features": [
-        "读取系统代理管理方与 Windows 代理视图",
-        "为可用的本机 HTTP 入口预览切换",
-        "按需检查已核验程序的代理端口、监听与 TCP 证据",
-        "保存并退出后预览按系统代理启动；未知身份时拒绝"
+        "代理管理方、入口监听与通路诊断",
+        "预览后恢复普通上网，保留程序规则与第三方配置",
+        "写前备份、结果复检与用户级撤回",
+        "机器级恢复独立预览并请求 UAC"
       ],
       "platform": "Windows · macOS 测试版",
       "requirements": "Windows 10 1809+ / Windows 11 x64，使用系统自带 Windows PowerShell 5.1、.NET Framework 4.x 与 curl；完整包自带运行组件。macOS 测试版需 macOS 13+，提供 Apple 芯片与 Intel 包，尚未公证。需自己的可用代理；仅管理进入固定入口的流量，Mac 功能范围与 Windows 不完全相同。",
       "downloads": [
         {
-          "label": "Windows 3.10.1-preview.1 可选预览版",
-          "url": "https://github.com/NOXEVYR/proxy-switch/releases/download/v3.10.1-preview.1/FlowSwitch-v3.10.1-Windows-x64.zip",
+          "label": "Windows 3.11.0-preview.1 可选预览版",
+          "url": "https://github.com/NOXEVYR/proxy-switch/releases/download/v3.11.0-preview.1/FlowSwitch-v3.11.0-Windows-x64.zip",
           "channel": "preview"
         },
         {
@@ -203,8 +203,8 @@
         }
       ],
       "sync": "stable",
-      "update": "将日常代理管理与按需旧代理残留诊断合并：首页读取系统管理方及代理视图；预览本机 HTTP 入口切换；按已核验程序查看本机端口、监听与 TCP 证据；启动前要求保存工作、退出整组程序并再次预览。",
-      "date": "2026-10-19",
+      "update": "3.11.0 可选预览新增“重置代理／恢复普通上网”：先诊断与预览，再分阶段恢复用户级或机器级设置，保留备份和操作记录。",
+      "date": "2026-10-23",
       "type": "software",
       "icon": "assets/icons/proxy-switch-cd6b53f84043.png",
       "screenshots": [
@@ -220,10 +220,10 @@
       "previewVersion": "3.9.0",
       "imageWidth": 1276,
       "imageHeight": 879,
-      "downloadNote": "可选 Windows 预览为 3.10.1-preview.1（程序版本 3.10.1）；稳定版和自动更新通道仍为 3.9.6。完整解压并保留 app 目录；替换已有安装前，从流向托盘正常退出。macOS 0.1.0-preview.3 与 3.9.0 历史演示截图保持独立。网络环境和 TCP 证据不代表真实 365VPN 隧道、账号请求或长期在线已验收。",
-      "sourceUrl": "https://github.com/NOXEVYR/proxy-switch/tree/22ce6efcba7c72fa2337e3b09181bbf024debcaf",
-      "documentationUrl": "https://github.com/NOXEVYR/proxy-switch/releases/tag/v3.10.1-preview.1",
-      "releaseNotesUrl": "https://github.com/NOXEVYR/proxy-switch/releases/tag/v3.10.1-preview.1"
+      "downloadNote": "可选 Windows 预览为 3.11.0-preview.1（程序版本 3.11.0）；稳定版和自动更新通道仍为 3.9.6。完整解压并保留 app 目录；替换已有安装前，从流向托盘正常退出。macOS 0.1.0-preview.3 与 3.9.0 历史演示截图保持原版本。真实重启、UAC 授权、第三方 VPN 隧道、账号登录和长期稳定性仍需独立验收；恢复普通上网不保证需要代理的网站可以直连。",
+      "sourceUrl": "https://github.com/NOXEVYR/proxy-switch/tree/f958e9baf2e6870e8ba71e6dc69f3fa24c82a659",
+      "documentationUrl": "https://github.com/NOXEVYR/proxy-switch/blob/f958e9baf2e6870e8ba71e6dc69f3fa24c82a659/RECOVERY.md",
+      "releaseNotesUrl": "https://github.com/NOXEVYR/proxy-switch/releases/tag/v3.11.0-preview.1"
     },
     {
       "id": "codex-switcher",
@@ -332,33 +332,33 @@
       "english": "Windows 桌面布局与外观工具",
       "category": "tools",
       "label": "系统与效率",
-      "version": "0.11.20-preview",
+      "version": "0.11.21-preview",
       "status": "预览版",
       "symbol": "CD",
       "color": "blue",
       "description": "预览任务栏、资源管理器与右键菜单的布局，管理自己的 Windows 桌面方案。",
-      "details": "Windows 11 布局与外观设置前端。方案大图与缩略卡片会随设置变化，六款皮肤统一菜单和焦点样式，支持方案导入导出、独立开始菜单与前端更新。预览和保存方案不会自动改变 Windows；独立开始菜单不接管 Win 键，尚不能完整替代 StartAllBack。",
+      "details": "Windows 11 布局与外观设置前端，支持方案大图、缩略卡片、六款皮肤、方案导入导出与独立开始菜单。0.11.21-preview 修复资源管理器 Win10 布局的导航初始化、旧窗口重建与开机自动加载流程；旧窗口经明确选择、身份和目录核对后重建，结果不确定时保留原窗口。预览和保存方案不会自动改变 Windows；独立开始菜单不接管 Win 键，尚不能完整替代 StartAllBack。",
       "features": [
-        "随设置变化的方案大图与缩略卡片",
-        "六款皮肤的统一菜单与控件",
-        "方案库、JSON 导入导出与前端更新",
-        "独立开始菜单与配套服务方案管理"
+        "方案大图、缩略卡片与六款皮肤",
+        "资源管理器 Win10 布局导航初始化修复",
+        "核对窗口身份与目录后重建旧窗口",
+        "区分当前会话恢复、开机诊断与持续自启"
       ],
       "platform": "Windows 11",
-      "requirements": "Windows 11 x64 与 .NET 8 Desktop Runtime x64。公开包未捆绑第三方增强运行组件，新电脑不能直接启用桌面改造；开机方案管理需已有经核对的 ClassicDesk 0.11.14 配套服务。不同方案真实管理员写入与重启后效果仍待实测。",
+      "requirements": "Windows 11 x64 与 .NET 8 Windows Desktop Runtime x64。完整解压前端 ZIP 并保留启动脚本，不能仅替换四个程序文件。公开前端包不含第三方增强引擎、模组 DLL 和自启服务宿主，不能作为完整增强安装器；前端升级不会自动替换已有原生组件。",
       "downloads": [
         {
-          "label": "Windows 0.11.20-preview",
-          "url": "https://github.com/NOXEVYR/classicdesk/releases/tag/v0.11.20-preview",
+          "label": "Windows 0.11.21-preview",
+          "url": "https://github.com/NOXEVYR/classicdesk/releases/tag/v0.11.21-preview",
           "channel": "preview"
         }
       ],
       "sync": "manual",
-      "update": "方案大图与缩略卡片随设置变化，统一六款皮肤的菜单与焦点，增加独立开始菜单和前端更新。",
-      "date": "2026-10-01",
+      "update": "0.11.21-preview 修复 Win10 布局导航初始化、旧窗口重建和开机自动加载；提供完整前端与公开源码包，保留稳定通道。",
+      "date": "2026-10-25",
       "type": "software",
       "icon": "assets/icons/classicdesk-4a2feca24709.png",
-      "downloadNote": "0.11.20-preview 为前端预览版；真实 Alt / Popup、多屏与管理员组件仍待实机验收。截图使用合成方案离屏输出，未应用 Windows。",
+      "downloadNote": "0.11.21-preview 提供完整前端与公开源码 ZIP，不含完整增强运行组件，不切换稳定通道。发行记录包含指定 Windows 11 构建上的窗口重建、导航和开机自动加载验收，不代表全部系统构建或长期稳定性。以下截图仍为 0.11.20-preview 的历史合成方案离屏演示，未应用 Windows。",
       "screenshots": [
         {
           "src": "assets/previews/classicdesk-4df31af7817f.png",
@@ -378,10 +378,13 @@
         }
       ],
       "image": "assets/previews/classicdesk-4df31af7817f.png",
-      "imageNote": "ClassicDesk 0.11.20-preview · 当前方案大图（合成方案离屏输出，未应用Windows）",
+      "imageNote": "ClassicDesk 0.11.20-preview · 历史方案大图（合成方案离屏输出，未应用 Windows）",
       "imageWidth": 1080,
       "imageHeight": 820,
-      "previewVersion": "0.11.20-preview"
+      "previewVersion": "0.11.20-preview",
+      "sourceUrl": "https://github.com/NOXEVYR/classicdesk/tree/23a3242d1eea364fc2c3faf191d784808db083ee",
+      "documentationUrl": "https://github.com/NOXEVYR/classicdesk/blob/23a3242d1eea364fc2c3faf191d784808db083ee/README.md",
+      "releaseNotesUrl": "https://github.com/NOXEVYR/classicdesk/releases/tag/v0.11.21-preview"
     },
     {
       "id": "env-anchor",

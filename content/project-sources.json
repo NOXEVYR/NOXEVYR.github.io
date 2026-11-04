@@ -1631,5 +1631,44 @@
         "sha256": "403c89b26f826881265ee8f5c6355be671c57f406dd8079802e4c204f068d2df"
       }
     ]
+  },
+  "targetedPublicCatalogReview20261104": {
+    "checkedAt": "2026-11-04",
+    "baseWebsiteCommit": "e11631ae9e1ff2dcf7a85095a7000b1632af1dbd",
+    "scope": "Update only the reviewed FlowSwitch Windows preview and ClassicDesk public release descriptions. Preserve other deployed project entries, icons, screenshots, stable and macOS downloads.",
+    "preservedLiveDifference": "Retain the deployed YingXu date 2026-11-04. ClassicDesk live download already points to 0.11.21-preview; align the source catalog and stale 0.11.20 descriptions.",
+    "projects": [
+      {
+        "id": "proxy-switch",
+        "version": "3.11.0-preview.1",
+        "prerelease": true,
+        "sourceCommit": "f958e9baf2e6870e8ba71e6dc69f3fa24c82a659",
+        "releaseUrl": "https://github.com/NOXEVYR/proxy-switch/releases/tag/v3.11.0-preview.1",
+        "programAsset": {
+          "name": "FlowSwitch-v3.11.0-Windows-x64.zip",
+          "bytes": 71748231,
+          "sha256": "370b4d5c2d6a2d5229c33cc31330313d68a4019128c8e60deb3f79aa8e2e21af"
+        },
+        "sourceAsset": {
+          "name": "FlowSwitch-v3.11.0-Windows-Source.zip",
+          "bytes": 2559094,
+          "sha256": "74106860ef79be7911f1412bac31d69bf9b83204e9cc586e671b1d2e5a204853"
+        },
+        "verification": "Both public ZIPs downloaded and matched GitHub byte sizes and digests; CRC, single root, basic path and duplicate-name checks passed. All 70 program manifest entries matched. 216 source files match exact Git blobs; source manifest.json is separately generated for the source ZIP. No application startup or native acceptance added."
+      },
+      {
+        "id": "classicdesk",
+        "version": "0.11.21-preview",
+        "prerelease": true,
+        "sourceCommit": "23a3242d1eea364fc2c3faf191d784808db083ee",
+        "releaseUrl": "https://github.com/NOXEVYR/classicdesk/releases/tag/v0.11.21-preview",
+        "programAsset": {
+          "name": "ClassicDesk-0.11.21-preview-windows-x64.zip",
+          "bytes": 7259918,
+          "sha256": "d0632a9ba34f2837f128417b8d22fcfb07b7ad9e78f5c631ded02b9444fc858d"
+        },
+        "verification": "Public Windows ZIP downloaded; byte size and SHA-256 match GitHub and the final release artifact. CRC, single root, basic path and duplicate-name checks passed. Native validation statements are attributed to the existing release record, not new tests."
+      }
+    ]
   }
 }
