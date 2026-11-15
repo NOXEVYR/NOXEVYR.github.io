@@ -40,19 +40,27 @@ check('published projects keep source and release targets distinct from introduc
   assert.equal(updateLink(withoutReleaseNotes), `${published.sourceUrl}#readme`);
   assert.ok(projectIntroduction(published).includes(published.downloads[0].url));
 });
-check('Zhiqun is an honest pending introduction without public artifacts', () => {
+check('Zhiqun public preview keeps private source separate', () => {
   const p = data.projects.find(p => p.id === 'zhiqun');
-  assert.ok(p?.pending); assert.equal(p.status, '开发中'); assert.deepEqual(p.downloads, []);
+  assert.equal(p.pending, undefined); assert.equal(p.status, '候选版'); assert.ok(p.downloads.length > 0);
+  assert.equal(p.closedSource, true); assert.equal(p.releaseSync, 'manual');
   assert.equal(sourceLink(p), ''); assert.equal(p.introductionUrl, 'projects/zhiqun.html');
   const html = projectIntroduction(p);
   assert.ok(html.includes(p.introduction.capabilitiesTitle)); assert.ok(!html.includes('围绕机箱的三件事'));
-  assert.ok(!html.includes('github.com')); assert.ok(!html.includes('primary-download')); assert.ok(!html.includes('<figure>'));
+  assert.ok(html.includes('primary-download')); assert.ok(html.includes(p.downloads[0].url));
+  for (const markup of [html, projectLinks(p), projectCard(p), projectCard(p, {fallback:true}), updateList([p])]) {
+    assert.ok(!/github\.com\/NOXEVYR\/zhiqun(?:["/#?]|$)/.test(markup));
+    assert.ok(!markup.includes('>源码'));
+  }
+  const invalid = structuredClone(data); invalid.projects.find(p => p.id === 'zhiqun').sourceUrl='https://github.com/NOXEVYR/zhiqun';
+  assert.equal(validCatalog(invalid),false);
+
 });
 const fetched = [];
 const before = structuredClone(pending);
 await syncPublishedProjects(pendingData.projects, async p => { fetched.push(p.id); });
 check('release sync does not invoke network work for pending projects', () => {
-  assert.ok(!fetched.includes(pending.id)); assert.equal(fetched.length, pendingData.projects.filter(p => !p.pending).length); assert.deepEqual(pending, before);
+  assert.ok(!fetched.includes(pending.id)); assert.ok(!fetched.includes('zhiqun')); assert.equal(fetched.length, pendingData.projects.filter(p => !p.pending && p.releaseSync !== 'manual').length); assert.deepEqual(pending, before);
 });
 check('card, fallback, links and updates never invent repository URLs', () => {
   assert.equal(sourceLink(pending), ''); assert.equal(projectTarget(pending), pending.introductionUrl); assert.equal(updateLink(pending), pending.introductionUrl);

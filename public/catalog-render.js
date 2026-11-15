@@ -23,6 +23,9 @@ export function validCatalog(data) {
       && Array.isArray(p.features) && p.features.every(text)
       && (!p.aliases || (Array.isArray(p.aliases) && p.aliases.every(text)))
       && (p.pending === undefined || typeof p.pending === 'boolean')
+      && (p.closedSource === undefined || typeof p.closedSource === 'boolean')
+      && (!p.closedSource || !p.sourceUrl)
+      && (p.releaseSync === undefined || p.releaseSync === 'manual')
       && (p.introductionUrl === undefined || (localIntroduction(p.introductionUrl) && p.introductionUrl === `projects/${p.id}.html`))
       && (!p.introductionUrl || (p.introduction && text(p.introduction.eyebrow) && text(p.introduction.previewNote)
         && Array.isArray(p.introduction.sections) && p.introduction.sections.length > 0 && p.introduction.sections.every(s => s && text(s.title) && text(s.body))
@@ -45,13 +48,15 @@ export function projectImages(p) {
 export function projectIcon(p, loading = 'lazy') {
   return `<span class="project-icon software-icon icon-${escapeHtml(p.id)}"><img src="${escapeHtml(p.icon)}" alt="${escapeHtml(p.name)}图标" width="44" height="44" loading="${loading}" decoding="async"></span>`;
 }
-export function sourceLink(p) { return p.sourceUrl || (isPending(p) ? '' : `https://github.com/NOXEVYR/${p.id}`); }
+export function sourceLink(p) { return p.closedSource ? '' : p.sourceUrl || (isPending(p) ? '' : `https://github.com/NOXEVYR/${p.id}`); }
 export function projectTarget(p) { return p.introductionUrl || sourceLink(p); }
 export function projectLinks(p) {
   if (p.id === 'yingxu') return p.releaseNotesUrl
     ? `<a href="${escapeHtml(p.releaseNotesUrl)}" ${linkAttributes(p.releaseNotesUrl)}>发布说明 ↗</a>`
     : '';
-  const links = isPending(p)
+  const links = p.closedSource
+    ? [[p.introductionUrl, '独立介绍页'], [p.documentationUrl, '使用说明'], [p.releaseNotesUrl, '发布说明']]
+    : isPending(p)
     ? [[p.introductionUrl, '独立介绍页'], [p.documentationUrl, '使用说明'], [p.sourceUrl, '源码']]
     : [[p.documentationUrl || `https://github.com/NOXEVYR/${p.id}#readme`, '使用说明'], [p.sourceUrl || `https://github.com/NOXEVYR/${p.id}`, '源码'], [`https://github.com/NOXEVYR/${p.id}/issues`, '反馈问题']];
   return links.filter(([url]) => url).map(([url, label]) => `<a href="${escapeHtml(url)}" ${linkAttributes(url)}>${label} ↗</a>`).join('');

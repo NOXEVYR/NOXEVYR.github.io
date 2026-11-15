@@ -51,7 +51,7 @@ def sync_icons(root=ROOT, fetch=download_icon):
     sources = json.loads((root / "content/icon-sources.json").read_text(encoding="utf-8"))
     staged = []
     for project in catalog["projects"]:
-        if project.get("pending") is True:
+        if project.get("pending") is True or project.get("releaseSync") == "manual":
             continue
         key = project["id"]
         if not re.fullmatch(r"[a-z0-9-]+", key):

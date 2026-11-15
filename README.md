@@ -19,6 +19,7 @@
 ## 文件与内容维护
 
 - `content/projects.json`：项目介绍、分类、平台说明、图标与下载入口。简介和功能范围按真实版本人工维护。
+- 智群提供 Windows x64 候选版完整包；下载来自独立的公开发行仓库，应用源码保持私有。`closedSource` 禁止生成默认源码链接，`releaseSync: "manual"` 保留经核验的程序链接，不从私有源码仓库推断发行版。后续更新须先验收公开附件，再修改目录与来源记录。
 - `content/icon-sources.json`：软件图标的公开仓库与资源路径。
 - `content/project-sources.json`：名称、介绍与展示图片的人工核对记录，包含固定来源提交、资源大小和哈希；不会混入正式页面的用户操作流程。
 - `public/horizon.html`、`public/horizon.css`：页面结构与样式。

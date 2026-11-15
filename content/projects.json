@@ -665,8 +665,7 @@
       "category": "tools",
       "label": "AI 协作",
       "version": "0.4.15",
-      "status": "开发中",
-      "pending": true,
+      "status": "候选版",
       "symbol": "ZQ",
       "color": "mint",
       "icon": "assets/icons/zhiqun.png",
@@ -678,12 +677,18 @@
         "人工审查验收与网页 AI 连接器"
       ],
       "platform": "Windows",
-      "requirements": "本地客户端与配套浏览器扩展协同工作；连接网页 AI 时需相应账户与可用网页会话。当前仍在测试，暂未提供公开安装包。",
-      "downloads": [],
-      "downloadNote": "0.4.15 开发候选 · 暂未开放公开下载。网页连接兼容性仍在验证，不代表所有 AI 平台均已稳定可用。",
+      "requirements": "Windows x64。本地客户端与配套浏览器扩展协同工作；完整包包含客户端、0.4.4 浏览器扩展与中文上手指南。连接网页 AI 时需相应账户与可用网页会话。",
+      "downloads": [
+        {
+          "label": "Windows x64 · 0.4.15 候选版完整包",
+          "url": "https://github.com/NOXEVYR/zhiqun-releases/releases/download/v0.4.15-preview/Zhiqun-0.4.15-Windows-x64.zip",
+          "channel": "preview"
+        }
+      ],
+      "downloadNote": "0.4.15 公开候选版 · 可下载测试。网页连接兼容性仍在验证，不代表所有 AI 平台均已稳定可用。",
       "introductionUrl": "projects/zhiqun.html",
       "date": "2026-11-15",
-      "update": "新增智群项目介绍。0.4.15 开发候选改进多段回答回读与异常恢复指引，仍在测试中。",
+      "update": "开放 Windows x64 候选版完整包下载，包含客户端、0.4.4 浏览器扩展和上手指南。网页 AI 兼容性仍在验证。",
       "introduction": {
         "eyebrow": "多 AI 协作 · 本地工作区",
         "capabilitiesTitle": "把协作过程留在一个工作区",
@@ -703,11 +708,16 @@
           }
         ],
         "notes": [
-          "当前为开发候选，不提供公开源码或下载入口。",
+          "当前开放候选版程序包下载，源码仍为私有；公开下载仓库仅用于发行程序及使用说明。",
+          "下载后解压到独立文件夹，按包内指南启动客户端并加载配套扩展。首次测试请使用独立工作区，保留原有数据备份。",
           "0.4.15 改进多段 Markdown 回答回读、异常领取后的恢复指引及打包保护。",
           "已通过 198 项 Python 与 25 项 Node 回归，以及独立客户端启动、托盘、草稿保留和重启检查；真实 AI 网页收发仍待验收，不代表全平台稳定可用。"
         ]
-      }
+      },
+      "closedSource": true,
+      "releaseSync": "manual",
+      "documentationUrl": "https://github.com/NOXEVYR/zhiqun-releases#readme",
+      "releaseNotesUrl": "https://github.com/NOXEVYR/zhiqun-releases/releases/tag/v0.4.15-preview"
     }
   ],
   "reviewedAt": "2026-09-27"

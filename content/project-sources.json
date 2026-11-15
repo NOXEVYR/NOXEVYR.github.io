@@ -1684,5 +1684,20 @@
     },
     "verification": "198 Python tests and 25 Node tests passed; independent executable startup, tray, draft retention and restart checked. Current third-party AI webpage send/receive remains unverified. No public source or download advertised.",
     "liveCatalogPreserved": "Existing project entries matched the deployed 2026-11-14 catalog; no unrelated software version changes."
+  },
+  "zhiqunPublicPreviewReview": {
+    "checkedAt": "2026-11-15",
+    "projectId": "zhiqun",
+    "version": "0.4.15",
+    "status": "public-preview",
+    "releaseUrl": "https://github.com/NOXEVYR/zhiqun-releases/releases/tag/v0.4.15-preview",
+    "package": {
+      "url": "https://github.com/NOXEVYR/zhiqun-releases/releases/download/v0.4.15-preview/Zhiqun-0.4.15-Windows-x64.zip",
+      "bytes": 20566139,
+      "sha256": "9be3e2416f14735caafafa6a31ca2bfd9f6573479735f21a1885ca44ed31516e",
+      "contents": "Windows x64 executable, browser connector 0.4.4, Chinese quick-start guide, third-party notices and checksums"
+    },
+    "verification": "Official prerelease metadata read anonymously; direct ZIP downloaded anonymously, byte count and SHA-256 matched, all ZIP CRC tests passed. Included browser manifest confirms version 0.4.4. Native app checks remain attributed to the development review, not rerun in this cloud executor.",
+    "scope": "Public binary distribution only; application source stays private. Real third-party AI webpage send/receive remains unverified. Manual catalog update prevents probing or exposing the private source repository."
   }
 }

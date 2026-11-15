@@ -45,6 +45,22 @@ class IconSyncTests(unittest.TestCase):
             self.assertEqual(fetched, ['one', 'two'])
             self.assertEqual(json.loads(path.read_text())['projects'][-1], pending)
 
+    def test_manual_public_binary_icon_stays_local_without_private_source_fetch(self):
+        with tempfile.TemporaryDirectory() as folder:
+            root = self.fixture(folder)
+            path = root / 'content/projects.json'
+            data = json.loads(path.read_text())
+            project = {'id': 'zhiqun', 'closedSource': True, 'releaseSync': 'manual', 'icon': 'assets/icons/zhiqun.png'}
+            data['projects'].append(project)
+            path.write_text(json.dumps(data))
+            fetched = []
+            def fetch(repo, source):
+                fetched.append(repo)
+                return image_bytes('blue')
+            icons.sync_icons(root, fetch)
+            self.assertEqual(fetched, ['one', 'two'])
+            self.assertEqual(json.loads(path.read_text())['projects'][-1], project)
+
     def test_failed_download_preserves_catalog_and_assets(self):
         with tempfile.TemporaryDirectory() as folder:
             root = self.fixture(folder)
