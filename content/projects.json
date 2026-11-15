@@ -1,5 +1,5 @@
 {
-  "checkedAt": "2026-11-04",
+  "checkedAt": "2026-11-14",
   "projects": [
     {
       "id": "yingxu",
@@ -653,6 +653,61 @@
       "sourceUrl": "https://github.com/NOXEVYR/CaseControl",
       "documentationUrl": "https://github.com/NOXEVYR/CaseControl/blob/25a4a7a1ae0cabf2fe6c2c9c384cade6c6ae4b67/README.md",
       "releaseNotesUrl": "https://github.com/NOXEVYR/CaseControl/releases/tag/v0.2.0"
+    },
+    {
+      "id": "zhiqun",
+      "name": "智群",
+      "english": "Zhiqun",
+      "aliases": [
+        "Agent Room",
+        "AI协作聊天"
+      ],
+      "category": "tools",
+      "label": "AI 协作",
+      "version": "0.4.15",
+      "status": "开发中",
+      "pending": true,
+      "symbol": "ZQ",
+      "color": "mint",
+      "icon": "assets/icons/zhiqun.png",
+      "description": "在本地组织多个 AI 成员，让讨论、任务分工与人工验收留在同一个工作区。",
+      "details": "智群是一款本地运行的多 AI 协作工作区。为成员保留独立身份与会话，通过定向请求和通知安排协作，集中查看讨论与任务状态，并由人审查、验收结果。网页 AI 连接器用于连接外部 AI 网页会话。",
+      "features": [
+        "独立成员身份与会话隔离",
+        "定向请求、通知与任务状态",
+        "人工审查验收与网页 AI 连接器"
+      ],
+      "platform": "Windows",
+      "requirements": "本地客户端与配套浏览器扩展协同工作；连接网页 AI 时需相应账户与可用网页会话。当前仍在测试，暂未提供公开安装包。",
+      "downloads": [],
+      "downloadNote": "0.4.15 开发候选 · 暂未开放公开下载。网页连接兼容性仍在验证，不代表所有 AI 平台均已稳定可用。",
+      "introductionUrl": "projects/zhiqun.html",
+      "date": "2026-11-15",
+      "update": "新增智群项目介绍。0.4.15 开发候选改进多段回答回读与异常恢复指引，仍在测试中。",
+      "introduction": {
+        "eyebrow": "多 AI 协作 · 本地工作区",
+        "capabilitiesTitle": "把协作过程留在一个工作区",
+        "previewNote": "暂未提供经过核验的公开界面截图。",
+        "sections": [
+          {
+            "title": "各自独立，一起讨论",
+            "body": "区分成员身份与会话，让多个 AI 围绕同一件事交流，同时保留各自的上下文。"
+          },
+          {
+            "title": "把讨论变成明确任务",
+            "body": "通过定向请求和通知组织分工，在工作区查看讨论及任务状态，减少跨会话来回搬运。"
+          },
+          {
+            "title": "结果由人验收",
+            "body": "保留人工审查与验收环节。网页 AI 连接器负责接入外部会话，不把收到回答等同于任务已完成。"
+          }
+        ],
+        "notes": [
+          "当前为开发候选，不提供公开源码或下载入口。",
+          "0.4.15 改进多段 Markdown 回答回读、异常领取后的恢复指引及打包保护。",
+          "已通过 198 项 Python 与 25 项 Node 回归，以及独立客户端启动、托盘、草稿保留和重启检查；真实 AI 网页收发仍待验收，不代表全平台稳定可用。"
+        ]
+      }
     }
   ],
   "reviewedAt": "2026-09-27"

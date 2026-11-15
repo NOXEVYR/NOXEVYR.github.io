@@ -1670,5 +1670,19 @@
         "verification": "Public Windows ZIP downloaded; byte size and SHA-256 match GitHub and the final release artifact. CRC, single root, basic path and duplicate-name checks passed. Native validation statements are attributed to the existing release record, not new tests."
       }
     ]
+  },
+  "zhiqunDevelopmentReview": {
+    "checkedAt": "2026-11-15",
+    "projectId": "zhiqun",
+    "version": "0.4.15",
+    "status": "development-candidate",
+    "icon": {
+      "path": "assets/icons/zhiqun.png",
+      "source": "Project brand icon, static/brand-icon.png, provided from the inspected application source",
+      "sha256": "9554dffac736570654a71d6a6057410ade02f94c807a7cc86542e6436d82e43d",
+      "kind": "application-brand-icon"
+    },
+    "verification": "198 Python tests and 25 Node tests passed; independent executable startup, tray, draft retention and restart checked. Current third-party AI webpage send/receive remains unverified. No public source or download advertised.",
+    "liveCatalogPreserved": "Existing project entries matched the deployed 2026-11-14 catalog; no unrelated software version changes."
   }
 }

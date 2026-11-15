@@ -40,11 +40,19 @@ check('published projects keep source and release targets distinct from introduc
   assert.equal(updateLink(withoutReleaseNotes), `${published.sourceUrl}#readme`);
   assert.ok(projectIntroduction(published).includes(published.downloads[0].url));
 });
+check('Zhiqun is an honest pending introduction without public artifacts', () => {
+  const p = data.projects.find(p => p.id === 'zhiqun');
+  assert.ok(p?.pending); assert.equal(p.status, '开发中'); assert.deepEqual(p.downloads, []);
+  assert.equal(sourceLink(p), ''); assert.equal(p.introductionUrl, 'projects/zhiqun.html');
+  const html = projectIntroduction(p);
+  assert.ok(html.includes(p.introduction.capabilitiesTitle)); assert.ok(!html.includes('围绕机箱的三件事'));
+  assert.ok(!html.includes('github.com')); assert.ok(!html.includes('primary-download')); assert.ok(!html.includes('<figure>'));
+});
 const fetched = [];
 const before = structuredClone(pending);
 await syncPublishedProjects(pendingData.projects, async p => { fetched.push(p.id); });
 check('release sync does not invoke network work for pending projects', () => {
-  assert.ok(!fetched.includes(pending.id)); assert.equal(fetched.length, data.projects.length - 1); assert.deepEqual(pending, before);
+  assert.ok(!fetched.includes(pending.id)); assert.equal(fetched.length, pendingData.projects.filter(p => !p.pending).length); assert.deepEqual(pending, before);
 });
 check('card, fallback, links and updates never invent repository URLs', () => {
   assert.equal(sourceLink(pending), ''); assert.equal(projectTarget(pending), pending.introductionUrl); assert.equal(updateLink(pending), pending.introductionUrl);
